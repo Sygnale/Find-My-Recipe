@@ -13,8 +13,10 @@ con.connect(function(err){
 });
 
 const http = require('http');
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 const requestListener = function (req, res) {
+    console.log("request received");
   res.writeHead(200);
   con.query("SELECT * FROM INGREDIENTS",function(err,result){
     if(err)throw err;
