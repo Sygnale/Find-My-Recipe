@@ -11,26 +11,30 @@ class App extends React.Component{
     };
   }
   componentDidMount() {
-    fetch("http://localhost:8080")
-      .then(function(response){
+    var context=this;
+    fetch("http://localhost:8080/ingredients")
+    .then(res => res.json())
+    .then(
+      (result) => {
         this.setState({
-          isLoaded:true,
-          response: response
+          isLoaded: true,
+          response: result
         });
-      })
-      .catch((error)=>{
+      },
+      (error) => {
         this.setState({
-          isLoaded:true,
-          error: error
+          isLoaded: true,
+          error
         });
-      });
+      }
+    )
   }
 
   render(){
     const { error, isLoaded, response } = this.state;
     let divText;
     if(error){
-      divText=error.message;
+      divText=error.responseText;
     }
     else if(!isLoaded){
       divText="Loading...";

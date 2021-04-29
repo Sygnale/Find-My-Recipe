@@ -6,23 +6,31 @@ var con=mysql.createConnection({
     password: "123456",
     database: "recipes"
 });
-
 con.connect(function(err){
     if(err) throw err;
     console.log("Connected to MySQL Database");
 });
 
-const http = require('http');
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+const express = require('express');
+const cors = require('cors');
 
-const requestListener = function (req, res) {
-    console.log("request received");
-  res.writeHead(200);
-  con.query("SELECT * FROM INGREDIENTS",function(err,result){
-    if(err)throw err;
-        res.end(JSON.stringify(result));
+const app = express();
+app.use(cors())
+
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Server Home'
     });
-}
+});
 
-const server = http.createServer(requestListener);
-server.listen(8080);
+app.get('/ingredients',(req,res)=>{
+    console.log("Sending ingredients list")
+    con.query("SELECT * FROM INGREDIENTS",function(err,result){
+        if(err)throw err;
+            res.json(JSON.stringify(result));
+        });
+});
+
+app.listen(8080, () => {
+    console.log('Server listening on port 8080');
+});
