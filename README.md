@@ -11,7 +11,7 @@
  
  ### Node.js
  
- Install Node.js using the installer [here](https://nodejs.org/en/download/). Open a command line prompt and enter "npm install mysql2". Navigate into the Fridge_App directory (the same directory as server.js). Enter "node server.js" in the command line. To check that you have correctly installed Node.js and MySQL, type "curl localhost:8080" into a command window. A list of all the ingredients should be printed to the command prompt in JSON format. 
+ Install Node.js using the installer [here](https://nodejs.org/en/download/). Open a command line prompt and enter "npm install mysql2", "npm install express", and "npm install cors". Navigate into the Fridge_App directory (the same directory as server.js). Enter "node server.js" in the command line. To check that you have correctly installed Node.js and MySQL, type "curl localhost:8080" into a command window. A list of all the ingredients should be printed to the command prompt in JSON format. 
  
  ### React.js
  
