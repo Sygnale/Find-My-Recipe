@@ -84,9 +84,9 @@ async function create_ingredients(con, json) {
       console.log("Table ingredients created");
 
       console.log("Inserting ingredients...");
-      Promise.all(json.flatMap(async (recipe) => {
+      await Promise.all(json.flatMap(async (recipe) => {
         recipe.ingredients.map(async (ingredient) => {
-          await insert_ingredient(con, ingredient.text);
+          insert_ingredient(con, ingredient.text);
         });
       }));
       console.log("Ingredients inserted");
@@ -126,8 +126,8 @@ async function create_recipes(con, json) {
       console.log("Table recipes created");
 
       console.log("Inserting recipes...");
-      Promise.all(json.map(async (recipe) => {
-        await insert_recipe(con, recipe.title, recipe.url,
+      await Promise.all(json.map(async (recipe) => {
+        insert_recipe(con, recipe.title, recipe.url,
           recipe.fsa_lights_per100g.fat,
           recipe.fsa_lights_per100g.salt,
           recipe.fsa_lights_per100g.saturates,
@@ -146,7 +146,7 @@ async function insert_recipe_ingredient(con, recipeTitle, ingredientName, quanti
     ingredientName = ingredientName.replace(/'/g, "''");
     const sql = `INSERT INTO recipe_ingredients
     SET recipe_id=(SELECT id FROM recipes WHERE title='${recipeTitle}' LIMIT 1),
-    ingredient_id=(SELECT id FROM ingredients WHERE name='${ingredientName}'),
+    ingredient_id=(SELECT id FROM ingredients WHERE name='${ingredientName}' LIMIT 1),
     quantity='${quantity}',
     unit='${unit}'`;
     con.query(sql, (err, res) => {
@@ -317,9 +317,9 @@ async function reload_db() {
   await create_ingredients(con, json);
   create_user_ingredients(con);
   await create_recipes(con, json);
-  Promise.all([
-    await create_recipe_ingredients(con, json),
-    await create_recipe_instructions(con, json)
+  await Promise.all([
+    create_recipe_ingredients(con, json),
+    create_recipe_instructions(con, json)
   ]);
 
   console.log("reload_db finished successfully");
