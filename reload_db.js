@@ -188,13 +188,12 @@ async function create_recipe_ingredients(con, json) {
   });
 }
 
-async function insert_recipe_instruction(con, recipeTitle, order, instruction) {
+async function insert_recipe_instruction(con, recipeTitle, stepNumber, instruction) {
   return new Promise((resolve, reject) => {
     const sql = `INSERT INTO recipe_instructions
     SET recipe_id=(SELECT id FROM recipes WHERE title='${recipeTitle}' LIMIT 1),
-    order=${order},
+    step_number=${stepNumber},
     instruction='${instruction}'`;
-    console.log(sql);
     con.query(sql, (err, res) => {
       if (err) throw err;
       resolve();
@@ -208,7 +207,7 @@ async function create_recipe_instructions(con, json) {
     const sql = `CREATE TABLE recipe_instructions (
       id INT NOT NULL AUTO_INCREMENT,
       recipe_id INT NOT NULL,
-      order INT,
+      step_number INT,
       instruction TEXT,
       PRIMARY KEY (id),
       FOREIGN KEY (recipe_id) REFERENCES recipes(id)
@@ -283,6 +282,7 @@ async function create_user_ingredients(con) {
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Table user_ingredients created");
+      resolve();
     });
   });
 }
@@ -292,7 +292,6 @@ async function reload_db() {
 
   // Get json
   let url = "http://data.csail.mit.edu/im2recipe/recipes_with_nutritional_info.json";
-  url = "http://localhost:8080/";
   let json = await get_json(url);
 
   // Connect to MySQL
@@ -308,11 +307,13 @@ async function reload_db() {
   await create_db(con);
   create_users(con);
   create_user_tags(con);
-  await create_recipes(con, json);
-  create_recipe_instructions(con, json);
   await create_ingredients(con, json);
-  await create_recipe_ingredients(con, json);
   create_user_ingredients(con);
+  await create_recipes(con, json);
+  Promise.all([
+    await create_recipe_ingredients(con, json),
+    await create_recipe_instructions(con, json)
+  ]);
 
   console.log("reload_db finished successfully");
 }
