@@ -61,6 +61,7 @@ async function create_db(con) {
 
 async function insert_ingredient(con, name) {
   return new Promise((resolve, reject) => {
+    name = name.replace(/'/g, "''");
     const sql = `INSERT INTO ingredients (name) VALUES ('${name}')`;
     con.query(sql, (err, res) => {
       if (err && err.code !== "ER_DUP_ENTRY") throw err;
@@ -96,6 +97,8 @@ async function create_ingredients(con, json) {
 
 async function insert_recipe(con, title, url, fat, salt, saturates, sugars) {
   return new Promise((resolve, reject) => {
+    title = title.replace(/'/g, "''");
+    url = url.replace(/'/g, "''");
     const sql = `INSERT INTO recipes (title, url, fat, salt, saturates, sugars)
     VALUES ('${title}', '${url}', '${fat}', '${salt}', '${saturates}', '${sugars}')`;
     con.query(sql, (err, res) => {
@@ -139,6 +142,8 @@ async function create_recipes(con, json) {
 
 async function insert_recipe_ingredient(con, recipeTitle, ingredientName, quantity, unit) {
   return new Promise((resolve, reject) => {
+    recipeTitle = recipeTitle.replace(/'/g, "''");
+    ingredientName = ingredientName.replace(/'/g, "''");
     const sql = `INSERT INTO recipe_ingredients
     SET recipe_id=(SELECT id FROM recipes WHERE title='${recipeTitle}' LIMIT 1),
     ingredient_id=(SELECT id FROM ingredients WHERE name='${ingredientName}'),
@@ -190,6 +195,8 @@ async function create_recipe_ingredients(con, json) {
 
 async function insert_recipe_instruction(con, recipeTitle, stepNumber, instruction) {
   return new Promise((resolve, reject) => {
+    recipeTitle = recipeTitle.replace(/'/g, "''");
+    instruction = instruction.replace(/'/g, "''");
     const sql = `INSERT INTO recipe_instructions
     SET recipe_id=(SELECT id FROM recipes WHERE title='${recipeTitle}' LIMIT 1),
     step_number=${stepNumber},
