@@ -48,7 +48,9 @@ async function connect_mysql(con) {
 async function create_db(con) {
   return new Promise((resolve, reject) => {
     console.log("Creating database find_my_recipe...");
-    const sql = "CREATE DATABASE IF NOT EXISTS find_my_recipe; USE find_my_recipe";
+    const sql = `DROP DATABASE IF EXISTS find_my_recipe;
+    CREATE DATABASE find_my_recipe;
+    USE find_my_recipe`;
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Database find_my_recipe created");
@@ -70,12 +72,12 @@ async function insert_ingredient(con, name) {
 async function create_ingredients(con, json) {
   return new Promise((resolve, reject) => {
     console.log("Creating table ingredients...");
-    const sql = `CREATE TABLE IF NOT EXISTS ingredients (
-      ingredient_id INT NOT NULL AUTO_INCREMENT,
+    const sql = `CREATE TABLE ingredients (
+      id INT NOT NULL AUTO_INCREMENT,
       name VARCHAR(255),
-      PRIMARY KEY (ingredient_id),
+      PRIMARY KEY (id),
       UNIQUE (name)
-    ); TRUNCATE TABLE ingredients`;
+    )`;
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Table ingredients created");
@@ -106,22 +108,22 @@ async function insert_recipe(con, title, url, fat, salt, saturates, sugars) {
 async function create_recipes(con, json) {
   return new Promise((resolve, reject) => {
     console.log("Creating table recipes...");
-    const sql = `CREATE TABLE IF NOT EXISTS recipes (
-      recipe_id INT NOT NULL AUTO_INCREMENT,
+    const sql = `CREATE TABLE recipes (
+      id INT NOT NULL AUTO_INCREMENT,
       title TEXT,
       url TEXT,
       fat ENUM('green', 'orange', 'red'),
       salt ENUM('green', 'orange', 'red'),
       saturates ENUM('green', 'orange', 'red'),
       sugars ENUM('green', 'orange', 'red'),
-      PRIMARY KEY (recipe_id)
-    ); TRUNCATE TABLE recipes`;
+      PRIMARY KEY (id)
+    )`;
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Table recipes created");
 
       console.log("Inserting recipes...");
-      Promise.all(json.map((recipe) => {
+      Promise.all(json.map(async (recipe) => {
         await insert_recipe(con, recipe.title, recipe.url,
           recipe.fsa_lights_per100g.fat,
           recipe.fsa_lights_per100g.salt,
@@ -135,16 +137,111 @@ async function create_recipes(con, json) {
   });
 }
 
+async function insert_recipe_ingredient(con, recipeTitle, ingredientName, quantity, unit) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO recipe_ingredients
+    SET recipe_id=(SELECT id FROM recipes WHERE title='${recipeTitle}' LIMIT 1),
+    ingredient_id=(SELECT id FROM ingredients WHERE name='${ingredientName}'),
+    quantity='${quantity}',
+    unit='${unit}'`;
+    con.query(sql, (err, res) => {
+      if (err) throw err;
+      resolve();
+    });
+  });
+}
 
+async function create_recipe_ingredients(con, json) {
+  return new Promise((resolve, reject) => {
+    console.log("Creating table recipe_ingredients...");
+    const sql = `CREATE TABLE recipe_ingredients (
+      id INT NOT NULL AUTO_INCREMENT,
+      recipe_id INT NOT NULL,
+      ingredient_id INT NOT NULL,
+      quantity TEXT,
+      unit TEXT,
+      PRIMARY KEY (id),
+      FOREIGN KEY (recipe_id) REFERENCES recipes(id),
+      FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
+    )`;
+    con.query(sql, async (err, res) => {
+      if (err) throw err;
+      console.log("Table recipe_ingredients created");
+
+      console.log("Inserting recipe ingredients...");
+      let insert_recipe_ingredients = [];
+      for (const recipe of json) {
+        const n = recipe.ingredients.length;
+        for (let i = 0; i < n; i++) {
+          insert_recipe_ingredients.push(
+            insert_recipe_ingredient(con, recipe.title,
+              recipe.ingredients[i].text,
+              recipe.quantity[i].text,
+              recipe.unit[i].text)
+          );
+        }
+      }
+      await Promise.all(insert_recipe_ingredients);
+      console.log("Recipe ingredients inserted");
+      resolve();
+    });
+  });
+}
+
+async function insert_recipe_instruction(con, recipeTitle, order, instruction) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO recipe_instructions
+    SET recipe_id=(SELECT id FROM recipes WHERE title='${recipeTitle}' LIMIT 1),
+    order=${order},
+    instruction='${instruction}'`;
+    console.log(sql);
+    con.query(sql, (err, res) => {
+      if (err) throw err;
+      resolve();
+    });
+  });
+}
+
+async function create_recipe_instructions(con, json) {
+  return new Promise((resolve, reject) => {
+    console.log("Creating table recipe_instructions...");
+    const sql = `CREATE TABLE recipe_instructions (
+      id INT NOT NULL AUTO_INCREMENT,
+      recipe_id INT NOT NULL,
+      order INT,
+      instruction TEXT,
+      PRIMARY KEY (id),
+      FOREIGN KEY (recipe_id) REFERENCES recipes(id)
+    )`;
+    con.query(sql, async (err, res) => {
+      console.log("Created table recipe_instructions");
+
+      console.log("Inserting recipe instructions...");
+      let insert_recipe_instructions = [];
+      for (const recipe of json) {
+        const n = recipe.instructions.length;
+        for (let i = 0; i < n; i++) {
+          insert_recipe_instructions.push(
+            insert_recipe_instruction(con, recipe.title, i+1,
+              recipe.instructions[i].text)
+          );
+        }
+      }
+      await Promise.all(insert_recipe_instructions);
+      console.log("Recipe instructions inserted");
+      resolve();
+    });
+  });
+}
 
 async function create_users(con) {
   return new Promise((resolve, reject) => {
     console.log("Creating table users...");
-    const sql = `CREATE TABLE IF NOT EXISTS users (
-      user_id INT NOT NULL AUTO_INCREMENT,
+    const sql = `CREATE TABLE users (
+      id INT NOT NULL AUTO_INCREMENT,
       password VARCHAR(255) NOT NULL,
-      PRIMARY KEY (user_id)
-    ); TRUNCATE TABLE users`;
+      PRIMARY KEY (id)
+    )`;
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Table users created");
@@ -156,13 +253,13 @@ async function create_users(con) {
 async function create_user_tags(con) {
   return new Promise((resolve, reject) => {
     console.log("Creating table user_tags...");
-    const sql = `CREATE TABLE IF NOT EXISTS user_tags (
+    const sql = `CREATE TABLE user_tags (
       id int NOT NULL AUTO_INCREMENT,
       user_id INT NOT NULL,
       tag TEXT,
       PRIMARY KEY (id),
-      FOREIGN KEY (user_id)
-    ); TRUNCATE TABLE user_tags`;
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    )`;
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Table user_tags created");
@@ -174,13 +271,15 @@ async function create_user_tags(con) {
 async function create_user_ingredients(con) {
   return new Promise((resolve, reject) => {
     console.log("Creating table user_ingredients...");
-    const sql = `CREATE TABLE IF NOT EXISTS user_ingredients (
-      id int NOT NULL AUTO_INCREMENT,
-      ingredient_id int NOT NULL,
-      amount int,
+    const sql = `CREATE TABLE user_ingredients (
+      id INT NOT NULL AUTO_INCREMENT,
+      user_id INT NOT NULL,
+      ingredient_id INT NOT NULL,
+      amount INT,
       PRIMARY KEY (id),
-      FOREIGN KEY (ingredient_id)
-    ); TRUNCATE TABLE user_ingredients`;
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
+    )`;
     con.query(sql, (err, res) => {
       if (err) throw err;
       console.log("Table user_ingredients created");
@@ -209,12 +308,11 @@ async function reload_db() {
   await create_db(con);
   create_users(con);
   create_user_tags(con);
+  await create_recipes(con, json);
+  create_recipe_instructions(con, json);
+  await create_ingredients(con, json);
+  await create_recipe_ingredients(con, json);
   create_user_ingredients(con);
-  Promise.all([
-    await create_ingredients(con, json),
-    await create_recipes(con, json)
-  ]);
-  
 
   console.log("reload_db finished successfully");
 }
