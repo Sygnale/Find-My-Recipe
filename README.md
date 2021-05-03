@@ -7,7 +7,7 @@
  
  ### MySQL
  
- Install MySQL using the installer [here](https://dev.mysql.com/downloads/installer/). Make sure you set the root password to the incredibly secure "123456" and when prompted, have the server setup on localhost:3306 (which should be the default option). Leave all other settings to the default settings. Open the MySQL Command Line Client. Enter "USE recipes;" then "source [path to db.sql]". This should set up the MySQL Database and server.
+ Install MySQL using the installer [here](https://dev.mysql.com/downloads/installer/). Make sure you set the root password to the incredibly secure "123456" and when prompted, have the server setup on localhost:3306 (which should be the default option). Leave all other settings to the default settings. Open reload_db.js in your favorite editor. If you do not have the MIT recipe JSON downloaded, use the line that starts with "download_json." Otherwise, change the path variable to the local path to your downloaded recipe JSON and use the line that starts with "load_json." Save your changes. Open a command line window in the Fridge_App folder and run the command "node reload_db.js." This command will take a long time to finish. 
  
  ### Node.js
  
