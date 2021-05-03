@@ -64,9 +64,9 @@ async function connect_mysql() {
   });
 }
 
-async function query_db(query) {
+async function query_db(query, args) {
   return new Promise((resolve, reject) => {
-    con.query(query, (err, res) => {
+    con.query(query, args, (err, res) => {
       if (err) throw err;
       resolve();
     });
@@ -148,32 +148,40 @@ async function insert_ingredients_and_recipes(json) {
   let promises = [];
   let remaining_queries = [];
   for (let name of ingredient_set.values()) {
-    name = name.replace(/'/g, "''");
-    promises.push(query_db(`INSERT INTO ingredients (name) VALUES ('${name}');`));
+    promises.push(query_db("INSERT INTO ingredients (name) VALUES (?);", [name]));
   }
   const n = json.length;
   for (let i = 0; i < n; i++) {
     const recipe = json[i];
     const id = i+1;
-    const title = recipe.title.replace(/'/g, "''");
-    const url = recipe.url.replace(/'/g, "''");
+    const title = recipe.title;
+    const url = recipe.url;
     const fat = recipe.fsa_lights_per100g.fat;
     const salt = recipe.fsa_lights_per100g.salt;
     const saturates = recipe.fsa_lights_per100g.saturates;
     const sugars = recipe.fsa_lights_per100g.sugars;
-    promises.push(query_db(`INSERT INTO recipes (title, url, fat, salt, saturates, sugars) VALUES ('${title}', '${url}', '${fat}', '${salt}', '${saturates}', '${sugars}');`));
+    let args = [title, url, fat, salt, saturates, sugars];
+    promises.push(query_db("INSERT INTO recipes (title, url, fat, salt, saturates, sugars) VALUES (?, ?, ?, ?, ?, ?);", args));
     let l = recipe.ingredients.length;
     for (let j = 0; j < l; j++) {
-      const ingredientName = recipe.ingredients[j].text.replace(/'/g, "''");
+      const ingredientName = recipe.ingredients[j].text;
       const quantity = recipe.quantity[j].text;
       const unit = recipe.unit[j].text
-      remaining_queries.push(`INSERT INTO recipe_ingredients SET recipe_id=${id}, ingredient_id=(SELECT id FROM ingredients WHERE name='${ingredientName}' LIMIT 1), quantity='${quantity}', unit='${unit}';`);
+      args = [id, ingredientName, quantity, unit];
+      remaining_queries.push({
+        query: "INSERT INTO recipe_ingredients SET recipe_id=?, ingredient_id=(SELECT id FROM ingredients WHERE name=? LIMIT 1), quantity=?, unit=?;",
+        args: args
+      });
     }
     l = recipe.instructions.length;
     for (let j = 0; j < l; j++) {
       const stepNumber = j+1;
-      const instruction = recipe.instructions[j].text.replace(/'/g, "''");
-      remaining_queries.push(`INSERT INTO recipe_instructions SET recipe_id=${id}, step_number=${stepNumber}, instruction='${instruction}';`);
+      const instruction = recipe.instructions[j].text;
+      args = [id, stepNumber, instruction];
+      remaining_queries.push({
+        query: "INSERT INTO recipe_instructions SET recipe_id=?, step_number=?, instruction=?;",
+        args: args
+      });
     }
   }
   await Promise.all(promises);
@@ -197,7 +205,11 @@ async function reload_db() {
   await create_db_and_tables();
   await insert_ingredients_and_recipes(json).then(async (remaining_queries) => {
     console.log("Adding recipe infomation...");
-    await Promise.all(remaining_queries.map((query) => {query_db(query);}));
+    let promises = [];
+    for (const query of remaining_queries) {
+      promises.push(query_db(query.query, query.args));
+    }
+    await Promise.all(promises);
     console.log("Recipe information added");
   });
 
