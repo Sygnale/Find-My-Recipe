@@ -114,6 +114,7 @@ async function create_db_and_tables() {
   );
   CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
+    username TEXT,
     password VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
   );
@@ -198,8 +199,8 @@ async function reload_db() {
   // Get json
   let url = "http://data.csail.mit.edu/im2recipe/recipes_with_nutritional_info.json";
   let path = "C:\\Users\\tedzy\\Documents\\Notepad\\find my recipe testing\\recipes_with_nutritional_info.json";
-  // let json = await download_json(url);
-  let json = await load_json(path);
+  let json = await download_json(url);
+  //let json = await load_json(path);
 
   // Reload database
   await create_db_and_tables();
