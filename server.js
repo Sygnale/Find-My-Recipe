@@ -5,7 +5,7 @@ var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "123456",
-    database: "recipes"
+    database: "find_my_recipe"
 });
 con.connect(function (err) {
     if (err) throw err;
@@ -43,7 +43,7 @@ app.get('/add-user/:userId-:userPassword', (req, res) => {
         return;
     }
 
-    var countQueryString = "SELECT COUNT (*) FROM users WHERE userid=\""+req.params.userId+"\"";
+    var countQueryString = "SELECT COUNT (*) FROM users WHERE username=\""+req.params.userId+"\"";
     con.query(countQueryString, function(err, result){ //Check if user already exists
         if(err) throw err;
         if(result[0]["COUNT (*)"] != 0){
@@ -51,7 +51,7 @@ app.get('/add-user/:userId-:userPassword', (req, res) => {
             res.end("Username already exists"); //User exists, return error
         }
         else{ //User does not exist, insert into database with null ingredients/tags and with corresponding userID and password
-            var addQueryString = "INSERT INTO users (userid, hashed_password) VALUES (\""+req.params.userId+"\",\""+req.params.userPassword+"\")";
+            var addQueryString = "INSERT INTO users (username, password) VALUES (\""+req.params.userId+"\",\""+req.params.userPassword+"\")";
             con.query(addQueryString, function(err, result){
                 if(err) throw err;
                 console.log(result);
@@ -70,7 +70,7 @@ app.get('/add-user/:userId-:userPassword', (req, res) => {
 app.get('/authenticate-user/:userId-:userPassword', (req, res) => {
     console.log("Request to authenticate user: "+req.params.userId+" with password " +req.params.userPassword);
 
-    var queryString="SELECT id FROM users WHERE userid=\""+req.params.userId+"\" AND hashed_password=\""+req.params.userPassword+"\"";
+    var queryString="SELECT id FROM users WHERE username=\""+req.params.userId+"\" AND password=\""+req.params.userPassword+"\"";
     console.log(queryString);
     con.query(queryString, function(err, result){
         if(err) throw err;
