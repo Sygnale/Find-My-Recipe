@@ -43,16 +43,16 @@ app.get('/add-user/:userId-:userPassword', (req, res) => {
         return;
     }
 
-    var countQueryString = "SELECT COUNT (*) FROM users WHERE username=\"" + req.params.userId + "\"";
-    con.query(countQueryString, function (err, result) { //Check if user already exists
+    var countQueryString = "SELECT COUNT (*) FROM users WHERE username=?";
+    con.query(countQueryString, [req.params.userId], function (err, result) { //Check if user already exists
         if (err) throw err;
         if (result[0]["COUNT (*)"] != 0) {
             console.log("Request denied: user already found in database");
             res.end("Username already exists"); //User exists, return error
         }
         else { //User does not exist, insert into database with null ingredients/tags and with corresponding userID and password
-            var addQueryString = "INSERT INTO users (username, password) VALUES (\"" + req.params.userId + "\",\"" + req.params.userPassword + "\")";
-            con.query(addQueryString, function (err, result) {
+            var addQueryString = "INSERT INTO users (username, password) VALUES (?, ?)";
+            con.query(addQueryString, [req.params.userId, req.params.userPassword], function (err, result) {
                 if (err) throw err;
                 console.log(result);
                 var idStruct = {
@@ -70,9 +70,8 @@ app.get('/add-user/:userId-:userPassword', (req, res) => {
 app.get('/authenticate-user/:userId-:userPassword', (req, res) => {
     console.log("Request to authenticate user: " + req.params.userId + " with password " + req.params.userPassword);
 
-    var queryString = "SELECT id FROM users WHERE username=\"" + req.params.userId + "\" AND password=\"" + req.params.userPassword + "\"";
-    console.log(queryString);
-    con.query(queryString, function (err, result) {
+    var queryString = "SELECT id FROM users WHERE username=? AND password=?";
+    con.query(queryString, [req.params.userId, req.params.userPassword] function (err, result) {
         if (err) throw err;
         if (result.length == 0) {
             console.log("Authentication Failed");
