@@ -96,7 +96,31 @@ app.get('/ingredients', (req, res) => {
     });
 });
 
-/** -------------------------- End of Backend APIs ----------------------------------  */ 
+app.get('/:userId/ingredients', (req, res) => {
+  const username = req.params.userId;
+
+  console.log(`Getting ${username} ingredients...`);
+  var queryString =
+  `SELECT ingredients.name, user_ingredients.amount FROM
+  ingredients JOIN user_ingredients ON ingredients.id = user_ingredients.ingredient_id
+  WHERE user_ingredients.user_id = (SELECT id FROM users WHERE username=? LIMIT 1)`;
+  con.query(queryString, [username], (err, result) => {
+    if (err) throw err;
+    if (res.length === 0) {
+      const msg = `${username} not found or has no ingredients`;
+      console.log(msg);
+      res.end(msg);
+      return;
+    }
+    console.log(`Got ${username} ingredients`);
+    const response = {
+      ingredients: result,
+    };
+    res.json(JSON.stringify(response));
+  });
+});
+
+/** -------------------------- End of Backend APIs ----------------------------------  */
 
 //Start server
 app.listen(8080, () => {
