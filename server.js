@@ -47,7 +47,7 @@ app.get('/add-user/:userId-:userPassword', (req, res) => {
     con.query(countQueryString, function(err, result){ //Check if user already exists
         if(err) throw err;
         if(result[0]["COUNT (*)"] != 0){
-            console.log("Request denied: user already found in database"); 
+            console.log("Request denied: user already found in database");
             res.end("Username already exists"); //User exists, return error
         }
         else{ //User does not exist, insert into database with null ingredients/tags and with corresponding userID and password
@@ -75,7 +75,7 @@ app.get('/authenticate-user/:userId-:userPassword', (req, res) => {
     con.query(queryString, function(err, result){
         if(err) throw err;
         if(result.length == 0){
-            console.log("Authentication Failed"); 
+            console.log("Authentication Failed");
             res.end("Authentication failed"); //Username/password does not match
         }
         else{
