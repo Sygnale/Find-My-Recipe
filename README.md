@@ -2,6 +2,7 @@
 
 ## Project Description 
  Authors: Niki Hosseinian (add your names here)
+          Theodore Lau
  
  ## Setup
  
