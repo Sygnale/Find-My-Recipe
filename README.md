@@ -1,7 +1,7 @@
 # Find My Recipe
 
 ## Project Description 
- Authors: Niki Hosseinian
+ Authors: Niki Hosseinian (add your names here)
  
  ## Setup
  
