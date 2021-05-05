@@ -1,7 +1,7 @@
 # Find My Recipe
 
 ## Project Description 
- project description words words words words
+ Authors: Niki Hosseinian
  
  ## Setup
  
