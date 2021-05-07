@@ -1,7 +1,7 @@
 # Find My Recipe
 
 ## Project Description
- Authors: Niki Hosseinian, Theodore Lau, Adam Murtagh (add your names here)
+ Authors: Niki Hosseinian, Theodore Lau, Adam Murtagh, Ivan Chi (add your names here)
 
  ## Setup
 
