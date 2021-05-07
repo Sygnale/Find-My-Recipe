@@ -1,7 +1,7 @@
 # Find My Recipe
 
 ## Project Description
- Authors: Niki Hosseinian, Theodore Lau, Adam Murtagh, Ivan Chi, Chirag Singh
+ Authors: Ivan Chi, Niki Hosseinian, Theodore Lau, Adam Murtagh, Chirag Singh, Lime Yao
 
  ## Setup
 
