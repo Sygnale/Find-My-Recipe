@@ -93,6 +93,8 @@ app.get('/authenticate-user/:userId-:userPassword', (req, res) => {
     });
 });
 
+//Returns list of ingredients in JSON object
+//Usage: http://localhost:8080/ingredients
 app.get('/ingredients', (req, res) => {
     console.log("Sending ingredients list")
     con.query("SELECT * FROM INGREDIENTS", function (err, result) {
@@ -101,6 +103,9 @@ app.get('/ingredients', (req, res) => {
     });
 });
 
+//Gets list of ingredients for specific userID
+//Usage: http://localhost:8080/[userID]/ingredients - Note that userID is their numerical database ID number saved from user creation/authentication
+//@returns numerical ingredient ID and string numerical tag as JSON list, relevant message on failure
 app.get('/:userId/ingredients', (req, res) => {
   const userId = req.params.userId;
 
@@ -137,6 +142,9 @@ app.get('/:userId/ingredients', (req, res) => {
   });
 });
 
+//Gets all ingredients for specific userID
+//Usage: http://localhost:8080/[userID]/ingredients - Note that userID is their numerical database ID number saved from user creation/authentication
+//@returns "Deleted all ingredients from [username]" on success, relevant failure message on failure
 app.delete('/:userId/ingredients', (req, res) => {
   const userId = req.params.userId;
 
@@ -163,6 +171,9 @@ app.delete('/:userId/ingredients', (req, res) => {
   });
 });
 
+//Deletes specific ingredient for single user
+//Usage: http://localhost:8080/[userID]/ingredients/[ingredientID] - userID and ingredientID are both numerical database IDs
+//@returns "Deleted [ingredient] from [username]" on success, error message on failure
 app.delete('/:userId/ingredients/:ingredientId', (req, res) => {
   const userId = req.params.userId;
   const ingredientId = req.params.ingredientId;
