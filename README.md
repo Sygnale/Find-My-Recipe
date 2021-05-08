@@ -15,4 +15,4 @@
 
  ### React.js
 
- Install React.js using the installer [here](https://nodejs.org/en/). Navigate to the Find-My-Recipe/find-my-recipe folder. Type "npm start" into the command line and a window should open with the base project at localhost:3000. If the page displays a list of ingredients in a JSON format, you have set up the dependencies correctly!
+Navigate to the Find-My-Recipe/find-my-recipe folder. Type "npm start" into the command line and a window should open with the base project at localhost:3000. If the page displays a list of ingredients in a JSON format, you have set up the dependencies correctly!
