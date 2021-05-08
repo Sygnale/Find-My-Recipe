@@ -120,6 +120,42 @@ app.get('/:userId/ingredients', (req, res) => {
   });
 });
 
+app.delete('/:userId/ingredients', (req, res) => {
+  const username = req.params.userId;
+
+  console.log(`Deleting all ingredients from ${username}...`);
+  var queryString =
+  `DELETE FROM user_ingredients
+  WHERE user_id=(SELECT id FROM ingredients WHERE username=? LIMIT 1)`;
+  con.query(queryString, [username], (err, result) => {
+    if (err) throw err;
+    console.log(`Deleted all ingredients from ${username}`);
+    const response = {
+      result: result,
+    };
+    res.json(JSON.stringify(response));
+  });
+});
+
+app.delete('/:userId/ingredients/:ingredientId', (req, res) => {
+  const username = req.params.userId;
+  const ingredient = req.params.ingrediendId;
+
+  console.log(`Deleting ${username} ingredient ${ingredient}...`);
+  var queryString =
+  `DELETE FROM user_ingredients
+  WHERE user_id=(SELECT id FROM users WHERE username=? LIMIT 1),
+  AND ingredient_id=(SELECT id FROM ingredients WHERE name=? LIMIT 1)`;
+  con.query(queryString, [username, ingredient], (err, result) => {
+    if (err) throw err;
+    console.log(`Deleted ${username} ingredient ${ingredient}`);
+    const response = {
+      result: result,
+    };
+    res.json(JSON.stringify(response));
+  });
+});
+
 /** -------------------------- End of Backend APIs ----------------------------------  */
 
 //Start server
