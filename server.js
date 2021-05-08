@@ -158,7 +158,7 @@ app.delete('/:userId/ingredients', (req, res) => {
       if (err2) throw err2;
       const msg = `Deleted all ingredients from ${username}`
       console.log(msg);
-      res.end(`Deleted all ingredients from ${username}`);
+      res.end(msg);
     });
   });
 });
