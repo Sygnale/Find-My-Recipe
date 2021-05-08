@@ -102,8 +102,8 @@ app.get('/:userId/ingredients', (req, res) => {
   console.log(`Getting ${username} ingredients...`);
   var queryString =
   `SELECT ingredients.id, ingredients.name, user_ingredients.amount FROM
-  ingredients JOIN user_ingredients ON ingredients.id = user_ingredients.ingredient_id
-  WHERE user_ingredients.user_id = (SELECT id FROM users WHERE username=? LIMIT 1)`;
+  ingredients JOIN user_ingredients ON ingredients.id=user_ingredients.ingredient_id
+  WHERE user_ingredients.user_id=(SELECT id FROM users WHERE username=? LIMIT 1)`;
   con.query(queryString, [username], (err, result) => {
     if (err) throw err;
     if (res.length === 0) {
