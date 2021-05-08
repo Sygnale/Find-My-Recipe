@@ -7,6 +7,9 @@ class Login extends React.Component {
       username: "",
       password: ""
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit(event) {
@@ -43,7 +46,9 @@ class Login extends React.Component {
           </div>
         </form>
         <div>
-          <p>New? Create an account</p>
+          <p>New? 
+            <a href="url">Create an account</a>
+          </p>
         </div>
       </div>
     );
