@@ -222,6 +222,41 @@ app.delete('/:userId/ingredients/:ingredientId', (req, res) => {
   });
 });
 
+//Returns all recipes matching search criteria (will use current active user tags automatically)
+//Usage: http://localhost:8080/get-recipes/[userID]
+//@returns JSON array of recipes on success, empty array on failure
+app.get('/get-recipes/:userId', (req, res) => {
+  const userID = req.params.userId;
+  console.log(`Searching for recipes for user ${userID}`);
+
+  const tagQueryString=`SELECT tag FROM user_tags WHERE user_id=?`;
+  con.query(tagQueryString,[userID],(err1,result1)=>{
+    if(err1) throw err1;
+
+    let recipeQueryString=`SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}) AS T 
+    RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL)=0)`;
+
+    for(var i=0;i<result1.length;i++){
+      if(result1[i].tag=='low fat'){
+        recipeQueryString+=`AND fat='green'`;
+      }
+      else if(result1[i].tag=='low salt'){
+        recipeQueryString+=`AND salt='green'`;
+      }
+      else if(result1[i].tag=='low salt'){
+        recipeQueryString+=`AND sugars='green'`;
+      }
+    }
+
+    con.query(recipeQueryString,(err2,result2)=>{
+      if(err2) throw err2;
+  
+      console.log(`Recipes returned for user ${userID}`);
+      res.end (JSON.stringify(result2));
+    });
+  });
+});
+
 /** -------------------------- End of Backend APIs ----------------------------------  */
 
 //Start server
