@@ -1,16 +1,22 @@
 import React from 'react';
 import './App.css';
 
+import { Login } from './Login.js';
+import { Register } from './Register.js';
+
 class App extends React.Component {
-    constructor(props) {
+    /*
+	constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
-            response: null
+            response: null,
         };
     }
-
+	*/
+	
+	/*
     componentDidMount() {
         var context = this;
         fetch("http://localhost:8080/ingredients")
@@ -30,8 +36,10 @@ class App extends React.Component {
                 }
             );
     }
-
+	*/
+	
     render() {
+		/*
         const { error, isLoaded, response } = this.state;
         let divText;
         if (error) {
@@ -49,6 +57,13 @@ class App extends React.Component {
                 <div>{divText}</div>
             </div>
         );
+		*/
+		return (
+			<div>
+				<Login />
+				<Register />
+			</div>
+		);
     }
 }
 

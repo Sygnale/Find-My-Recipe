@@ -4,11 +4,15 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: "",
-      lastname: "",
-      email: "",
+      //firstname: "",
+      //lastname: "",
+      //email: "",
       username: "",
-      password: ""
+      password: "",
+	  
+	  error: null,
+      isLoaded: false,
+      response: null,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,19 +20,54 @@ class Register extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("Success!");
+    fetch(`http://localhost:8080/add-user/${this.state.username}-${this.state.password}`, {
+		method: 'POST',
+	})
+	.then(response => response.json())
+	.then(
+		(result) => {
+			this.setState({
+				isLoaded: true,
+				response: result
+			});
+			console.log(result);
+		},
+		(error) => {
+			this.setState({
+				isLoaded: true,
+				error
+			});
+			console.log(error);
+		}
+	);
   }
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
+	console.log(`${this.state.username}, ${this.state.password}`);
   }
 
   render() {
+	const { error, isLoaded, response } = this.state;
+	let divText;
+	if (error) {
+		divText = error.responseText;
+	}
+	else if (!isLoaded) {
+		divText = "Loading...";
+	}
+	else {
+		divText = response;
+	}
+	  
+	  
+	console.log(`${this.state.reponse}`);
     return (
       <div>
         <h1>Create an account</h1>
         <form onSubmit={this.handleSubmit}>
-        <label>
+			{/*
+			<label>			
             <p>First name</p>
             <input 
               name="firstname" 
@@ -52,6 +91,7 @@ class Register extends React.Component {
               value={this.state.email} 
               onChange={this.handleChange} />
           </label>
+			*/}
           <label>
             <p>Username</p>
             <input 
@@ -71,8 +111,11 @@ class Register extends React.Component {
           <div>
             <button type="submit">Sign up</button>
           </div>
+		  <div> {divText} </div>
         </form>
       </div>
     );
   }
 }
+
+export { Register };
