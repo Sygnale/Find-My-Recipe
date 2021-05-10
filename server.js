@@ -74,7 +74,7 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
     const username = req.params.username;
     const password = req.params.password;
 
-    console.log("Request to authenticate user "${username}" with password "${password}");
+    console.log(`Request to authenticate user "${username}" with password "${password}`);
 
     var queryString = "SELECT id FROM users WHERE username=? AND password=?";
     con.query(queryString, [username, password], function (err, result) {
