@@ -70,14 +70,14 @@ app.post('/add-user/:username-:password', (req, res) => {
 //Method to authenticate user from database
 //Usage (from frontend): http://localhost:8080/authenticate-user/[username]-[password]
 //@returns "Authentication failed" for failure, user ID in struct in format {"id":[id]} for authenticated user for future frontend requests
-app.get('/authenticate-user/:userId-:userPassword', (req, res) => {
-    const userId = req.params.userId;
-    const userPassword = req.params.userPassword;
+app.get('/authenticate-user/:username-:password', (req, res) => {
+    const username = req.params.username;
+    const password = req.params.password;
 
-    console.log("Request to authenticate user " + userId + " with password " + userPassword);
+    console.log("Request to authenticate user "${username}" with password "${password}");
 
     var queryString = "SELECT id FROM users WHERE username=? AND password=?";
-    con.query(queryString, [userId, userPassword], function (err, result) {
+    con.query(queryString, [username, password], function (err, result) {
         if (err) throw err;
         if (result.length == 0) {
             console.log("Authentication Failed");
