@@ -41,21 +41,21 @@ class Login extends React.Component {
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
-  console.log(`${this.state.username}, ${this.state.password}`);
+    console.log(`${this.state.username}, ${this.state.password}`);
   }
 
   render() {
-  const { error, isLoaded, response } = this.state;
-  let divText;
-  if (error) {
-    divText = error.responseText;
-  }
-  else if (!isLoaded) {
-    divText = "Loading...";
-  }
-  else {
-    divText = response;
-  }
+    const { error, isLoaded, response } = this.state;
+    let divText;
+    if (error) {
+      divText = error.responseText;
+    }
+    else if (!isLoaded) {
+      divText = "Loading...";
+    }
+    else {
+      divText = response;
+    }
   
     return (
       <div>
