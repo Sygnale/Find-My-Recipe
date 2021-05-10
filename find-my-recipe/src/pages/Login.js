@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Login extends React.Component {
   constructor(props) {
@@ -6,7 +7,7 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-	  
+
 	  error: null,
       isLoaded: false,
       response: null,
@@ -36,7 +37,7 @@ class Login extends React.Component {
 			});
 			console.log(error);
 		}
-	);	  
+	);
   }
 
   handleChange(event) {
@@ -56,24 +57,24 @@ class Login extends React.Component {
 	else {
 		divText = response;
 	}
-	
+
     return (
       <div>
         <h1>Find My Recipe</h1>
         <form onSubmit={this.handleSubmit}>
           <label>
             <p>Username</p>
-            <input 
-              name="username" 
-              type="text" 
-              value={this.state.username} 
+            <input
+              name="username"
+              type="text"
+              value={this.state.username}
               onChange={this.handleChange} />
           </label>
           <label>
             <p>Password</p>
-            <input 
-              name="password" 
-              type="password" 
+            <input
+              name="password"
+              type="password"
               value={this.state.password}
               onChange={this.handleChange} />
           </label>
@@ -82,8 +83,8 @@ class Login extends React.Component {
           </div>
         </form>
         <div>
-          <p>New? 
-            <a href="url">Create an account</a>
+          <p>New?
+            <Link to='/Register'>Create a new account</Link>
           </p>
         </div>
 		<div> {divText} </div>
@@ -92,4 +93,4 @@ class Login extends React.Component {
   }
 }
 
-export { Login };
+export default Login;

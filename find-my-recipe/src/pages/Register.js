@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Register extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class Register extends React.Component {
       //email: "",
       username: "",
       password: "",
-	  
+
 	  error: null,
       isLoaded: false,
       response: null,
@@ -59,53 +60,53 @@ class Register extends React.Component {
 	else {
 		divText = response;
 	}
-	  
-	  
+
+
 	console.log(`${this.state.reponse}`);
     return (
       <div>
         <h1>Create an account</h1>
         <form onSubmit={this.handleSubmit}>
 			{/*
-			<label>			
+			<label>
             <p>First name</p>
-            <input 
-              name="firstname" 
-              type="text" 
-              value={this.state.firstname} 
+            <input
+              name="firstname"
+              type="text"
+              value={this.state.firstname}
               onChange={this.handleChange} />
           </label>
           <label>
             <p>Last name</p>
-            <input 
-              name="lastname" 
-              type="text" 
-              value={this.state.lastname} 
+            <input
+              name="lastname"
+              type="text"
+              value={this.state.lastname}
               onChange={this.handleChange} />
           </label>
           <label>
             <p>Email</p>
-            <input 
-              name="email" 
-              type="text" 
-              value={this.state.email} 
+            <input
+              name="email"
+              type="text"
+              value={this.state.email}
               onChange={this.handleChange} />
           </label>
 			*/}
           <label>
             <p>Username</p>
-            <input 
-              name="username" 
-              type="text" 
-              value={this.state.username} 
+            <input
+              name="username"
+              type="text"
+              value={this.state.username}
               onChange={this.handleChange} />
           </label>
           <label>
             <p>Password</p>
-            <input 
-              name="password" 
-              type="password" 
-              value={this.state.password} 
+            <input
+              name="password"
+              type="password"
+              value={this.state.password}
               onChange={this.handleChange} />
           </label>
           <div>
@@ -118,4 +119,4 @@ class Register extends React.Component {
   }
 }
 
-export { Register };
+export default Register;
