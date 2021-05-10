@@ -222,6 +222,82 @@ app.delete('/:userId/ingredients/:ingredientId', (req, res) => {
   });
 });
 
+//Returns all recipes matching search criteria (will use current active user tags automatically)
+//Usage: http://localhost:8080/get-recipes/[userID]
+//@returns JSON array of recipes on success, empty array on failure
+app.get('/get-recipes/:userId', (req, res) => {
+  const userID = req.params.userId;
+  console.log(`Searching for recipes for user ${userID}`);
+
+  const tagQueryString = `SELECT tag FROM user_tags WHERE user_id=?`;
+  con.query(tagQueryString, [userID], (err1,result1) =>{
+    if(err1) throw err1;
+
+    let recipeQueryStringStart = `SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}`;
+    let recipeQueryStringEnd = `) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL)=0)`;
+
+    for(var i = 0; i < result1.length; i++){
+      if(result1[i].tag == 'low fat'){
+        recipeQueryStringEnd += `AND fat='green'`;
+      }
+      else if(result1[i].tag == 'low salt'){
+        recipeQueryStringEnd += `AND salt='green'`;
+      }
+      else if(result1[i].tag == 'low salt'){
+        recipeQueryStringEnd += `AND sugars='green'`;
+      }
+      else if(result1[i].tag =='vegetarian'){
+        recipeQueryStringStart += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)';
+      }
+      else if(result1[i].tag == 'gluten free'){
+        recipeQueryStringStart += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)';
+      }
+    }
+
+    recipeQueryString = recipeQueryStringStart + recipeQueryStringEnd;
+    con.query(recipeQueryString, (err2,result2) => {
+      if(err2) throw err2;
+  
+      console.log(`Recipes returned for user ${userID}`);
+      res.end (JSON.stringify(result2));
+    });
+  });
+});
+
+//Returns details on specific recipe in detail
+//Usage: http://localhost:8080/recipe/[recipeID]
+//@returns single JSON object containing all recipe details, 'Invalid recipe index' for bad recipe
+app.get('/recipes/:recipeID', (req, res) => {
+  const recipeID = req.params.recipeID;
+
+  if(Number(recipeID) == 'NaN' || Number(recipeID) > 51235 || Number(recipeID <= 0) || recipeID.includes('.')) { //Basic data validation
+    res.end('Invalid recipe index');
+    return;
+  }
+
+
+  let queryString = `SELECT * FROM recipes WHERE id=${recipeID}`;
+
+  con.query(queryString, (err1, result1) => {
+    if(err1) throw err1;
+    queryString=`SELECT step_number,instruction FROM recipe_instructions WHERE recipe_id=${recipeID}`;
+    let result=Object.assign({},result1[0]);
+
+    con.query(queryString, (err2, result2) => {
+      if(err2) throw err2;
+      result['instructions']=result2;
+
+      queryString=`SELECT ingredient_id,quantity,unit FROM recipe_ingredients WHERE recipe_id=${recipeID}`;
+      con.query(queryString, (err3, result3) => {
+        if(err3) throw err3;
+
+        result['ingredients']=result3;
+        res.end(JSON.stringify(result));
+      });
+    });
+  });
+
+});
 /** -------------------------- End of Backend APIs ----------------------------------  */
 
 //Start server
