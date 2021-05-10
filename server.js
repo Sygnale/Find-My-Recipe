@@ -233,21 +233,28 @@ app.get('/get-recipes/:userId', (req, res) => {
   con.query(tagQueryString,[userID],(err1,result1)=>{
     if(err1) throw err1;
 
-    let recipeQueryString=`SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}) AS T 
-    RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL)=0)`;
+    let recipeQueryStringStart=`SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}`;
+    let recipeQueryStringEnd=`) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL)=0)`;
 
     for(var i=0;i<result1.length;i++){
       if(result1[i].tag=='low fat'){
-        recipeQueryString+=`AND fat='green'`;
+        recipeQueryStringEnd+=`AND fat='green'`;
       }
       else if(result1[i].tag=='low salt'){
-        recipeQueryString+=`AND salt='green'`;
+        recipeQueryStringEnd+=`AND salt='green'`;
       }
       else if(result1[i].tag=='low salt'){
-        recipeQueryString+=`AND sugars='green'`;
+        recipeQueryStringEnd+=`AND sugars='green'`;
+      }
+      else if(result1[i].tag=='vegetarian'){
+        recipeQueryStringStart+=' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)';
+      }
+      else if(result1[i].tag=='gluten free'){
+        recipeQueryStringStart+=' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)';
       }
     }
 
+    recipeQueryString=recipeQueryStringStart+recipeQueryStringEnd;
     con.query(recipeQueryString,(err2,result2)=>{
       if(err2) throw err2;
   
