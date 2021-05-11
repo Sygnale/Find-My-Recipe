@@ -51,7 +51,8 @@ app.post('/add-user/:username-:password', (req, res) => {
         if (err) throw err;
         if (result[0]["COUNT (*)"] != 0) {
             console.log("Request denied: user already found in database");
-            res.end("Username already exists"); //User exists, return error
+            res.statusCode = 404;
+            res.end(JSON.stringify("Username already exists")); //User exists, return error
         }
         else { //User does not exist, insert into database with null ingredients/tags and with corresponding userID and password
             var addQueryString = "INSERT INTO users (username, password) VALUES (?, ?)";
@@ -61,7 +62,7 @@ app.post('/add-user/:username-:password', (req, res) => {
                 var idStruct = {
                     id: result.insertId,
                 };
-                res.end(JSON.stringify(idStruct));
+                res.json(idStruct);
             });
         }
     });
@@ -81,14 +82,15 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
         if (err) throw err;
         if (result.length == 0) {
             console.log("Authentication Failed");
-            res.end("Authentication failed"); //Username/password does not match
+            res.statusCode = 404;
+            res.end(JSON.stringify("Authentication failed")); //Username/password does not match
         }
         else {
             console.log("Authentication success");
             var idStruct = {
-                id: result[0].username,
+                id: result[0].id,
             };
-            res.end(JSON.stringify(idStruct)); //Success
+            res.json(idStruct); //Success
         }
     });
 });
