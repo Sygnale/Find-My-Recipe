@@ -5,66 +5,32 @@ import { Login } from './Login.js';
 import { Register } from './Register.js';
 
 class App extends React.Component {
-  /*
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      response: null,
-    };
-  }
-  */
-  
-  /*
-  componentDidMount() {
-    var context = this;
-    fetch("http://localhost:8080/ingredients")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            response: result
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
-  }
-  */
-  
-  render() {
-    /*
-    const { error, isLoaded, response } = this.state;
-    let divText;
-    if (error) {
-      divText = error.responseText;
+	constructor(props) {
+        super(props);
+        this.state = {
+			userID: null,
+        };
+		
+		this.handleStateChange = this.handleStateChange.bind(this);
+    }	
+	
+	handleStateChange(value) {
+		this.setState({ userID: value });
+	}
+	
+    render() {
+		let header = '';
+		if (this.state.userID) {
+			header = <h1>Welcome, user #{this.state.userID}!</h1>
+		}
+		return (
+			<div>
+				{header}
+				<Login handleStateChange = {this.handleStateChange}/>
+				<Register handleStateChange = {this.handleStateChange}/>
+			</div>
+		);
     }
-    else if (!isLoaded) {
-      divText = "Loading...";
-    }
-    else {
-      divText = response;
-    }
-    return (
-      <div className="App">
-        <header className="App-header">Find My Recipe</header>
-        <div>{divText}</div>
-      </div>
-    );
-    */
-    return (
-      <div>
-        <Login />
-        <Register />
-      </div>
-    );
-  }
 }
 
 export default App;

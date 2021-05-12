@@ -6,8 +6,8 @@ class Register extends React.Component {
     this.state = {
       username: "",
       password: "",
-    
-    error: null,
+	  
+	  error: null,
       isLoaded: false,
       response: null,
     };
@@ -15,49 +15,70 @@ class Register extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+  
+  // user, pass cannot be null or ""
+  addUser(user, pass) {
+   fetch(`http://localhost:8080/add-user/${user}-${pass}`, {
+	   method: "POST",
+	})
+   .then(async response => {
+	   let data = await response.json();		   
+	   if(!response.ok) {
+		   let err = data;
+		   return Promise.reject(err);
+	   }		   
+	   console.log(data);
+	   this.setState({
+		   isLoaded: true,
+		   response: data.id,
+	   });
+	   this.props.handleStateChange(this.state.response);
+   })
+   .catch(err => {
+	   console.log(err);
+	   this.setState({
+		   isLoaded: true,
+		   error: err,
+	   });
+   });
+  }
 
   handleSubmit(event) {
-    fetch(`http://localhost:8080/add-user/${this.state.username}-${this.state.password}`, {
-    method: 'POST',
-  })
-  .then(response => response.json())
-  .then(
-    (result) => {
-      this.setState({
-        isLoaded: true,
-        response: result
-      });
-      console.log(result);
-    },
-    (error) => {
-      this.setState({
-        isLoaded: true,
-        error
-      });
-      console.log(error);
-    }
-  );
+	  event.preventDefault(); //prevents page from refreshing
+	  if (this.state.username == "" 
+			|| this.state.password == ""
+			|| (this.state.username).includes("-")
+			|| (this.state.password).includes("-")) {
+		  this.setState({
+		   error: "Invalid username or password (must not be empty and cannot contain '-')",
+		  });
+	  }
+	  else {
+		  this.addUser(this.state.username, this.state.password);
+	  }
   }
 
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
-    console.log(`${this.state.username}, ${this.state.password}`);
+	  this.setState({[event.target.name]: event.target.value});
   }
 
   render() {
-    const { error, isLoaded, response } = this.state;
-    let divText;
-    if (error) {
-      divText = error.responseText;
-    }
-    else if (!isLoaded) {
-      divText = "Loading...";
-    }
-    else {
-      divText = response;
-    }
-     
-    console.log(`${this.state.reponse}`);
+	const { error, isLoaded, response } = this.state;
+	let divText;
+	if (error) {
+		divText = error;
+	}
+	else if (!isLoaded) {
+		divText = "Loading...";
+	}
+	else {
+		divText = response;
+	}
+	
+	if (response) {
+		console.log(response);
+	}
+	
     return (
       <div>
         <h1>Create an account</h1>
@@ -81,7 +102,7 @@ class Register extends React.Component {
           <div>
             <button type="submit">Sign up</button>
           </div>
-          <div> {divText} </div>
+		  <div> {divText} </div>
         </form>
       </div>
     );
