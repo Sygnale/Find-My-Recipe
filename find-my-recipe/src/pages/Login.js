@@ -7,13 +7,8 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-<<<<<<< HEAD:find-my-recipe/src/Login.js
     
       error: null,
-=======
-
-	  error: null,
->>>>>>> multi_page:find-my-recipe/src/pages/Login.js
       isLoaded: false,
       response: null,
     };
@@ -38,7 +33,7 @@ class Login extends React.Component {
 			   isLoaded: true,
 			   response: data.id,
 		   });
-		   this.props.handleStateChange(this.state.response);
+		   {/*this.props.handleStateChange(this.state.response);*/}
 	   })
 	   .catch(err => {
 		   console.log(err);
@@ -50,7 +45,6 @@ class Login extends React.Component {
   }
 
   handleSubmit(event) {
-<<<<<<< HEAD:find-my-recipe/src/Login.js
 		event.preventDefault(); //prevents page from refreshing
 		if (this.state.username == "" 
 			|| this.state.password == ""
@@ -63,28 +57,6 @@ class Login extends React.Component {
 	  else {
 		  this.authenUser(this.state.username, this.state.password);
 	  }
-=======
-	fetch(`http://localhost:8080/authenticate-user/${this.state.username}-${this.state.password}`, {
-		method: 'GET',
-	})
-	.then(res => res.json())
-	.then(
-		(result) => {
-			this.setState({
-				isLoaded: true,
-				response: result,
-			});
-			console.log(result);
-		},
-		(error) => {
-			this.setState({
-				isLoaded: true,
-				error,
-			});
-			console.log(error);
-		}
-	);
->>>>>>> multi_page:find-my-recipe/src/pages/Login.js
   }
 
   handleChange(event) {
@@ -95,17 +67,12 @@ class Login extends React.Component {
 	const { error, isLoaded, response } = this.state;
 	let divText;
 	if (error) {
-<<<<<<< HEAD:find-my-recipe/src/Login.js
 		divText = error;
-=======
-		divText = error.responseText;
->>>>>>> multi_page:find-my-recipe/src/pages/Login.js
 	}
 	else if (!isLoaded) {
 		divText = "Loading...";
 	}
 	else {
-<<<<<<< HEAD:find-my-recipe/src/Login.js
 		divText = `userId: ${response}`;
 	}
 	
@@ -113,11 +80,6 @@ class Login extends React.Component {
 		console.log(JSON.stringify(response));
 	}
 	
-=======
-		divText = response;
-	}
-
->>>>>>> multi_page:find-my-recipe/src/pages/Login.js
     return (
       <div>
         <h1>Find My Recipe</h1>

@@ -33,7 +33,7 @@ class Register extends React.Component {
 		   isLoaded: true,
 		   response: data.id,
 	   });
-	   this.props.handleStateChange(this.state.response);
+	   {/*this.props.handleStateChange(this.state.response);*/}
    })
    .catch(err => {
 	   console.log(err);
@@ -67,11 +67,7 @@ class Register extends React.Component {
 	const { error, isLoaded, response } = this.state;
 	let divText;
 	if (error) {
-<<<<<<< HEAD:find-my-recipe/src/Register.js
 		divText = error;
-=======
-		divText = error.responseText;
->>>>>>> multi_page:find-my-recipe/src/pages/Register.js
 	}
 	else if (!isLoaded) {
 		divText = "Loading...";
@@ -79,18 +75,11 @@ class Register extends React.Component {
 	else {
 		divText = response;
 	}
-<<<<<<< HEAD:find-my-recipe/src/Register.js
 	
 	if (response) {
 		console.log(response);
 	}
 	
-=======
-
-
-	console.log(`${this.state.reponse}`);
-
->>>>>>> multi_page:find-my-recipe/src/pages/Register.js
     return (
       <div>
         <h1>Create an account</h1>
