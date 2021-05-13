@@ -7,7 +7,6 @@ class Login extends React.Component {
     this.state = {
       username: "",
       password: "",
-    
       error: null,
       isLoaded: false,
       response: null,
@@ -19,67 +18,67 @@ class Login extends React.Component {
 
   // user, pass cannot be null or ""
   authenUser(user, pass) {
-		fetch(`http://localhost:8080/authenticate-user/${user}-${pass}`, {
-		   method: "GET",
-		})
-	 .then(async response => {
-		 let data = await response.json();		   
-		 if(!response.ok) {
-			 let err = data;
-			 return Promise.reject(err);
-		 }		   
-		 console.log(data);
-		 this.setState({
-			 isLoaded: true,
-			 response: data.id,
-		 });
-		 this.props.handleStateChange(this.state.response);
-	 })
-	 .catch(err => {
-		 console.log(err);
-		 this.setState({
-			 isLoaded: true,
-			 error: err,
-		 });
-	 });
+    fetch(`http://localhost:8080/authenticate-user/${user}-${pass}`, {
+      method: "GET",
+    })
+   .then(async response => {
+     let data = await response.json();       
+     if(!response.ok) {
+       let err = data;
+       return Promise.reject(err);
+     }       
+     console.log(data);
+     this.setState({
+       isLoaded: true,
+       response: data.id,
+     });
+     this.props.handleStateChange(this.state.response);
+   })
+   .catch(err => {
+     console.log(err);
+     this.setState({
+       isLoaded: true,
+       error: err,
+     });
+   });
   }
 
   handleSubmit(event) {
-		event.preventDefault(); //prevents page from refreshing
-		if (this.state.username == "" 
-			|| this.state.password == ""
-			|| (this.state.username).includes("-")
-			|| (this.state.password).includes("-")) {
-			this.setState({
-				error: "Invalid username or password (must not be empty and cannot contain '-')",
-			});
-		}
-	  else {
-		  this.authenUser(this.state.username, this.state.password);
-	  }
+    event.preventDefault(); // prevents page from refreshing
+    if (this.state.username == "" 
+      || this.state.password == ""
+      || (this.state.username).includes("-")
+      || (this.state.password).includes("-")) {
+      this.setState({
+        error: "Invalid username or password (must not be empty and cannot contain '-')",
+      });
+    }
+    else {
+      this.authenUser(this.state.username, this.state.password);
+    }
   }
 
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   render() {
-		const { error, isLoaded, response } = this.state;
-		let divText;
-		if (error) {
-			divText = error;
-		}
-		else if (!isLoaded) {
-			divText = "Loading...";
-		}
-		else {
-			divText = `userId: ${response}`;
-		}
-		
-		if (response) {
-			console.log(JSON.stringify(response));
-		}
-	
+    const { error, isLoaded, response } = this.state;
+    let divText;
+    if (error) {
+      divText = error;
+    }
+    else if (!isLoaded) {
+      divText = "Loading...";
+    }
+    else {
+      divText = `userId: ${response}`;
+    }
+    
+    if (response) {
+      console.log(JSON.stringify(response));
+    }
+  
     return (
       <div>
         <h1>Find My Recipe</h1>
@@ -109,7 +108,7 @@ class Login extends React.Component {
             <Link to='/Register'>Create a new account</Link>
           </p>
         </div>
-				<div> {divText} </div>
+        <div> {divText} </div>
       </div>
     );
   }
