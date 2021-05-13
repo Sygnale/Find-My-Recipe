@@ -42,7 +42,7 @@ class Login extends React.Component {
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
-	console.log(`${this.state.username}, ${this.state.password}`);
+    console.log(`${this.state.username}, ${this.state.password}`);
   }
 
   render() {
@@ -87,7 +87,7 @@ class Login extends React.Component {
             <Link to='/Register'>Create a new account</Link>
           </p>
         </div>
-		<div> {divText} </div>
+        <div> {divText} </div>
       </div>
     );
   }
