@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Register extends React.Component {
   constructor(props) {
@@ -66,7 +67,11 @@ class Register extends React.Component {
 	const { error, isLoaded, response } = this.state;
 	let divText;
 	if (error) {
+<<<<<<< HEAD:find-my-recipe/src/Register.js
 		divText = error;
+=======
+		divText = error.responseText;
+>>>>>>> multi_page:find-my-recipe/src/pages/Register.js
 	}
 	else if (!isLoaded) {
 		divText = "Loading...";
@@ -74,29 +79,36 @@ class Register extends React.Component {
 	else {
 		divText = response;
 	}
+<<<<<<< HEAD:find-my-recipe/src/Register.js
 	
 	if (response) {
 		console.log(response);
 	}
 	
+=======
+
+
+	console.log(`${this.state.reponse}`);
+
+>>>>>>> multi_page:find-my-recipe/src/pages/Register.js
     return (
       <div>
         <h1>Create an account</h1>
         <form onSubmit={this.handleSubmit}>
           <label>
             <p>Username</p>
-            <input 
-              name="username" 
-              type="text" 
-              value={this.state.username} 
+            <input
+              name="username"
+              type="text"
+              value={this.state.username}
               onChange={this.handleChange} />
           </label>
           <label>
             <p>Password</p>
-            <input 
-              name="password" 
-              type="password" 
-              value={this.state.password} 
+            <input
+              name="password"
+              type="password"
+              value={this.state.password}
               onChange={this.handleChange} />
           </label>
           <div>
@@ -109,4 +121,4 @@ class Register extends React.Component {
   }
 }
 
-export { Register };
+export default Register;

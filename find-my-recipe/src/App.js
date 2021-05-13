@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
+import Main from './components/Main.js';
 
+<<<<<<< HEAD
 import { Login } from './Login.js';
 import { Register } from './Register.js';
 
@@ -32,5 +34,12 @@ class App extends React.Component {
 		);
     }
 }
+=======
+const App = () => (
+	<div className='app'>
+		<Main />
+	</div>
+);
+>>>>>>> multi_page
 
 export default App;
