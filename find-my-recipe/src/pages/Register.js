@@ -20,8 +20,8 @@ class Register extends React.Component {
   // user, pass cannot be null or ""
   addUser(user, pass) {
    fetch(`http://localhost:8080/add-user/${user}-${pass}`, {
-	   method: "POST",
-	})
+		 method: "POST",
+	 })
    .then(async response => {
 	   let data = await response.json();		   
 	   if(!response.ok) {

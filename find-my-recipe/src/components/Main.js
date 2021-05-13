@@ -6,10 +6,10 @@ import Register from '../pages/Register';
 
 class Main extends React.Component {
 	constructor(props) {
-        super(props);
-        this.state = {
+		super(props);
+		this.state = {
 			userID: null,
-        };
+		};
 		
 		this.handleStateChange = this.handleStateChange.bind(this);
     }	
