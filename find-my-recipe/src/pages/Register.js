@@ -33,7 +33,7 @@ class Register extends React.Component {
 		   isLoaded: true,
 		   response: data.id,
 	   });
-	   {/*this.props.handleStateChange(this.state.response);*/}
+	   this.props.handleStateChange(this.state.response);
    })
    .catch(err => {
 	   console.log(err);
