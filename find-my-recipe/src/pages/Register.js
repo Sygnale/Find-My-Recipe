@@ -8,7 +8,7 @@ class Register extends React.Component {
       username: "",
       password: "",
 	  
-	  error: null,
+			error: null,
       isLoaded: false,
       response: null,
     };
@@ -19,29 +19,29 @@ class Register extends React.Component {
   
   // user, pass cannot be null or ""
   addUser(user, pass) {
-   fetch(`http://localhost:8080/add-user/${user}-${pass}`, {
-		 method: "POST",
-	 })
-   .then(async response => {
-	   let data = await response.json();		   
-	   if(!response.ok) {
-		   let err = data;
-		   return Promise.reject(err);
-	   }		   
-	   console.log(data);
-	   this.setState({
-		   isLoaded: true,
-		   response: data.id,
-	   });
-	   this.props.handleStateChange(this.state.response);
-   })
-   .catch(err => {
-	   console.log(err);
-	   this.setState({
-		   isLoaded: true,
-		   error: err,
-	   });
-   });
+		fetch(`http://localhost:8080/add-user/${user}-${pass}`, {
+			method: "POST",
+		})
+		.then(async response => {
+			let data = await response.json();		   
+			if(!response.ok) {
+				let err = data;
+				return Promise.reject(err);
+			}		   
+			console.log(data);
+			this.setState({
+				isLoaded: true,
+				response: data.id,
+			});
+			this.props.handleStateChange(this.state.response);
+		})
+		.catch(err => {
+			console.log(err);
+			this.setState({
+				isLoaded: true,
+				error: err,
+			});
+		});
   }
 
   handleSubmit(event) {
@@ -64,49 +64,49 @@ class Register extends React.Component {
   }
 
   render() {
-	const { error, isLoaded, response } = this.state;
-	let divText;
-	if (error) {
-		divText = error;
-	}
-	else if (!isLoaded) {
-		divText = "Loading...";
-	}
-	else {
-		divText = response;
-	}
-	
-	if (response) {
-		console.log(response);
-	}
-	
-    return (
-      <div>
-        <h1>Create an account</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <p>Username</p>
-            <input
-              name="username"
-              type="text"
-              value={this.state.username}
-              onChange={this.handleChange} />
-          </label>
-          <label>
-            <p>Password</p>
-            <input
-              name="password"
-              type="password"
-              value={this.state.password}
-              onChange={this.handleChange} />
-          </label>
-          <div>
-            <button type="submit">Sign up</button>
-          </div>
-		  <div> {divText} </div>
-        </form>
-      </div>
-    );
+		const { error, isLoaded, response } = this.state;
+		let divText;
+		if (error) {
+			divText = error;
+		}
+		else if (!isLoaded) {
+			divText = "Loading...";
+		}
+		else {
+			divText = response;
+		}
+		
+		if (response) {
+			console.log(response);
+		}
+		
+		return (
+			<div>
+				<h1>Create an account</h1>
+				<form onSubmit={this.handleSubmit}>
+					<label>
+						<p>Username</p>
+						<input
+							name="username"
+							type="text"
+							value={this.state.username}
+							onChange={this.handleChange} />
+					</label>
+					<label>
+						<p>Password</p>
+						<input
+							name="password"
+							type="password"
+							value={this.state.password}
+							onChange={this.handleChange} />
+					</label>
+					<div>
+						<button type="submit">Sign up</button>
+					</div>
+				<div> {divText} </div>
+				</form>
+			</div>
+		);
   }
 }
 
