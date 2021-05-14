@@ -175,6 +175,14 @@ async function create_db_and_tables() {
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
+  );
+  CREATE TABLE IF NOT EXISTS user_favorite_recipes(
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    recipe_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (recipe_id) REFERENCES recipes(id)
   );`;
   await query_db(sql);
   console.log("Database find_my_recipe created");
