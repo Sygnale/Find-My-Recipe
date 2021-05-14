@@ -9,6 +9,47 @@ const con = mysql.createConnection({
   multipleStatements: true,
 });
 
+const conv = {
+  'ounce': 0.028349,
+  'pound': 0.4535,
+  'g': 0.001,
+  'kg': 1,
+  'teaspoon': 0.00493,
+  'tablespoon': 0.014787,
+  'fl. oz': 0.029574,
+  'cup': 0.2400,
+  'pint': 0.4733,
+  'quart': 0.9461,
+  'gallon': 3.785,
+  'bushel': 35.239,
+  'ml': 0.001,
+  'liter': 1,
+  'shot': 0,
+  'dash': 0,
+  'drop': 0,
+  'pinch': 0,
+  'scoop': 0,
+  'glass': 0,
+};
+
+function parse_quantity(quantity) {
+  const dashSplit = quantity.split('-');
+  const toSplit = dashSplit[0].split(' to ');
+  const val = toSplit[0];
+  const parts = val.split(' ');
+  if (parts.length === 1)
+    return eval(parts[0]);
+  const intRe = /^[0-9]+$/;
+  const fracRe = /^[0-9]+\/[0-9]+/;
+  if (intRe.test(parts[0]) && fracRe.test(parts[1]))
+    return parseInt(parts[0]) + eval(parts[1]);
+  if (fracRe.test(parts[0]) && fracRe.test(parts[1]))
+    return eval(parts[0]);
+  if (intRe.test(parts[1]))
+    return eval(parts[0]) * parseInt(parts[1]);
+  return 0;
+}
+
 async function download_json(url) {
   return new Promise((resolve, reject) => {
     console.log("Getting http request...");
@@ -100,6 +141,7 @@ async function create_db_and_tables() {
     ingredient_id INT NOT NULL,
     quantity TEXT,
     unit TEXT,
+    min_si FLOAT(5),
     PRIMARY KEY (id),
     FOREIGN KEY (recipe_id) REFERENCES recipes(id),
     FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
@@ -129,7 +171,7 @@ async function create_db_and_tables() {
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     ingredient_id INT NOT NULL,
-    amount INT,
+    amount FLOAT(5),
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (ingredient_id) REFERENCES ingredients(id)
@@ -168,9 +210,15 @@ async function insert_ingredients_and_recipes(json) {
       const ingredientName = recipe.ingredients[j].text;
       const quantity = recipe.quantity[j].text;
       const unit = recipe.unit[j].text
-      args = [id, ingredientName, quantity, unit];
+      const min_si = parse_quantity(quantity) * conv[unit];
+      args = [id, ingredientName, quantity, unit, min_si];
       remaining_queries.push({
-        query: "INSERT INTO recipe_ingredients SET recipe_id=?, ingredient_id=(SELECT id FROM ingredients WHERE name=? LIMIT 1), quantity=?, unit=?;",
+        query: `INSERT INTO recipe_ingredients
+        SET recipe_id=?,
+        ingredient_id=(SELECT id FROM ingredients WHERE name=? LIMIT 1),
+        quantity=?,
+        unit=?,
+        min_si=?;`,
         args: args
       });
     }
