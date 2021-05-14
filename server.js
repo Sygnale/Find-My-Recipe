@@ -236,7 +236,7 @@ app.get('/get-recipes/:userId', (req, res) => {
     if(err1) throw err1;
 
     let recipeQueryStringStart = `SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}`;
-    let recipeQueryStringEnd = `) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL)=0)`;
+    let recipeQueryStringEnd = `) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL OR amount < min_si)=0)`;
 
     for(var i = 0; i < result1.length; i++){
       if(result1[i].tag == 'low fat'){
