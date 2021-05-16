@@ -300,6 +300,123 @@ app.get('/recipes/:recipeID', (req, res) => {
   });
 
 });
+
+//Adds recipe to user favorite list (if the recipe and user both exist and recipe not already in user favorites)
+//Safe to call for nonexistant user/recipe or if the user already has favorite recipe (will just return relevant error message)
+//Usage: http://localhost:8080/favorites/[userId]/[recipeId]
+//@returns "Favorite recipe added" on success, error message with status code 404 on failure
+app.post('/favorites/:userId/:recipeId', (req, res) => {
+  const recipeID = req.params.recipeId;
+  const userId = req.params.userId;
+
+  console.log(`Adding recipe ${recipeID} to ${userId} favorite list`);
+  const queryString1 = `SELECT COUNT(*) FROM user_favorite_recipes WHERE (user_id=${userId} AND recipe_id=${recipeID})`;
+  const queryString2 = `INSERT INTO user_favorite_recipes (user_id,recipe_id) VALUES (${userId},${recipeID})`;
+  const queryString3= `SELECT COUNT(*) FROM users WHERE id=${userId}`;
+  const queryString4=`SELECT COUNT(*) FROM recipes WHERE id=${recipeID}`;
+
+  con.query(queryString3, (err3, result3) => {
+    if(err3) throw err3;
+
+    if(result3[0]["COUNT(*)"] == 0){
+      res.statusCode = 404;
+      res.end("User not found");
+      return;
+    }
+
+    con.query(queryString4, (err4, result4) => {
+      if(err4) throw err4;
+
+      if(result4[0]["COUNT(*)"] == 0){
+        res.statusCode = 404;
+        res.end("Recipe not found");
+        return;
+      }
+
+      con.query(queryString1, (err1, result1) => {
+        if(err1) throw err1;
+    
+        if(result1[0]["COUNT(*)"] != 0){
+          res.statusCode = 404;
+          res.end("Recipe already in user favorites");
+          return;
+        }
+    
+        con.query(queryString2, (err2, result2) => {
+          if(err2) throw err2;
+          res.end("Favorite recipe added");
+        });
+      });
+    });
+  });
+});
+
+//Gets list of recipe ID's for a specific user's favorites
+//Usage: http://localhost:8080/favorites/[userId]
+//@returns JSON array of recipe IDs on success, empty JSON array for invalid user ID
+app.get('/favorites/:userId', (req, res) => {
+  const userId=req.params.userId;
+  console.log(`Fetching ${userId} favorite recipe list`);
+
+  const queryString=`SELECT recipe_id FROM user_favorite_recipes WHERE user_id=${userId}`;
+
+  con.query(queryString, (err, result) => {
+    if(err) throw err;
+
+    res.end(JSON.stringify(result));
+  });
+
+});
+
+//Removes recipe from user favorite list (if the recipe and user both exist and recipe in user favorites)
+//Safe to call for nonexistant user/recipe or if the user does not have specific recipe
+//Usage: http://localhost:8080/favorites/[userId]/[recipeId]
+//@returns "Favorite recipe deleted" on success, error message with status code 404 on failure
+app.delete('/favorites/:userId/:recipeId', (req, res) => {
+  const recipeID = req.params.recipeId;
+  const userId = req.params.userId;
+
+  console.log(`Deleting recipe ${recipeID} from ${userId} favorite list`);
+  const queryString1 = `SELECT COUNT(*) FROM user_favorite_recipes WHERE (user_id=${userId} AND recipe_id=${recipeID})`;
+  const queryString2 = `DELETE FROM user_favorite_recipes WHERE user_id=${userId} AND recipe_id=${recipeID}`;
+  const queryString3= `SELECT COUNT(*) FROM users WHERE id=${userId}`;
+  const queryString4=`SELECT COUNT(*) FROM recipes WHERE id=${recipeID}`;
+
+  con.query(queryString3, (err3, result3) => {
+    if(err3) throw err3;
+
+    if(result3[0]["COUNT(*)"] == 0){
+      res.statusCode = 404;
+      res.end("User not found");
+      return;
+    }
+
+    con.query(queryString4, (err4, result4) => {
+      if(err4) throw err4;
+
+      if(result4[0]["COUNT(*)"] == 0){
+        res.statusCode = 404;
+        res.end("Recipe not found");
+        return;
+      }
+
+      con.query(queryString1, (err1, result1) => {
+        if(err1) throw err1;
+    
+        if(result1[0]["COUNT(*)"] == 0){
+          res.statusCode = 404;
+          res.end("Recipe not in user favorites");
+          return;
+        }
+    
+        con.query(queryString2, (err2, result2) => {
+          if(err2) throw err2;
+          res.end("Favorite recipe deleted");
+        });
+      });
+    });
+  });
+});
 /** -------------------------- End of Backend APIs ----------------------------------  */
 
 //Start server
