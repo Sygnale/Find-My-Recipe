@@ -417,6 +417,84 @@ app.delete('/favorites/:userId/:recipeId', (req, res) => {
     });
   });
 });
+
+//Method to add a new ingredient to user's list
+//Usage: http://localhost:8080/[userID]/ingredients/[ingredientId]
+//@returns Adds ingredient for user on success, and error message on failure
+app.post('/:userId/ingredients/:ingredientId', (req, res) => {
+  const userId = req.params.userId;
+  const ingredientId = req.params.ingredientId;
+
+  console.log(`Adding ingredient ${ingredientId} to ${userId} pantry.`);
+  const queryString1= `SELECT COUNT(*) FROM users WHERE id=${userId}`;
+  const queryString2= `SELECT COUNT(*) FROM ingredients WHERE id=${ingredientId}`;
+  const queryString3= `SELECT COUNT(*) FROM user_ingredients WHERE (user_id=${userId} AND ingredient_id=${ingredientId})`;
+  const queryString4= `INSERT INTO user_ingredients (user_id,ingredient_id) VALUES (${userId},${ingredientId})`;
+
+  con.query(queryString1, (err1, result1) => {
+    if(err1) throw err1;
+    if(result1[0]["COUNT(*)"] == 0){
+      res.statusCode = 404;
+      res.end("User not found.");
+      return;
+    }
+    con.query(queryString2, (err2, result2) => {
+      if(err2) throw err2;
+      if(result2[0]["COUNT(*)"] == 0){
+        res.statusCode = 404;
+        res.end("Ingredient not found.");
+        return;
+      }
+      con.query(queryString3, (err3, result3) => {
+        if(err3) throw err3;
+        if(result3[0]["COUNT(*)"] != 0){
+          res.statusCode = 404;
+          res.end("Ingredient already exists in user pantry.");
+          return;
+        }
+        con.query(queryString4, (err4, result4) => {
+          if(err4) throw err4;
+          res.end("Ingredient added");
+        });
+      });
+    });
+  });
+});
+
+//Method to edit the quantity of ingredient
+//Usage: http://localhost:8080/[userID]/ingredients/[ingredientId]
+//@returns Updates ingredients to new amount on success, and erro message on failure
+app.post('/:userId/ingredients/add/:ingredientId/:amount', (req, res) => {
+  const userId = req.params.userId;
+  const ingredientId = req.params.ingredientId;
+  const amount = req.params.amount;
+
+  console.log(`Updating ingredient ${ingredientId} in ${userId} pantry to ${amount}.`);
+  const queryString1= `SELECT COUNT(*) FROM users WHERE id=${userId}`;
+  const queryString2= `SELECT COUNT(*) FROM ingredients WHERE id=${ingredientId}`;
+  const queryString3= `UPDATE user_ingredients SET amount=${amount} WHERE user_id=${userId} AND ingredient_id=${ingredientId}`;
+
+  con.query(queryString1, (err1, result1) => {
+    if(err1) throw err1;
+    if(result1[0]["COUNT(*)"] == 0){
+      res.statusCode = 404;
+      res.end("User not found.");
+      return;
+    }
+    con.query(queryString2, (err2, result2) => {
+      if(err2) throw err2;
+      if(result2[0]["COUNT(*)"] == 0){
+        res.statusCode = 404;
+        res.end("Ingredient not found.");
+        return;
+      }
+      con.query(queryString3, (err3, result3) => {
+        if(err3) throw err3;
+        res.end("Ingredient amount updated");
+      });
+    });
+  });
+});
 /** -------------------------- End of Backend APIs ----------------------------------  */
 
 //Start server
