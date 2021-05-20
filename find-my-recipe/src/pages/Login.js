@@ -1,4 +1,5 @@
 import React from 'react';
+import './Login.css';
 import { Link } from "react-router-dom";
 
 class Login extends React.Component {
@@ -80,33 +81,40 @@ class Login extends React.Component {
     }
   
     return (
-      <div>
-        <h1>Find My Recipe</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            <p>Username</p>
-            <input
-              name="username"
-              type="text"
-              value={this.state.username}
-              onChange={this.handleChange} />
-          </label>
-          <label>
-            <p>Password</p>
-            <input
-              name="password"
-              type="password"
-              value={this.state.password}
-              onChange={this.handleChange} />
-          </label>
-          <div>
-            <button type="submit">Sign in</button>
+      <div className='Login'>
+        <div className='left'>
+          <form onSubmit={this.handleSubmit}>
+          <h1>Login</h1>
+            <label>
+              <input
+                name="username"
+                type="text"
+                placeholder='Username'
+                value={this.state.username}
+                onChange={this.handleChange} />
+            </label>
+            <label>
+              <input
+                name="password"
+                type="password"
+                placeholder='Password'
+                value={this.state.password}
+                onChange={this.handleChange} />
+            </label>
+            <div>
+              <button className='SubmitButton' type="submit">SIGN IN</button>
+            </div>
+          </form>
+        </div>
+        <div className='right-container'>
+          <div className='right'>
+            <div className='right-panel'>
+              <h1 className='title'>Find My Recipe</h1>
+              <p>New?&nbsp;
+                <Link to='/Register'>Create a new account</Link>
+              </p>
+            </div>
           </div>
-        </form>
-        <div>
-          <p>New?
-            <Link to='/Register'>Create a new account</Link>
-          </p>
         </div>
         <div> {divText} </div>
       </div>
