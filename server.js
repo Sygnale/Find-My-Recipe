@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 
 //Security constants
 const bcrypt=require('bcrypt');
-const saltRound=5; //Relatively low number of salting rounds for performance 
+const saltRound=5; //Relatively low number of salting rounds for performance
 
 /** ---------------------------------------- Backend APIs --------------------------------------- */
 
@@ -241,6 +241,62 @@ app.delete('/:userId/ingredients/:ingredientId', (req, res) => {
   });
 });
 
+app.delete('/:userId/ingredients/:ingredientId/:amount', (req, res) => {
+  const userId = req.params.userId;
+  const ingredientId = req.params.ingredientId;
+  const amount = parseFloat(req.params.amount);
+
+  console.log(`Finding user with id ${userId}...`);
+  let queryString = `SELECT username FROM users WHERE id=?`;
+  con.query(queryString, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User with id ${userId} not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User with id ${userId} found`);
+
+    const username = result1[0].username;
+    console.log(`Finding ingredient with id ${ingredientId} from ${username}...`);
+    queryString =
+    `SELECT ingredients.name, user_ingredients.amount
+    FROM ingredients JOIN user_ingredients ON ingredients.id=user_ingredients.ingredient_id
+    WHERE user_ingredients.user_id=? AND user_ingredients.ingredient_id=?`;
+    con.query(queryString, [userId, ingredientId], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.length === 0) {
+        console.log(`Ingredient with id ${ingredientId} not found from ${username}`);
+        res.end("Ingredient not found");
+        return;
+      }
+      console.log(`Ingredient with id ${ingredientId} found from ${username}`);
+
+      const ingredient = result2[0].name;
+      const userAmount = parseFloat(result2[0].amount);
+      let newAmount = userAmount - amount;
+      if (newAmount < 0)
+        newAmount = 0;
+      console.log(`Updating ${ingredient} amount of ${username} to ${newAmount}...`);
+      queryString = `UPDATE user_ingredients SET amount=? WHERE user_id=? AND ingredient_id=?`;
+      con.query(queryString, [newAmount, userId, ingredientId], (err3, result3) => {
+        if (err3) throw err3;
+        if (result3.affectedRows === 0) {
+          console.log(`Could not update ingredient (id: ${ingredientId}) from user (id: ${userID})`);
+          res.end("Could not delete ingredient");
+          return;
+        }
+        const msg = `${ingredient} amount of ${username} updated`;
+        const response = {
+          amount: newAmount,
+        };
+        console.log(msg);
+        res.json(response);
+      });
+    });
+  });
+});
+
 //Returns all recipes matching search criteria (will use current active user tags automatically)
 //Usage: http://localhost:8080/get-recipes/[userID]
 //@returns JSON array of recipes on success, empty array on failure
@@ -276,7 +332,7 @@ app.get('/get-recipes/:userId', (req, res) => {
     recipeQueryString = recipeQueryStringStart + recipeQueryStringEnd;
     con.query(recipeQueryString, (err2,result2) => {
       if(err2) throw err2;
-  
+
       console.log(`Recipes returned for user ${userID}`);
       res.end (JSON.stringify(result2));
     });
@@ -352,13 +408,13 @@ app.post('/favorites/:userId/:recipeId', (req, res) => {
 
       con.query(queryString1, (err1, result1) => {
         if(err1) throw err1;
-    
+
         if(result1[0]["COUNT(*)"] != 0){
           res.statusCode = 404;
           res.end("Recipe already in user favorites");
           return;
         }
-    
+
         con.query(queryString2, (err2, result2) => {
           if(err2) throw err2;
           res.end("Favorite recipe added");
@@ -419,13 +475,13 @@ app.delete('/favorites/:userId/:recipeId', (req, res) => {
 
       con.query(queryString1, (err1, result1) => {
         if(err1) throw err1;
-    
+
         if(result1[0]["COUNT(*)"] == 0){
           res.statusCode = 404;
           res.end("Recipe not in user favorites");
           return;
         }
-    
+
         con.query(queryString2, (err2, result2) => {
           if(err2) throw err2;
           res.end("Favorite recipe deleted");
