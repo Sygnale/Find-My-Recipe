@@ -25,6 +25,10 @@ app.get('/', (req, res) => {
     });
 });
 
+//Security constants
+const bcrypt=require('bcrypt');
+const saltRound=5; //Relatively low number of salting rounds for performance 
+
 /** ---------------------------------------- Backend APIs --------------------------------------- */
 
 //Method to add user to database
@@ -55,15 +59,19 @@ app.post('/add-user/:username-:password', (req, res) => {
             res.end(JSON.stringify("Username already exists")); //User exists, return error
         }
         else { //User does not exist, insert into database with null ingredients/tags and with corresponding userID and password
-            var addQueryString = "INSERT INTO users (username, password) VALUES (?, ?)";
-            con.query(addQueryString, [username, password], function (err, result) {
-                if (err) throw err;
-                console.log(result);
-                var idStruct = {
-                    id: result.insertId,
-                };
-                res.json(idStruct);
+          bcrypt.genSalt(saltRound, function(err, salt){
+            bcrypt.hash(password, salt, function(err, hash){
+              var addQueryString = "INSERT INTO users (username, password) VALUES (?, ?)";
+              con.query(addQueryString, [username, hash], function (err, result) {
+                  if (err) throw err;
+                  console.log(result);
+                  var idStruct = {
+                      id: result.insertId,
+                  };
+                  res.json(idStruct);
+              });
             });
+          });
         }
     });
 });
@@ -77,20 +85,29 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
 
     console.log(`Request to authenticate user "${username}" with password "${password}"`);
 
-    var queryString = "SELECT id FROM users WHERE username=? AND password=?";
-    con.query(queryString, [username, password], function (err, result) {
+    var queryString = "SELECT id,password FROM users WHERE username=?";
+    con.query(queryString, [username], function (err, result) {
         if (err) throw err;
         if (result.length == 0) {
-            console.log("Authentication Failed");
+            console.log("User Not Found");
             res.statusCode = 404;
-            res.end(JSON.stringify("Authentication failed")); //Username/password does not match
+            res.end("User Not Found"); //Username does not match
         }
         else {
-            console.log("Authentication success");
-            var idStruct = {
-                id: result[0].id,
-            };
-            res.json(idStruct); //Success
+          bcrypt.compare(password,result[0].password, function(err, res1){
+            if(res1){
+              console.log("Authentication success");
+              var idStruct = {
+                  id: result[0].id,
+              };
+              res.json(idStruct); //Success
+            }
+            else{
+              console.log("Incorrect Password");
+              res.statusCode = 404;
+              res.end("Incorrect Password"); //Password
+            }
+          });
         }
     });
 });
