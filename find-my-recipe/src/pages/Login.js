@@ -104,6 +104,7 @@ class Login extends React.Component {
             <div>
               <button className='SubmitButton' type="submit">SIGN IN</button>
             </div>
+            <div> {divText} </div>
           </form>
         </div>
         <div className='right-container'>
@@ -116,7 +117,6 @@ class Login extends React.Component {
             </div>
           </div>
         </div>
-        <div> {divText} </div>
       </div>
     );
   }

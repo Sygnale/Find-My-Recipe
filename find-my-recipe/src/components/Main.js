@@ -40,6 +40,7 @@ class Main extends React.Component {
               <Register {...props} handleStateChange = {this.handleStateChange}/>
             )}
           />
+
         </Switch>
       </div>
     );
