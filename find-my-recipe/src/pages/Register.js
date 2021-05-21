@@ -9,7 +9,6 @@ class Register extends React.Component {
     username: "",
     password: "",
     error: null,
-    isLoaded: false,
     response: null,
   };
 
@@ -28,17 +27,13 @@ class Register extends React.Component {
         let err = data;
         return Promise.reject(err);
       }
-      console.log(data);
       this.setState({
-        isLoaded: true,
         response: data.id,
       });
       this.props.handleStateChange(this.state.response);
     })
     .catch(err => {
-      console.log(err);
       this.setState({
-        isLoaded: true,
         error: err,
       });
     });
@@ -46,8 +41,8 @@ class Register extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault(); // prevents page from refreshing
-    if (this.state.username == "" 
-      || this.state.password == ""
+    if (this.state.username === "" 
+      || this.state.password === ""
       || (this.state.username).includes("-")
       || (this.state.password).includes("-")) {
       this.setState({
@@ -64,20 +59,13 @@ class Register extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, response } = this.state;
-    let divText;
+    const { error, response } = this.state;
+    let divText = '';
     if (error) {
       divText = error;
     }
-    else if (!isLoaded) {
-      divText = "Loading...";
-    }
     else {
       divText = response;
-    }
-    
-    if (response) {
-      console.log(response);
     }
     
     return (
@@ -111,8 +99,8 @@ class Register extends React.Component {
           <div className='right'>
             <div className='right-panel'>
               <h1 className='title'>Find My Recipe</h1>
-                <p>New?&nbsp;
-                  <Link to='/'>Create a new account</Link>
+                <p>Already have an account?&nbsp;
+                  <Link to='/'>Login</Link>
                 </p>
             </div>
           </div>

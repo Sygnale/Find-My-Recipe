@@ -91,7 +91,7 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
         if (result.length == 0) {
             console.log("User Not Found");
             res.statusCode = 404;
-            res.end("User Not Found"); //Username does not match
+            res.end(JSON.stringify("User Not Found")); //Username does not match
         }
         else {
           bcrypt.compare(password,result[0].password, function(err, res1){
@@ -105,7 +105,7 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
             else{
               console.log("Incorrect Password");
               res.statusCode = 404;
-              res.end("Incorrect Password"); //Password
+              res.end(JSON.stringify("Incorrect Password")); //Password
             }
           });
         }
@@ -118,7 +118,7 @@ app.get('/ingredients', (req, res) => {
     console.log("Sending ingredients list")
     con.query("SELECT * FROM INGREDIENTS", function (err, result) {
         if (err) throw err;
-        res.json(JSON.stringify(result));
+        res.json(result);
     });
 });
 
@@ -149,7 +149,8 @@ app.get('/:userId/ingredients', (req, res) => {
       if (err2) throw err2;
       if (result2.length === 0) {
         console.log(`${username} (id: ${userId}) has no ingredients`);
-        res.end(`${username} has no ingredients`);
+				res.statusCode = 404;
+        res.end(JSON.stringify(`${username} has no ingredients`));
         return;
       }
       console.log(`Got ingredients from ${username} (id: ${userId})`);

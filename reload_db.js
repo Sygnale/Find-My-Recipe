@@ -253,10 +253,10 @@ async function reload_db() {
   await connect_mysql(con);
 
   // Get json
-  let url = "http://data.csail.mit.edu/im2recipe/recipes_with_nutritional_info.json";
-  let path = "C:\\Users\\tedzy\\Documents\\Notepad\\find my recipe testing\\recipes_with_nutritional_info.json";
-  let json = await download_json(url);
-  //let json = await load_json(path);
+  //let url = "http://data.csail.mit.edu/im2recipe/recipes_with_nutritional_info.json";
+  let path = "C:\\Users\\Emily\\Desktop\\recipes_with_nutritional_info.json";
+  //let json = await download_json(url);
+  let json = await load_json(path);
 
   // Reload database
   await create_db_and_tables();

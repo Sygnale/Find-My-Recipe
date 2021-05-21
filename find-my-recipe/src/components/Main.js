@@ -1,8 +1,9 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import Pantry from '../pages/Pantry';
 
 class Main extends React.Component {
   constructor(props) {
@@ -12,20 +13,23 @@ class Main extends React.Component {
     };
     
     this.handleStateChange = this.handleStateChange.bind(this);
-  } 
+  }
   
   handleStateChange(value) {
     this.setState({ userID: value });
   }
   
   render() {
-    let header = '';
+    let redirect = '';
     if (this.state.userID) {
-      header = <h1>Welcome, user #{this.state.userID}!</h1>
+      redirect = <Redirect to='/Pantry' />;
     }
+		else {
+			redirect = <Redirect to='/' />;
+		}
     return (
       <div>
-        {header}
+				{redirect}
         <Switch> {/* The Switch decides which component to show based on the current URL. */}
           <Route
             exact path='/'
@@ -33,14 +37,18 @@ class Main extends React.Component {
               <Login {...props} handleStateChange = {this.handleStateChange}/>
             )}
           />
-            component={Login}>
           <Route
             exact path='/Register'
             render={(props) => (
               <Register {...props} handleStateChange = {this.handleStateChange}/>
             )}
           />
-
+					<Route
+            exact path='/Pantry'
+            render={(props) => (
+              <Pantry {...props} userID = {this.state.userID}/>
+            )}
+          />
         </Switch>
       </div>
     );

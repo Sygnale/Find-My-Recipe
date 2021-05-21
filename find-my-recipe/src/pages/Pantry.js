@@ -1,131 +1,182 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Search from './Search';
 
 class Pantry extends React.Component {
-  constructor(props) {
+  constructor(props) { // props = { userID }
     super(props);
     this.state = {
+			ingredients: [],
       pantry: [],
-      ingredients: [],
-      search: null,
+			pantryChanged: false,
+			action: null,
+      query: null,
       error: null,
-      isLoaded: false,
     };
+		
+		this.getPantry = this.getPantry.bind(this);
+		this.addIngredient = this.addIngredient.bind(this);
+		this.removeIngredient = this.removeIngredient.bind(this);
+		this.emptyPantry = this.emptyPantry.bind(this);
+	}
 
-  this.handleSearch = this.handleSearch.bind(this);
-  this.handleRemove = this.handleRemove.bind(this);
-  this.handleEmpty = this.handleEmpty.bind(this);
+	// runs only once when Pantry is created
+	componentDidMount() {
+		this.getIngredients();
+		console.log(this.state.ingredients);
+		this.getPantry();
+		console.log(this.state.pantry);
+	}
+	
+	// runs everytime listed props are updated
+	componentDidUpdate() {
+		if(this.state.pantryChanged) {
+			this.getPantry();
+			this.setState({ pantryChanged: false, });
+			console.log("Itsa me!");
+		}
+	}
+	
+	// runs right before exiting Pantry, cancel in-progress fetches
+	componentWillUnmount() {
+	}
+	
+	getIngredients() {
+		fetch(`http://localhost:8080/ingredients`, {
+				method: "GET",
+		})
+		.then(async response => {
+			let data = await response.json();
+			this.setState({
+				ingredients: data,
+			});
+		});
+	}
+
+	getPantry() {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
+			method: "GET",
+		})
+		.then(async response => {
+			let data = await response.json();
+			if(!response.ok) { // user had no ingredients
+				let err = data;
+				return Promise.reject(err);
+			}
+			this.setState({
+				pantry: data,
+			});
+		})
+		.catch(err => {
+			this.setState({
+				error: "Your pantry is empty. Search to add ingredients.",
+			});
+		});
+	}
+	
+	addIngredient() {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients/100`, {
+			method: "POST",
+		})
+		.then(async response => {
+			let data = await response.text();
+			if(!response.ok) {
+				let err = data;
+				return Promise.reject(err);
+			}
+			this.setState({
+				action: data,
+				pantryChanged: true,
+			});
+		})
+		.catch(err => {
+			this.setState({
+				error: err,
+			});
+		});
+	}
+
+	removeIngredient(event, id) {
+		event.preventDefault();
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
+			method: "DELETE",
+		})
+		.then(async response => {
+			let data = await response.text();
+			if(!response.ok) {
+				let err = data;
+				return Promise.reject(err);
+			}
+			this.setState({
+				action: data,
+				pantryChanged: true,
+			});
+		})
+		.catch(err => {
+			this.setState({
+				error: err,
+			});
+		});
+	}
+
+	emptyPantry() {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
+			method: "DELETE",
+		})
+		.then(async response => {
+			let data = await response.text();
+			if(!response.ok) {
+				let err = data;
+				return Promise.reject(err);
+			}
+			this.setState({
+				action: data,
+				pantryChanged: true,
+			});
+		})
+		.catch(err => {
+			this.setState({
+				error: err,
+			});
+		});
+	}
+
+	render() {		
+		const { error } = this.state;
+		let items;
+		if (error) {
+			items = error;
+		}
+		else {
+			items = (this.state.pantry).map((item) => 
+				<li key={item.id}>
+					{item.name}{`(${item.amount})`}
+					<button onClick={(event) => this.removeIngredient(event, item.id)}>+</button>
+				</li>
+			);
+		}
+		
+		
+		let msg = '';
+		if (this.state.action) {
+			msg = this.state.action;
+		}
+		
+		//reloading page on Pantry loses user ID, so make user log back in if that happens, but that's another issue
+
+		return (
+			<div>
+				<h1>Pantry</h1>
+				<Search pantry={this.state.pantry} list={this.state.ingredients}/>
+				<div> {items} </div>
+				<div>
+					<button onClick={this.emptyPantry}>Empty pantry</button>
+				</div>
+				{msg}
+			</div>
+		);
+	}
 }
 
-getPantry() {
-  fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
-    method: "GET",
-  })
-  .then(async response => {
-    let data = await response.json();
-    if(!response.ok) {
-      let err = data;
-      return Promise.reject(err);
-    }
-    this.setState({
-      isLoaded: true,
-      pantry: data,
-    });
-    this.props.handleStateChange(this.state.response);
-  })
-  .catch(err => {
-    this.setState({
-      isLoaded: true,
-      error: "Your pantry is empty. Search to add ingredients.",
-    });
-  });
-}
-
-getIngredients() {
-  fetch(`http://localhost:8080/ingredients`, {
-      method: "GET",
-  })
-  .then(async response => {
-    let data = await response.json();
-    if(!response.ok) {
-      let err = data;
-      return Promise.reject(err);
-    }
-    this.setState({
-      isLoaded: true,
-      ingredients: data,
-    });
-    this.props.handleStateChange(this.state.response);
-  });
-}
-
-handleSearch(event) {
-  this.setState({ search: event.target.value });
-}
-
-handleRemove(id) {
-  fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
-    method: "DELETE",
-  });
-}
-
-handleEmpty(event) {
-  if (confirm("Are you sure you want to empty your pantry?")) {
-    fetch(`http://localhost:8080/${this.props.userID}ingredients`, {
-      method: "DELETE",
-    });
-  }
-}
-
-render() {
-  getPantry();
-
-  const { error, isLoaded } = this.state;
-  let items;
-  if (error) {
-    items = error;
-  }
-  else if (!isLoaded) {
-    items = "Loading...";
-  }
-  else {
-    items = pantry.filter((data) => {
-      if (!this.state.search) {
-        return data;
-      }
-      else if (data.name.toLowerCase().includes(this.state.search.toLowerCase())) {
-        return data;
-      }
-    }).map(data => {
-      return (
-        <div>
-          <p> {data.name} {data.amount}
-            <button onClick={this.handleRemove(data.id)}>Remove</button>
-          </p>
-        </div>
-      );
-    });
-  }
-
-  return (
-    <div>
-      <h1>Pantry</h1>
-      <form>
-        <label>
-          <input
-            name="search"
-            type="text"
-            value={this.state.search}
-            placeholder="Search or add ingredients"
-            onChange={this.handleSearch} />
-        </label>
-      </form>
-       <div> {items} </div>
-      <div>
-        <button onClick={this.handleEmpty}>Empty pantry</button>
-      </div>
-    </div>
-  );
-}
 
 export default Pantry;
