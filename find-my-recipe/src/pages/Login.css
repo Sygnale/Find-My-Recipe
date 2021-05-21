@@ -4,9 +4,13 @@ body{
     font-family:'Roboto', sans-serif;
     box-sizing: border-box;
     background-image: url("./../assets/pattern.PNG");
-    background-size: cover;
+    background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
 	display: flex;
 	justify-content: center;
+	overflow-y: hidden;
 	align-items: center;
 	flex-direction: column;
 	font-family: 'Roboto', sans-serif;
