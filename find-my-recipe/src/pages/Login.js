@@ -10,6 +10,7 @@ class Login extends React.Component {
       error: null,
       isLoaded: false,
       response: null,
+      logged: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,11 +23,11 @@ class Login extends React.Component {
       method: "GET",
     })
    .then(async response => {
-     let data = await response.json();       
+     let data = await response.json();
      if(!response.ok) {
        let err = data;
        return Promise.reject(err);
-     }       
+     }
      console.log(data);
      this.setState({
        isLoaded: true,
@@ -45,8 +46,8 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault(); // prevents page from refreshing
-    if (this.state.username == "" 
-      || this.state.password == ""
+    if (this.state.username === ""
+      || this.state.password === ""
       || (this.state.username).includes("-")
       || (this.state.password).includes("-")) {
       this.setState({
@@ -54,7 +55,8 @@ class Login extends React.Component {
       });
     }
     else {
-      this.authenUser(this.state.username, this.state.password);
+      if(this.authenUser(this.state.username, this.state.password))
+        this.setState( { logged: true,} );
     }
   }
 
@@ -74,11 +76,13 @@ class Login extends React.Component {
     else {
       divText = `userId: ${response}`;
     }
-    
+
     if (response) {
       console.log(JSON.stringify(response));
     }
-  
+
+    return <ProtectedClass logged={this.state.logged}>
+
     return (
       <div>
         <h1>Find My Recipe</h1>
@@ -100,11 +104,13 @@ class Login extends React.Component {
               onChange={this.handleChange} />
           </label>
           <div>
-            <button type="submit">Sign in</button>
+            <Link to="/Pantry">
+              <button type="submit">Sign in</button>
+            </Link>
           </div>
         </form>
         <div>
-          <p>New?
+          <p>
             <Link to='/Register'>Create a new account</Link>
           </p>
         </div>

@@ -127,5 +127,6 @@ render() {
     </div>
   );
 }
+}
 
 export default Pantry;

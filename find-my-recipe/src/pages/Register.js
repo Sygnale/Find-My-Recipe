@@ -15,14 +15,14 @@ class Register extends React.Component {
   this.handleSubmit = this.handleSubmit.bind(this);
   this.handleChange = this.handleChange.bind(this);
   }
-  
+
   // user, pass cannot be null or ""
   addUser(user, pass) {
     fetch(`http://localhost:8080/add-user/${user}-${pass}`, {
       method: "POST",
     })
     .then(async response => {
-      let data = await response.json();          
+      let data = await response.json();
       if(!response.ok) {
         let err = data;
         return Promise.reject(err);
@@ -45,8 +45,8 @@ class Register extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault(); // prevents page from refreshing
-    if (this.state.username == "" 
-      || this.state.password == ""
+    if (this.state.username === ""
+      || this.state.password === ""
       || (this.state.username).includes("-")
       || (this.state.password).includes("-")) {
       this.setState({
@@ -74,11 +74,11 @@ class Register extends React.Component {
     else {
       divText = response;
     }
-    
+
     if (response) {
       console.log(response);
     }
-    
+
     return (
       <div>
         <h1>Create an account</h1>
