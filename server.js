@@ -319,7 +319,7 @@ app.get('/get-recipes/:userId', (req, res) => {
       else if(result1[i].tag == 'low salt'){
         recipeQueryStringEnd += `AND salt='green'`;
       }
-      else if(result1[i].tag == 'low salt'){
+      else if(result1[i].tag == 'low sugar'){
         recipeQueryStringEnd += `AND sugars='green'`;
       }
       else if(result1[i].tag =='vegetarian'){
