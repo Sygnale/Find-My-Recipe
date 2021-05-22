@@ -157,7 +157,7 @@ app.get('/:userId/ingredients', (req, res) => {
       const response = {
         ingredients: result2,
       };
-      res.json(JSON.stringify(response));
+      res.json(response);
     });
   });
 });

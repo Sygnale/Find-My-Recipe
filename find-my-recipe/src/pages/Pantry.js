@@ -18,6 +18,7 @@ class Pantry extends React.Component {
 		this.addIngredient = this.addIngredient.bind(this);
 		this.removeIngredient = this.removeIngredient.bind(this);
 		this.emptyPantry = this.emptyPantry.bind(this);
+		this.managePantry = this.managePantry.bind(this);
 	}
 
 	// runs only once when Pantry is created
@@ -33,7 +34,6 @@ class Pantry extends React.Component {
 		if(this.state.pantryChanged) {
 			this.getPantry();
 			this.setState({ pantryChanged: false, });
-			console.log("Itsa me!");
 		}
 	}
 	
@@ -64,18 +64,19 @@ class Pantry extends React.Component {
 				return Promise.reject(err);
 			}
 			this.setState({
-				pantry: data,
+				pantry: data.ingredients,
 			});
 		})
 		.catch(err => {
 			this.setState({
+				pantry: [],
 				error: "Your pantry is empty. Search to add ingredients.",
 			});
 		});
 	}
 	
-	addIngredient() {
-		fetch(`http://localhost:8080/${this.props.userID}/ingredients/100`, {
+	addIngredient(id) {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
 			method: "POST",
 		})
 		.then(async response => {
@@ -88,6 +89,7 @@ class Pantry extends React.Component {
 				action: data,
 				pantryChanged: true,
 			});
+			console.log(`added id: ${id}`);
 		})
 		.catch(err => {
 			this.setState({
@@ -96,8 +98,7 @@ class Pantry extends React.Component {
 		});
 	}
 
-	removeIngredient(event, id) {
-		event.preventDefault();
+	removeIngredient(id) {
 		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
 			method: "DELETE",
 		})
@@ -111,6 +112,7 @@ class Pantry extends React.Component {
 				action: data,
 				pantryChanged: true,
 			});
+			console.log(`removed id: ${id}`);
 		})
 		.catch(err => {
 			this.setState({
@@ -141,21 +143,35 @@ class Pantry extends React.Component {
 		});
 	}
 
-	render() {		
+	managePantry(event, action, id) {
+		event.preventDefault();
+		switch(action) {
+		case 1:
+			this.addIngredient(id);
+			break;
+		case -1:
+			this.removeIngredient(id);
+			break;
+		default:
+			break;
+		}
+	}
+
+	render() {
 		const { error } = this.state;
 		let items;
-		if (error) {
+		if (this.state.pantry.length === 0) {
 			items = error;
 		}
 		else {
-			items = (this.state.pantry).map((item) => 
+			console.log(this.state.pantry);
+			items = (this.state.pantry).map((item) => (
 				<li key={item.id}>
 					{item.name}{`(${item.amount})`}
-					<button onClick={(event) => this.removeIngredient(event, item.id)}>+</button>
+					<button onClick={(event) => this.managePantry(event, -1, item.id)}>(-)</button>
 				</li>
-			);
-		}
-		
+			));
+		}		
 		
 		let msg = '';
 		if (this.state.action) {
@@ -166,8 +182,8 @@ class Pantry extends React.Component {
 
 		return (
 			<div>
-				<h1>Pantry</h1>
-				<Search pantry={this.state.pantry} list={this.state.ingredients}/>
+				<Search pantry={this.state.pantry} list={this.state.ingredients} handleClick = {this.managePantry}/>
+				<h1>Pantry:</h1>
 				<div> {items} </div>
 				<div>
 					<button onClick={this.emptyPantry}>Empty pantry</button>

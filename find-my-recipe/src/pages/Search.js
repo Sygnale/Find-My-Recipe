@@ -10,13 +10,7 @@ function Search(props) {
 			setSearching('');
 		}
 	}, [query]);
-	/*
-	const data = [
-		{id: 1, name: 'abc'},
-		{id: 2, name: 'bcd'},
-		{id: 3, name: 'cde'}
-	];
-	*/
+	
 	const getMatch = (q, allData) => {
 		if(allData.length === 0 || q === '')
 			return false;
@@ -33,32 +27,18 @@ function Search(props) {
 		e.preventDefault();
 		let s = e.target.value.toLowerCase();
 		setQuery(s);
-		/*
-		if (getMatch(s, data))
-			setSearching("Searching in ingredients database...");
-		else {
-			setSearching("¯\\_(⊙︿⊙)_/¯ not found");
-			setResults([]);
-		}
-		*/
 		
 		if(getMatch(s, props.pantry)) {
-			setSearching("Searching in ingredients database...");
-			
+			setSearching("Searching in your pantry...");			
 		}
 		else if(getMatch(s, props.list))
-			setSearching("Searching in your pantry...");
+			setSearching("Searching in ingredients database...");
 		else {
 			setSearching("¯\\_(⊙︿⊙)_/¯ not found");
 			setResults([]);
 		}
 		
   }
-	
-	const handleClick = (e, n) => {
-		e.preventDefault();
-		console.log(`id: ${n}`);
-	}
 	
 	return (
 		<div>
@@ -75,7 +55,7 @@ function Search(props) {
 						{results.map(item => (
 							<li key={item.id}>
 								{item.name}
-								<button onClick={(event) => handleClick(event, item.id)}>+</button>
+								<button onClick={(event) => props.handleClick(event, 1, item.id)}>+</button>
 							</li>
 						))}
 					</ul>
