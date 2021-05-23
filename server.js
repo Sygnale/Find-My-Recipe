@@ -298,6 +298,103 @@ app.delete('/:userId/ingredients/:ingredientId/:amount', (req, res) => {
   });
 });
 
+app.get('/:userId/tags', (req, res) => {
+  const userId = req.params.userId;
+
+  console.log(`Finding user with id ${userId}...`);
+  let queryString = `SELECT username FROM users WHERE id=?`;
+  con.query(queryString, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User with id ${userId} not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User with id ${userId} found`);
+
+    const username = result1[0].username;
+    console.log(`Getting tags from ${username}...`);
+    queryString = `SELECT tag FROM user_tags WHERE user_id=?`;
+    con.query(queryString, [userId], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.length === 0) {
+        console.log(`${username} (id: ${userId}) has no tags`);
+				res.statusCode = 404;
+        res.end(JSON.stringify(`${username} has no tags`));
+        return;
+      }
+      console.log(`Got tags from ${username} (id: ${userId})`);
+      const response = {
+        tags: result2,
+      };
+      res.json(JSON.stringify(response));
+    });
+  });
+});
+
+app.post('/:userId/tags/:tag', (req, res) => {
+  const userId = req.params.userId;
+  const tag = req.params.tag;
+
+  console.log(`Getting user with id ${userId}...`);
+  let sql = `SELECT username FROM users WHERE id=?`;
+  con.query(sql, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User (id: ${userId}) not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User (id: ${userId}) found`);
+
+    const username = result1[0].username;
+    console.log(`Adding tag ${tag} to ${username}...`);
+    sql = `INSERT INTO user_tags (user_id, tag) VALUES (?, ?)`;
+    con.query(sql, [userId, tag], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.affectedRows === 0) {
+        console.log(`Could not add tag ${tag} to ${username}`);
+        res.end("Could not add tag");
+        return;
+      }
+      console.log(`Tag ${tag} added to ${username}`);
+      res.end("Tag added");
+    });
+  });
+});
+
+app.delete('/:userId/tags/:tag', (req, res) => {
+  const userId = req.params.userId;
+  const tag = req.params.tag;
+
+  console.log(`Getting user with id ${userId}...`);
+  let sql = `SELECT username FROM users WHERE id=?`;
+  con.query(sql, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User (id: ${userId}) not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User (id: ${userId}) found`);
+
+    const username = result1[0].username;
+    console.log(`Deleting tag ${tag} from ${username}...`);
+    sql = `DELETE FROM user_tags WHERE user_id=? AND tag=?`;
+    con.query(sql, [userId, tag], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.affectedRows === 0) {
+        console.log(`Could not delete tag ${tag} from ${username}`);
+        res.end("Could not delete tag");
+        return;
+      }
+      const msg = `Tag ${tag} deleted from ${username}`
+      console.log(msg);
+      res.end(msg);
+    });
+  });
+});
+
 //Returns all recipes matching search criteria (will use current active user tags automatically)
 //Usage: http://localhost:8080/get-recipes/[userID]
 //@returns JSON array of recipes on success, empty array on failure
