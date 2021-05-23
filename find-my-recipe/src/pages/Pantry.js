@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
+import './Pantry.css';
 
 class Pantry extends React.Component {
   constructor(props) { // props = { userID }
@@ -149,9 +150,9 @@ class Pantry extends React.Component {
 		}
 		else {
 			items = (this.state.pantry).map((item) => 
-				<li key={item.id}>
+				<li className='list' key={item.id}>
 					{item.name}{`(${item.amount})`}
-					<button onClick={(event) => this.removeIngredient(event, item.id)}>+</button>
+					<button className='EmptyButton' onClick={(event) => this.removeIngredient(event, item.id)}>+</button>
 				</li>
 			);
 		}
@@ -165,14 +166,14 @@ class Pantry extends React.Component {
 		//reloading page on Pantry loses user ID, so make user log back in if that happens, but that's another issue
 
 		return (
-			<div>
+			<div className='Pantry'>
 				<h1>Pantry</h1>
-				<Search pantry={this.state.pantry} list={this.state.ingredients}/>
-				<div> {items} </div>
+				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients}/>
+				<div className='Items'> {items} </div>
 				<div>
-					<button onClick={this.emptyPantry}>Empty pantry</button>
+					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>
-				{msg}
+				<div className='message' >{msg}</div>
 			</div>
 		);
 	}
