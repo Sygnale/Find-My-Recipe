@@ -30,6 +30,14 @@ const bcrypt=require('bcrypt');
 const saltRound=5; //Relatively low number of salting rounds for performance
 
 /** ---------------------------------------- Backend APIs --------------------------------------- */
+async function query(sqlString, arguments) {
+  return new Promise((resolve, rejection) => {
+    con.query(sqlString, arguments, (err, res) => {
+      if (err) throw err;
+      resolve(res);
+    });
+  });
+}
 
 //Method to add user to database
 //Usage (from frontend): http://localhost:8080/add-user/[username]-[password]
@@ -635,7 +643,7 @@ app.post('/:userId/ingredients/:ingredientId', (req, res) => {
 //Method to edit the quantity of ingredient
 //Usage: http://localhost:8080/[userID]/ingredients/[ingredientId]
 //@returns Updates ingredients to new amount on success, and erro message on failure
-app.post('/:userId/ingredients/add/:ingredientId/:amount', (req, res) => {
+app.put('/:userId/ingredients/:ingredientId/:amount', (req, res) => {
   const userId = req.params.userId;
   const ingredientId = req.params.ingredientId;
   const amount = req.params.amount;
@@ -665,6 +673,41 @@ app.post('/:userId/ingredients/add/:ingredientId/:amount', (req, res) => {
       });
     });
   });
+});
+
+app.post('/:userId/ingredients/:ingredientId/:amount', async (req, res) => {
+  const userId = req.params.userId;
+  const ingredientId = req.params.ingredientId;
+  const amount = parseFloat(req.params.amount);
+
+  let sql, result;
+
+  console.log(`Getting amount of ingredient ${ingredientId} from user ${userId}...`);
+  sql = `SELECT amount FROM user_ingredients WHERE user_id=? AND ingredient_id=?`;
+  result = await query(sql, [userId, ingredientId]);
+  if (result.length === 0) {
+    console.log(`Could not get amount of ingredient ${ingredientId} from user ${userId}`);
+    res.end("User or user ingredient not found");
+    return;
+  }
+  console.log(`Got amount of ingredient ${ingredientId} from user ${userId}`);
+
+  const userAmount = parseFloat(result[0].amount);
+  const newAmount = userAmount + amount;
+
+  console.log(`Updating user ${userId} ingredient ${ingredientId} to ${newAmount}...`);
+  sql = `UPDATE user_ingredients SET amount=? WHERE user_id=? AND ingredient_id=?`;
+  result = await query(sql, [newAmount, userId, ingredientId]);
+  if (result.affectedRows === 0) {
+    console.log(`Could not update user ${userId} ingredient ${ingredientId} to ${newAmount}`);
+    res.end("Could not add ingredient");
+  }
+  console.log(`Updated user ${userId} ingredient ${ingredientId} to ${newAmount}`);
+
+  const response = {
+    amount: newAmount,
+  };
+  res.json(response);
 });
 /** -------------------------- End of Backend APIs ----------------------------------  */
 
