@@ -151,8 +151,8 @@ class Pantry extends React.Component {
 			//alert(this.state.pantry);
 			items = (this.state.pantry).map((item) => 
 				<li className='list' key={item.id}>
-					{item.name}{`(${item.amount})`}
-					<button className='EmptyButton' onClick={(event) => this.removeIngredient(event, item.id)}>+</button>
+					{item.name} {`(${item.amount})`} &nbsp;
+					<button className='RemoveButton' onClick={(event) => this.removeIngredient(event, item.id)}>-</button>
 				</li>
 			);
 		}
