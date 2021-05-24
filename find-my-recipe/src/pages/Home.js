@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import SplitPane from 'react-split-pane';
 import Pantry from './Pantry';
 import Favorites from './Favorites';
+import './Home.css';
 
 class Home extends React.Component {
   constructor(props) {
@@ -20,17 +21,17 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className>
         <h1>Find My Recipe</h1>
-        <SplitPane split="vertical" defaultSize={600}>
-          <div>
+        <SplitPane className='Home' split="vertical" defaultSize={600}>
+          <div className='Pantry'>
             <Route
               render={(props) => (
                 <Pantry {...props} userID = {this.state.userID}/>
               )}
             />
           </div>
-          <div>
+          <div className='Favorites'>
             <Route
               render={(props) => (
                 <Favorites {...props} userID = {this.state.userID}/>

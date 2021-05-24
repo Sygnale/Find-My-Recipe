@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
-import './Pantry.css';
 
 class Pantry extends React.Component {
   constructor(props) { // props = { userID }
