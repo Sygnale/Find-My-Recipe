@@ -62,8 +62,9 @@ class Pantry extends React.Component {
 				let err = data;
 				return Promise.reject(err);
 			}
+			
 			this.setState({
-				pantry: data,
+				pantry: JSON.parse(data)["ingredients"],
 			});
 		})
 		.catch(err => {
@@ -147,6 +148,7 @@ class Pantry extends React.Component {
 			items = error;
 		}
 		else {
+			//alert(this.state.pantry);
 			items = (this.state.pantry).map((item) => 
 				<li className='list' key={item.id}>
 					{item.name}{`(${item.amount})`}

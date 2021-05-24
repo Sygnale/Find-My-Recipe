@@ -18,7 +18,7 @@ function Search(props) {
 	];
 	*/
 	const getMatch = (q, allData) => {
-		alert(JSON.stringify(allData));
+		//alert(JSON.stringify(allData));
 		if(allData.length === 0 || q === '')
 			return false;
 		let a = allData.filter((i) => {
