@@ -99,7 +99,7 @@ class Login extends React.Component {
         <div className='right-container'>
           <div className='right'>
             <div className='right-panel'>
-              <h1 className='title'>Find My Recipe</h1>
+              <h1 className>Find My Recipe</h1>
               <p>New?&nbsp;
 								<Link to='/Register'>Create a new account</Link>
               </p>

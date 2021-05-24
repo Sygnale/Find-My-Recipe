@@ -105,8 +105,8 @@ class Favorites extends React.Component {
     return (
       <div>
         <h1>Recipes</h1>
-        <button>
-          <Link to='/Recipes'>Find more recipes</Link>
+        <button className='MoreButton'>
+          <Link to='/Recipes'>FIND MORE RECIPES</Link>
         </button>
         <div> {items} </div>
         {msg}

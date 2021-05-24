@@ -66,7 +66,7 @@ function Search(props) {
 		<div>
 			<form>
 				<label>
-					<input
+					<input className='SearchBar'
 						type="text"
 						placeholder="Search or add ingredients"
 						value={query}
@@ -76,8 +76,8 @@ function Search(props) {
 					<ul>
 						{results.map(item => (
 							<li key={item.id}>
-								{item.name} &nbsp;
 								<button className='RemoveButton' onClick={(event) => handleClick(event, item.id)}>+</button>
+								{item.name};
 							</li>
 						))}
 					</ul>

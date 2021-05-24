@@ -98,7 +98,7 @@ class Register extends React.Component {
         <div className='right-container'>
           <div className='right'>
             <div className='right-panel'>
-              <h1 className='title'>Find My Recipe</h1>
+              <h1 className>Find My Recipe</h1>
                 <p>Already have an account?&nbsp;
                   <Link to='/'>Login</Link>
                 </p>
