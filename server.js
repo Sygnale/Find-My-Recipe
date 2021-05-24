@@ -608,7 +608,7 @@ app.post('/:userId/ingredients/:ingredientId', (req, res) => {
   const queryString1= `SELECT COUNT(*) FROM users WHERE id=${userId}`;
   const queryString2= `SELECT COUNT(*) FROM ingredients WHERE id=${ingredientId}`;
   const queryString3= `SELECT COUNT(*) FROM user_ingredients WHERE (user_id=${userId} AND ingredient_id=${ingredientId})`;
-  const queryString4= `INSERT INTO user_ingredients (user_id,ingredient_id) VALUES (${userId},${ingredientId})`;
+  const queryString4= `INSERT INTO user_ingredients (user_id,ingredient_id,amount) VALUES (${userId},${ingredientId},0)`;
 
   con.query(queryString1, (err1, result1) => {
     if(err1) throw err1;
