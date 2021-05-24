@@ -414,8 +414,13 @@ app.get('/get-recipes/:userId', (req, res) => {
   con.query(tagQueryString, [userID], (err1,result1) =>{
     if(err1) throw err1;
 
-    let recipeQueryStringStart = `SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}`;
-    let recipeQueryStringEnd = `) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL OR amount < min_si)=0)`;
+    let recipeQueryString = `SELECT * FROM recipes WHERE id IN (
+      SELECT recipe_id FROM (
+        SELECT * FROM user_ingredients WHERE user_id=${userID}
+      ) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id
+      GROUP BY recipe_id
+      HAVING SUM(amount IS NULL OR amount < min_si)=0
+    )`;
 
     let tags = {
       'low fat': false,
@@ -429,16 +434,15 @@ app.get('/get-recipes/:userId', (req, res) => {
     for (const tag in tags) {
       if (tags[tag]) {
         switch (tag) {
-          case 'low fat': recipeQueryStringEnd += `AND fat='green'`; break;
-          case 'low salt': recipeQueryStringEnd += `AND salt='green'`; break;
-          case 'low sugar': recipeQueryStringEnd += `AND sugars='green'`; break;
-          case 'vegetarian': recipeQueryStringStart += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)'; break;
-          case 'gluten free': recipeQueryStringStart += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)'; break;
+          case 'low fat': recipeQueryString += `AND fat='green'`; break;
+          case 'low salt': recipeQueryString += `AND salt='green'`; break;
+          case 'low sugar': recipeQueryString += `AND sugars='green'`; break;
+          case 'vegetarian': recipeQueryString += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)'; break;
+          case 'gluten free': recipeQueryString += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)'; break;
         }
       }
     }
 
-    recipeQueryString = recipeQueryStringStart + recipeQueryStringEnd;
     con.query(recipeQueryString, (err2,result2) => {
       if(err2) throw err2;
 
