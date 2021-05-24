@@ -13,7 +13,6 @@ class Pantry extends React.Component {
       query: null,
       error: null,
     };
-		
 		this.getPantry = this.getPantry.bind(this);
 		this.addIngredient = this.addIngredient.bind(this);
 		this.removeIngredient = this.removeIngredient.bind(this);
@@ -74,8 +73,8 @@ class Pantry extends React.Component {
 		});
 	}
 	
-	addIngredient() {
-		fetch(`http://localhost:8080/${this.props.userID}/ingredients/100`, {
+	addIngredient(id) {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
 			method: "POST",
 		})
 		.then(async response => {
@@ -167,7 +166,7 @@ class Pantry extends React.Component {
 		return (
 			<div className='Pantry'>
 				<h1>Pantry</h1>
-				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients}/>
+				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients} addIngredient={this.addIngredient}/>
 				<div className='Items'> {items} </div>
 				<div>
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>

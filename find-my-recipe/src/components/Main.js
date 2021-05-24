@@ -11,7 +11,6 @@ class Main extends React.Component {
     this.state = {
       userID: null,
     };
-    
     this.handleStateChange = this.handleStateChange.bind(this);
   }
   
