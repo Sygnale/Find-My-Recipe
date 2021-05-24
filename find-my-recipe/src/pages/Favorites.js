@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import Recipes from './Recipes';
 
 class Favorites extends React.Component {
   constructor(props) {
@@ -10,7 +9,7 @@ class Favorites extends React.Component {
         favoritesChanged: false,
         action: null,
         error: null,
-      }
+      };
 
     this.getFavorites = this.getFavorites.bind(this);
     this.removeFavorite = this.removeFavorite.bind(this);
@@ -87,7 +86,7 @@ class Favorites extends React.Component {
       items = (this.state.favorites).map((item) => 
         <li key={item.id}>
           (${item.title})`
-          <button onClick={(event) => this.removeFavorite(event, item.id)}>+</button>
+          <button onClick={(event) => this.removeFavorite(event, item.id)}>x</button>
           <div>
             <li>Total Fat `(${item.fat})`</li>
             <li>Saturated Fat `(${item.saturates})`</li>
@@ -107,7 +106,7 @@ class Favorites extends React.Component {
       <div>
         <h1>Recipes</h1>
         <button>
-          <Link to='\Recipes'>Find more recipes</Link>
+          <Link to='/Recipes'>Find more recipes</Link>
         </button>
         <div> {items} </div>
         {msg}

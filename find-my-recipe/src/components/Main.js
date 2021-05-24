@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Home from '../pages/Home';
+import Recipes from '../pages/Recipes';
 
 class Main extends React.Component {
   constructor(props) {
@@ -46,6 +47,12 @@ class Main extends React.Component {
             exact path='/Home'
             render={(props) => (
               <Home {...props} userID = {this.state.userID}/>
+            )}
+          />
+          <Route
+            exact path='/Recipes'
+            render={(props) => (
+              <Recipes {...props} userID = {this.state.userID}/>
             )}
           />
         </Switch>
