@@ -24,7 +24,7 @@ class Home extends React.Component {
       <div className>
         <h1 className='title'>Find My Recipe</h1>
         <SplitPane className='Home' split="vertical" defaultSize={600}>
-          <div className='Pantry'>
+          <div className>
             <Route
               render={(props) => (
                 <Pantry {...props} userID = {this.state.userID}/>

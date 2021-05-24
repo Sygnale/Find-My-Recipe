@@ -175,6 +175,7 @@ class Pantry extends React.Component {
 				</div>
 				<div className='message' >{msg}</div>
 			</div>
+			
 		);
 	}
 }
