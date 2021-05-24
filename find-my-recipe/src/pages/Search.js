@@ -44,11 +44,11 @@ function Search(props) {
 		*/
 		
 		if(getMatch(s, props.pantry)) {
-			setSearching("Searching in ingredients database...");
+			setSearching("Searching in your pantry...");
 			
 		}
 		else if(getMatch(s, props.list))
-			setSearching("Searching in your pantry...");
+			setSearching("Searching in ingredients database...");
 		else {
 			setSearching("¯\\_(⊙︿⊙)_/¯ not found");
 			setResults([]);
@@ -59,6 +59,7 @@ function Search(props) {
 	const handleClick = (e, n) => {
 		e.preventDefault();
 		props.addIngredient(n);
+		setResults([]);
 	}
 	
 	return (
@@ -75,8 +76,8 @@ function Search(props) {
 					<ul>
 						{results.map(item => (
 							<li key={item.id}>
-								{item.name}
-								<button onClick={(event) => handleClick(event, item.id)}>+</button>
+								{item.name} &nbsp;
+								<button className='RemoveButton' onClick={(event) => handleClick(event, item.id)}>+</button>
 							</li>
 						))}
 					</ul>
