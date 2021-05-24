@@ -544,7 +544,8 @@ app.get('/favorites/:userId', (req, res) => {
   const userId=req.params.userId;
   console.log(`Fetching ${userId} favorite recipe list`);
 
-  const queryString=`SELECT recipe_id FROM user_favorite_recipes WHERE user_id=${userId}`;
+  const queryString=`SELECT recipe_id, title, fat, salt, saturates, sugars
+   FROM user_favorite_recipes INNER JOIN recipes ON recipes.id=user_favorite_recipes.recipe_id WHERE user_id=${userId}`;
 
   con.query(queryString, (err, result) => {
     if(err) throw err;

@@ -55,6 +55,8 @@ class Favorites extends React.Component {
 
   removeFavorite(event, id) {
     event.preventDefault();
+    alert(this.props.userID);
+    alert(id);
     fetch(`http://localhost:8080/favorites/${this.props.userID}/${id}`, {
       method: "DELETE",
     })
@@ -64,6 +66,7 @@ class Favorites extends React.Component {
         let err = data;
         return Promise.reject(err);
       }
+      alert(JSON.stringify(data));
       this.setState({
         action: data,
         favoritesChanged: true,
@@ -84,14 +87,14 @@ class Favorites extends React.Component {
     }
     else {
       items = (this.state.favorites).map((item) => 
-        <li key={item.id}>
-          (${item.title})`
-          <button onClick={(event) => this.removeFavorite(event, item.id)}>x</button>
+        <li key={item.recipe_id}>
+          {item.title}
+          <button onClick={(event) => this.removeFavorite(event, item.recipe_id)}>x</button>
           <div>
-            <li>Total Fat `(${item.fat})`</li>
-            <li>Saturated Fat `(${item.saturates})`</li>
-            <li>Sodium `(${item.salt})`</li>
-            <li>Sugars `(${item.sugars})`</li>
+            <li>Total Fat: {item.fat}</li>
+            <li>Saturated Fat: {item.saturates}</li>
+            <li>Sodium: {item.salt}</li>
+            <li>Sugars: {item.sugars}</li>
           </div>
         </li>
       );
