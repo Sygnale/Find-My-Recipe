@@ -417,21 +417,24 @@ app.get('/get-recipes/:userId', (req, res) => {
     let recipeQueryStringStart = `SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}`;
     let recipeQueryStringEnd = `) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL OR amount < min_si)=0)`;
 
-    for(var i = 0; i < result1.length; i++){
-      if(result1[i].tag == 'low fat'){
-        recipeQueryStringEnd += `AND fat='green'`;
-      }
-      else if(result1[i].tag == 'low salt'){
-        recipeQueryStringEnd += `AND salt='green'`;
-      }
-      else if(result1[i].tag == 'low sugar'){
-        recipeQueryStringEnd += `AND sugars='green'`;
-      }
-      else if(result1[i].tag =='vegetarian'){
-        recipeQueryStringStart += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)';
-      }
-      else if(result1[i].tag == 'gluten free'){
-        recipeQueryStringStart += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)';
+    let tags = {
+      'low fat': false,
+      'low salt': false,
+      'low sugar': false,
+      'vegetarian': false,
+      'gluten free': false,
+    };
+    for (const tag of result1)
+      tags[tag] = true;
+    for (const tag in tags) {
+      if (tags[tag]) {
+        switch (tag) {
+          case 'low fat': recipeQueryStringEnd += `AND fat='green'`; break;
+          case 'low salt': recipeQueryStringEnd += `AND salt='green'`; break;
+          case 'low sugar': recipeQueryStringEnd += `AND sugars='green'`; break;
+          case 'vegetarian': recipeQueryStringStart += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)'; break;
+          case 'gluten free': recipeQueryStringStart += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)'; break;
+        }
       }
     }
 
