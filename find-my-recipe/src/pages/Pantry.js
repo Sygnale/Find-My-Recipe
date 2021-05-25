@@ -8,6 +8,8 @@ class Pantry extends React.Component {
     this.state = {
 			ingredients: [],
       pantry: [],
+      amount: 0,
+      unit: 'ounce',
 			pantryChanged: false,
 			action: null,
       query: null,
@@ -26,7 +28,7 @@ class Pantry extends React.Component {
 		this.getPantry();
 		console.log(this.state.pantry);
 	}
-	
+
 	// runs everytime listed props are updated
 	componentDidUpdate() {
 		if(this.state.pantryChanged) {
@@ -35,11 +37,11 @@ class Pantry extends React.Component {
 			console.log("Itsa me!");
 		}
 	}
-	
+
 	// runs right before exiting Pantry, cancel in-progress fetches
 	componentWillUnmount() {
 	}
-	
+
 	getIngredients() {
 		fetch(`http://localhost:8080/ingredients`, {
 				method: "GET",
@@ -62,7 +64,7 @@ class Pantry extends React.Component {
 				let err = data;
 				return Promise.reject(err);
 			}
-			
+
 			this.setState({
 				pantry: JSON.parse(data)["ingredients"],
 			});
@@ -73,7 +75,7 @@ class Pantry extends React.Component {
 			});
 		});
 	}
-	
+
 	addIngredient(id) {
 		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
 			method: "POST",
@@ -141,7 +143,81 @@ class Pantry extends React.Component {
 		});
 	}
 
-	render() {		
+  amountConversion(){
+
+    switch(this.state.unit){
+      case "ounce":
+        this.setState({amount: (this.state.amount / 35.274)});
+      break
+
+      case "pound":
+        this.setState({amount: (this.state.amount / 2.205)});
+      break
+
+      case "gram":
+        this.setState({amount: (this.state.amount / 1000)});
+      break
+
+      case "kilo":
+        return;
+      break
+
+      case "teas":
+        this.setState({amount: (this.state.amount / 203)});
+      break
+
+      case "table":
+        this.setState({amount: (this.state.amount / 67.628)});
+      break
+
+      case "fl-oz":
+        this.setState({amount: (this.state.amount / 33.814)});
+      break
+
+      case "cup":
+        this.setState({amount: (this.state.amount / 4.167)});
+      break
+
+      case "pint":
+        this.setState({amount: (this.state.amount / 2.113)});
+      break
+
+      case "quart":
+        this.setState({amount: (this.state.amount / 1.057)});
+      break
+
+      case "gallon":
+        this.setState({amount: (this.state.amount / 3.785)});
+      break
+
+      case "bushel":
+        this.setState({amount: (this.state.amount * 35.239)});
+      break
+
+      case "ml":
+        this.setState({amount: (this.state.amount / 1000)});
+      break
+
+      case "li":
+        return;
+      break
+
+      default:
+        return;
+
+    }
+
+  }
+
+  handleUnitChange(event) {
+    this.setState({unit: event.target.unit});
+  }
+
+  handleAmountChange(event) {
+    this.setState({unit: event.target.amount});
+  }
+
+	render() {
 		const { error } = this.state;
 		let items;
 		if (error) {
@@ -149,20 +225,20 @@ class Pantry extends React.Component {
 		}
 		else {
 			//alert(this.state.pantry);
-			items = (this.state.pantry).map((item) => 
+			items = (this.state.pantry).map((item) =>
 				<li className='list' key={item.id}>
 					{item.name} {`(${item.amount})`} &nbsp;
 					<button className='RemoveButton' onClick={(event) => this.removeIngredient(event, item.id)}>-</button>
 				</li>
 			);
 		}
-		
-		
+
+
 		let msg = '';
 		if (this.state.action) {
 			msg = this.state.action;
 		}
-		
+
 		//reloading page on Pantry loses user ID, so make user log back in if that happens, but that's another issue
 
 		return (
@@ -174,8 +250,24 @@ class Pantry extends React.Component {
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>
 				<div className='message' >{msg}</div>
+        <input type='number' amount={this.state.amount} onChange={() => this.handleAmountChange} />
+        <select unit={this.state.unit} onChange={() => this.handleUnitChange}>
+          <option unit="ounce">Ounces</option>
+          <option unit="pound">Pounds</option>
+          <option unit="gram">Grams</option>
+          <option unit="kilo">Kilograms</option>
+          <option unit="teas">Teaspoons</option>
+          <option unit="table">Tablespoons</option>
+          <option unit="fl-oz">Fluid Ounces</option>
+          <option unit="cup">Cups</option>
+          <option unit="pint">Pints</option>
+          <option unit="quart">Quarts</option>
+          <option unit="gallon">Gallons</option>
+          <option unit="bushel">Bushels</option>
+          <option unit="ml">Milliliters</option>
+          <option unit="li">Liters</option>
+        </select>
 			</div>
-			
 		);
 	}
 }
