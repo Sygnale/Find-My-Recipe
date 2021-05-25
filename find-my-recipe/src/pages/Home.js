@@ -31,7 +31,7 @@ class Home extends React.Component {
               )}
             />
           </div>
-          <div className='Favorites'>
+          <div className>
             <Route
               render={(props) => (
                 <Favorites {...props} userID = {this.state.userID}/>

@@ -86,6 +86,9 @@ class Favorites extends React.Component {
       items = (this.state.favorites).map((item) => 
         <li className='FavRecipe' key={item.recipe_id}>
           <button className='RemoveRecipeButton' onClick={(event) => this.removeFavorite(event, item.recipe_id)}>X</button>
+          <button className='ViewRecipeButton'>
+            <i class="arrow"></i>
+          </button>
           <div className='RecipeTitle'>{item.title}</div>
           <div className='NutritionalInfo'>
             <li>Total Fat: {item.fat}</li>
@@ -103,11 +106,11 @@ class Favorites extends React.Component {
     }
 
     return (
-      <div>
-        <h1>Recipes</h1>
-        <button className='MoreButton'>
-          <Link to='/Recipes'>FIND MORE RECIPES</Link>
-        </button>
+      <div className='Favorites'>
+        <h1 className='FavRecipeTitle'>Favorite Recipes</h1>
+        <Link to='/Recipes'>
+          <button className='MoreButton'>FIND MORE RECIPES</button>
+        </Link>
         <div> {items} </div>
         {msg}
       </div>

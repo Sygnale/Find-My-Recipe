@@ -8,7 +8,7 @@ body{
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: cover;
-	overflow-y: hidden;
+    overflow-y: hidden;
 	font-family: 'Roboto', sans-serif;
 	height: 100vh;
 }
@@ -34,19 +34,6 @@ body{
     align-items: center;
     display: flex;
     justify-content: center;
-    box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
-    0 10px 12px rgba(0,0,0,0.22);
-}
-
-.Favorites{
-    box-sizing: border-box;
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    margin-left: 1vw; 
-    margin-right: 1vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
     0 10px 12px rgba(0,0,0,0.22);
 }
@@ -145,8 +132,16 @@ li{
 	letter-spacing: 1px;
 	border:none;
 	outline: none;
-	margin-bottom:1px;
+	margin-bottom:3px;
+    margin-top: 3px;
     margin-right: 3px;
+    margin-left: 3px;
+    width:2vw;
+}
+
+.FavRecipeTitle{
+    text-align: center;
+    margin-bottom: 4px;
 }
 
 .RemoveRecipeButton:hover{
@@ -164,8 +159,98 @@ li{
 
 .NutritionalInfo{
     float: right;
+    width: 10vw;
 }
 
 .FavRecipe{
-    
+    display: flex;
+    flex-direction: row;
+    height: 12vh;
+    width: 45vw;
+    border-color: #878787;
+    border-width: 4px;
+    border-style: solid;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-bottom: 2px;
+}
+
+.Favorites{
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 1vw; 
+    margin-right: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
+    0 10px 12px rgba(0,0,0,0.22);
+}
+
+.RecipeTitle{
+    width: 25vw;
+}
+
+.ViewRecipeButton{
+    border-radius: 11px;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 12px;
+	letter-spacing: 1px;
+	border:none;
+	outline: none;
+	margin-bottom:3px;
+    margin-right: 3px;
+    width:3vw;
+    background-color: #2541B2;
+    margin-top: 3px;
+}
+
+.ViewRecipeButton:hover{
+    background-color: #8787;
+}
+
+.ViewRecipeButton:active{
+    background-color: #8787;
+}
+
+.ViewRecipeButton:focus{
+	border:none;
+	outline: none;
+}
+
+.arrow{
+    border: solid #FFFFFF;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.MoreButton{
+    border-radius: 11px;
+	background-color: #2541B2;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 40px;
+	letter-spacing: 1px;
+	border:none;
+    margin-bottom: 5px;
+	outline: none;
+}
+
+.MoreButton:hover{
+    background-color: #8787;
+}
+
+.MoreButton:active{
+    background-color: #8787;
+}
+
+.MoreButton:focus{
+	border:none;
+	outline: none;
 }
