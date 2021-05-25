@@ -30,6 +30,14 @@ const bcrypt=require('bcrypt');
 const saltRound=5; //Relatively low number of salting rounds for performance
 
 /** ---------------------------------------- Backend APIs --------------------------------------- */
+async function query(sqlString, arguments) {
+  return new Promise((resolve, rejection) => {
+    con.query(sqlString, arguments, (err, res) => {
+      if (err) throw err;
+      resolve(res);
+    });
+  });
+}
 
 //Method to add user to database
 //Usage (from frontend): http://localhost:8080/add-user/[username]-[password]
@@ -298,6 +306,103 @@ app.delete('/:userId/ingredients/:ingredientId/:amount', (req, res) => {
   });
 });
 
+app.get('/:userId/tags', (req, res) => {
+  const userId = req.params.userId;
+
+  console.log(`Finding user with id ${userId}...`);
+  let queryString = `SELECT username FROM users WHERE id=?`;
+  con.query(queryString, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User with id ${userId} not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User with id ${userId} found`);
+
+    const username = result1[0].username;
+    console.log(`Getting tags from ${username}...`);
+    queryString = `SELECT tag FROM user_tags WHERE user_id=?`;
+    con.query(queryString, [userId], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.length === 0) {
+        console.log(`${username} (id: ${userId}) has no tags`);
+				res.statusCode = 404;
+        res.end(JSON.stringify(`${username} has no tags`));
+        return;
+      }
+      console.log(`Got tags from ${username} (id: ${userId})`);
+      const response = {
+        tags: result2,
+      };
+      res.json(JSON.stringify(response));
+    });
+  });
+});
+
+app.post('/:userId/tags/:tag', (req, res) => {
+  const userId = req.params.userId;
+  const tag = req.params.tag;
+
+  console.log(`Getting user with id ${userId}...`);
+  let sql = `SELECT username FROM users WHERE id=?`;
+  con.query(sql, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User (id: ${userId}) not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User (id: ${userId}) found`);
+
+    const username = result1[0].username;
+    console.log(`Adding tag ${tag} to ${username}...`);
+    sql = `INSERT INTO user_tags (user_id, tag) VALUES (?, ?)`;
+    con.query(sql, [userId, tag], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.affectedRows === 0) {
+        console.log(`Could not add tag ${tag} to ${username}`);
+        res.end("Could not add tag");
+        return;
+      }
+      console.log(`Tag ${tag} added to ${username}`);
+      res.end("Tag added");
+    });
+  });
+});
+
+app.delete('/:userId/tags/:tag', (req, res) => {
+  const userId = req.params.userId;
+  const tag = req.params.tag;
+
+  console.log(`Getting user with id ${userId}...`);
+  let sql = `SELECT username FROM users WHERE id=?`;
+  con.query(sql, [userId], (err1, result1) => {
+    if (err1) throw err1;
+    if (result1.length === 0) {
+      console.log(`User (id: ${userId}) not found`);
+      res.end("User not found");
+      return;
+    }
+    console.log(`User (id: ${userId}) found`);
+
+    const username = result1[0].username;
+    console.log(`Deleting tag ${tag} from ${username}...`);
+    sql = `DELETE FROM user_tags WHERE user_id=? AND tag=?`;
+    con.query(sql, [userId, tag], (err2, result2) => {
+      if (err2) throw err2;
+      if (result2.affectedRows === 0) {
+        console.log(`Could not delete tag ${tag} from ${username}`);
+        res.end("Could not delete tag");
+        return;
+      }
+      const msg = `Tag ${tag} deleted from ${username}`
+      console.log(msg);
+      res.end(msg);
+    });
+  });
+});
+
 //Returns all recipes matching search criteria (will use current active user tags automatically)
 //Usage: http://localhost:8080/get-recipes/[userID]
 //@returns JSON array of recipes on success, empty array on failure
@@ -309,28 +414,35 @@ app.get('/get-recipes/:userId', (req, res) => {
   con.query(tagQueryString, [userID], (err1,result1) =>{
     if(err1) throw err1;
 
-    let recipeQueryStringStart = `SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM (SELECT * FROM user_ingredients WHERE user_id= ${userID}`;
-    let recipeQueryStringEnd = `) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id GROUP BY recipe_id HAVING SUM(amount IS NULL OR amount < min_si)=0)`;
+    let recipeQueryString = `SELECT * FROM recipes WHERE id IN (
+      SELECT recipe_id FROM (
+        SELECT * FROM user_ingredients WHERE user_id=${userID}
+      ) AS T RIGHT JOIN recipe_ingredients ON T.ingredient_id=recipe_ingredients.ingredient_id
+      GROUP BY recipe_id
+      HAVING SUM(amount IS NULL OR amount < min_si)=0
+    )`;
 
-    for(var i = 0; i < result1.length; i++){
-      if(result1[i].tag == 'low fat'){
-        recipeQueryStringEnd += `AND fat='green'`;
-      }
-      else if(result1[i].tag == 'low salt'){
-        recipeQueryStringEnd += `AND salt='green'`;
-      }
-      else if(result1[i].tag == 'low salt'){
-        recipeQueryStringEnd += `AND sugars='green'`;
-      }
-      else if(result1[i].tag =='vegetarian'){
-        recipeQueryStringStart += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)';
-      }
-      else if(result1[i].tag == 'gluten free'){
-        recipeQueryStringStart += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)';
+    let tags = {
+      'low fat': false,
+      'low salt': false,
+      'low sugar': false,
+      'vegetarian': false,
+      'gluten free': false,
+    };
+    for (const tag of result1)
+      tags[tag] = true;
+    for (const tag in tags) {
+      if (tags[tag]) {
+        switch (tag) {
+          case 'low fat': recipeQueryString += `AND fat='green'`; break;
+          case 'low salt': recipeQueryString += `AND salt='green'`; break;
+          case 'low sugar': recipeQueryString += `AND sugars='green'`; break;
+          case 'vegetarian': recipeQueryString += ' AND ingredient_id NOT IN (10,21,55,68,97,106,136,144,147,171,190,217,222,227,280,289,292,295,307,321,343,347,353,354)'; break;
+          case 'gluten free': recipeQueryString += ' AND ingredient_id NOT IN (3,9,39,78,119,126,129,174,205,212,279,346)'; break;
+        }
       }
     }
 
-    recipeQueryString = recipeQueryStringStart + recipeQueryStringEnd;
     con.query(recipeQueryString, (err2,result2) => {
       if(err2) throw err2;
 
@@ -432,7 +544,8 @@ app.get('/favorites/:userId', (req, res) => {
   const userId=req.params.userId;
   console.log(`Fetching ${userId} favorite recipe list`);
 
-  const queryString=`SELECT recipe_id FROM user_favorite_recipes WHERE user_id=${userId}`;
+  const queryString=`SELECT recipe_id, title, fat, salt, saturates, sugars
+   FROM user_favorite_recipes INNER JOIN recipes ON recipes.id=user_favorite_recipes.recipe_id WHERE user_id=${userId}`;
 
   con.query(queryString, (err, result) => {
     if(err) throw err;
@@ -503,7 +616,7 @@ app.post('/:userId/ingredients/:ingredientId', (req, res) => {
   const queryString1= `SELECT COUNT(*) FROM users WHERE id=${userId}`;
   const queryString2= `SELECT COUNT(*) FROM ingredients WHERE id=${ingredientId}`;
   const queryString3= `SELECT COUNT(*) FROM user_ingredients WHERE (user_id=${userId} AND ingredient_id=${ingredientId})`;
-  const queryString4= `INSERT INTO user_ingredients (user_id,ingredient_id) VALUES (${userId},${ingredientId})`;
+  const queryString4= `INSERT INTO user_ingredients (user_id,ingredient_id,amount) VALUES (${userId},${ingredientId},0)`;
 
   con.query(queryString1, (err1, result1) => {
     if(err1) throw err1;
@@ -538,7 +651,7 @@ app.post('/:userId/ingredients/:ingredientId', (req, res) => {
 //Method to edit the quantity of ingredient
 //Usage: http://localhost:8080/[userID]/ingredients/[ingredientId]
 //@returns Updates ingredients to new amount on success, and erro message on failure
-app.post('/:userId/ingredients/add/:ingredientId/:amount', (req, res) => {
+app.put('/:userId/ingredients/:ingredientId/:amount', (req, res) => {
   const userId = req.params.userId;
   const ingredientId = req.params.ingredientId;
   const amount = req.params.amount;
@@ -568,6 +681,41 @@ app.post('/:userId/ingredients/add/:ingredientId/:amount', (req, res) => {
       });
     });
   });
+});
+
+app.post('/:userId/ingredients/:ingredientId/:amount', async (req, res) => {
+  const userId = req.params.userId;
+  const ingredientId = req.params.ingredientId;
+  const amount = parseFloat(req.params.amount);
+
+  let sql, result;
+
+  console.log(`Getting amount of ingredient ${ingredientId} from user ${userId}...`);
+  sql = `SELECT amount FROM user_ingredients WHERE user_id=? AND ingredient_id=?`;
+  result = await query(sql, [userId, ingredientId]);
+  if (result.length === 0) {
+    console.log(`Could not get amount of ingredient ${ingredientId} from user ${userId}`);
+    res.end("User or user ingredient not found");
+    return;
+  }
+  console.log(`Got amount of ingredient ${ingredientId} from user ${userId}`);
+
+  const userAmount = parseFloat(result[0].amount);
+  const newAmount = userAmount + amount;
+
+  console.log(`Updating user ${userId} ingredient ${ingredientId} to ${newAmount}...`);
+  sql = `UPDATE user_ingredients SET amount=? WHERE user_id=? AND ingredient_id=?`;
+  result = await query(sql, [newAmount, userId, ingredientId]);
+  if (result.affectedRows === 0) {
+    console.log(`Could not update user ${userId} ingredient ${ingredientId} to ${newAmount}`);
+    res.end("Could not add ingredient");
+  }
+  console.log(`Updated user ${userId} ingredient ${ingredientId} to ${newAmount}`);
+
+  const response = {
+    amount: newAmount,
+  };
+  res.json(response);
 });
 /** -------------------------- End of Backend APIs ----------------------------------  */
 

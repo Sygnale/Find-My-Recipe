@@ -11,7 +11,7 @@
 
  ### Node.js
 
- Install Node.js using the installer [here](https://nodejs.org/en/download/). Open a command line prompt and enter "npm install mysql2", "npm install express", "npm install react-router-dom", "npm install bcrypt", and "npm install cors". Navigate into the Find-My-Recipe directory (the same directory as server.js). If you installed MySQL with a root password other than "123456", change the password field on line 7 of server.js to match it. Enter "node server.js" in the command line. To check that you have correctly installed Node.js and MySQL, type "curl localhost:8080" into a command window. A list of all the ingredients should be printed to the command prompt in JSON format.
+ Install Node.js using the installer [here](https://nodejs.org/en/download/). Open a command line prompt and enter "npm install mysql2", "npm install express", "npm install react-router-dom", "npm install react-split-pane", "npm install bcrypt", and "npm install cors". Navigate into the Find-My-Recipe directory (the same directory as server.js). If you installed MySQL with a root password other than "123456", change the password field on line 7 of server.js to match it. Enter "node server.js" in the command line. To check that you have correctly installed Node.js and MySQL, type "curl localhost:8080" into a command window. A list of all the ingredients should be printed to the command prompt in JSON format.
 
  ### React.js
 

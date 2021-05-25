@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,800');
+
+body{
+    font-family:'Roboto', sans-serif;
+    box-sizing: border-box;
+    background-image: url("./../assets/pattern.PNG");
+    background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow-y: hidden;
+	font-family: 'Roboto', sans-serif;
+	height: 100vh;
+}
+
+.title{
+    margin: auto;
+    top: 0vh;
+    position: absolute;
+}
+
+.Home{
+    position: absolute;
+    top: 10vh;
+    left: 0;
+}
+
+.Pantry{
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 1vw; 
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
+    0 10px 12px rgba(0,0,0,0.22);
+}
+
+.Favorites{
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 1vw; 
+    margin-right: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
+    0 10px 12px rgba(0,0,0,0.22);
+}
+
+.EmptyButton{
+    border-radius: 22px;
+	background-color: #2541B2;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 50px;
+	letter-spacing: 1px;
+	border:none;
+	outline: none;
+	margin-bottom:0.5vh;
+    margin-top: 0.5vh;
+}
+
+.EmptyButton:hover{
+	background-color:#878787;
+}
+
+.EmptyButton:active{
+	background-color: #878787;
+}
+
+.EmptyButton:focus{
+	border:none;
+	outline: none;
+}
+
+.SearchBar{
+    width: 30vw;
+    display: block;
+    align-self: center;
+}
+
+ul{
+    list-style-type: none;
+}
+
+li{
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+}
+
+.RemoveButton{
+    border-radius: 11px;
+	background-color: #2541B2;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 12px;
+	letter-spacing: 1px;
+	border:none;
+	outline: none;
+	margin-bottom:1px;
+    margin-right: 3px;
+}
+
+.RemoveButton:hover{
+	background-color:#878787;
+}
+
+.RemoveButton:active{
+	background-color: #878787;
+}
+
+.RemoveButton:focus{
+	border:none;
+	outline: none;
+}
+
+.message{
+    text-align: center;
+    padding-bottom: 1vh;
+}
+
+.list{
+    background-color: #878787;    
+}
+
+.RecipeTitle{
+    margin-right:0.5vw;
+    margin-left:0.5vw;
+}
+
+.RemoveRecipeButton{
+    border-radius: 11px;
+	background-color: #2541B2;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 6px 12px;
+	letter-spacing: 1px;
+	border:none;
+	outline: none;
+	margin-bottom:1px;
+    margin-right: 3px;
+}
+
+.RemoveRecipeButton:hover{
+	background-color:#878787;
+}
+
+.RemoveRecipeButton:active{
+	background-color: #878787;
+}
+
+.RemoveRecipeButton:focus{
+	border:none;
+	outline: none;
+}
+
+.NutritionalInfo{
+    float: right;
+}
+
+.FavRecipe{
+    
+}

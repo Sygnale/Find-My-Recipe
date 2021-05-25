@@ -8,12 +8,13 @@ class Pantry extends React.Component {
     this.state = {
 			ingredients: [],
       pantry: [],
+      amount: 0,
+      unit: 'ounce',
 			pantryChanged: false,
 			action: null,
       query: null,
       error: null,
     };
-		
 		this.getPantry = this.getPantry.bind(this);
 		this.addIngredient = this.addIngredient.bind(this);
 		this.removeIngredient = this.removeIngredient.bind(this);
@@ -28,7 +29,7 @@ class Pantry extends React.Component {
 		this.getPantry();
 		console.log(this.state.pantry);
 	}
-	
+
 	// runs everytime listed props are updated
 	componentDidUpdate() {
 		if(this.state.pantryChanged) {
@@ -36,11 +37,11 @@ class Pantry extends React.Component {
 			this.setState({ pantryChanged: false, });
 		}
 	}
-	
+
 	// runs right before exiting Pantry, cancel in-progress fetches
 	componentWillUnmount() {
 	}
-	
+
 	getIngredients() {
 		fetch(`http://localhost:8080/ingredients`, {
 				method: "GET",
@@ -63,8 +64,9 @@ class Pantry extends React.Component {
 				let err = data;
 				return Promise.reject(err);
 			}
+
 			this.setState({
-				pantry: data.ingredients,
+				pantry: JSON.parse(data)["ingredients"],
 			});
 		})
 		.catch(err => {
@@ -74,7 +76,7 @@ class Pantry extends React.Component {
 			});
 		});
 	}
-	
+
 	addIngredient(id) {
 		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
 			method: "POST",
@@ -143,19 +145,79 @@ class Pantry extends React.Component {
 		});
 	}
 
-	managePantry(event, action, id) {
-		event.preventDefault();
-		switch(action) {
-		case 1:
-			this.addIngredient(id);
-			break;
-		case -1:
-			this.removeIngredient(id);
-			break;
-		default:
-			break;
-		}
-	}
+  amountConversion(){
+
+    switch(this.state.unit){
+      case "ounce":
+        this.setState({amount: (this.state.amount / 35.274)});
+      break
+
+      case "pound":
+        this.setState({amount: (this.state.amount / 2.205)});
+      break
+
+      case "gram":
+        this.setState({amount: (this.state.amount / 1000)});
+      break
+
+      case "kilo":
+        return;
+      break
+
+      case "teas":
+        this.setState({amount: (this.state.amount / 203)});
+      break
+
+      case "table":
+        this.setState({amount: (this.state.amount / 67.628)});
+      break
+
+      case "fl-oz":
+        this.setState({amount: (this.state.amount / 33.814)});
+      break
+
+      case "cup":
+        this.setState({amount: (this.state.amount / 4.167)});
+      break
+
+      case "pint":
+        this.setState({amount: (this.state.amount / 2.113)});
+      break
+
+      case "quart":
+        this.setState({amount: (this.state.amount / 1.057)});
+      break
+
+      case "gallon":
+        this.setState({amount: (this.state.amount / 3.785)});
+      break
+
+      case "bushel":
+        this.setState({amount: (this.state.amount * 35.239)});
+      break
+
+      case "ml":
+        this.setState({amount: (this.state.amount / 1000)});
+      break
+
+      case "li":
+        return;
+      break
+
+      default:
+        return;
+
+    }
+
+  }
+
+  handleUnitChange(event) {
+    this.setState({unit: event.target.unit});
+  }
+
+  handleAmountChange(event) {
+    this.setState({unit: event.target.amount});
+  }
 
 	render() {
 		const { error } = this.state;
@@ -164,31 +226,47 @@ class Pantry extends React.Component {
 			items = error;
 		}
 		else {
-			console.log(this.state.pantry);
-			items = (this.state.pantry).map((item) => (
-				<li key={item.id}>
-					{item.name}{`(${item.amount})`}
-					<button onClick={(event) => this.managePantry(event, -1, item.id)}>(-)</button>
+			//alert(this.state.pantry);
+			items = (this.state.pantry).map((item) =>
+				<li className='list' key={item.id}>
+					{item.name} {`(${item.amount})`} &nbsp;
+					<button className='RemoveButton' onClick={(event) => this.removeIngredient(event, item.id)}>-</button>
 				</li>
-			));
-		}		
-		
+			);
+		}
 		let msg = '';
 		if (this.state.action) {
 			msg = this.state.action;
 		}
-		
+
 		//reloading page on Pantry loses user ID, so make user log back in if that happens, but that's another issue
 
 		return (
-			<div>
-				<Search pantry={this.state.pantry} list={this.state.ingredients} handleClick = {this.managePantry}/>
-				<h1>Pantry:</h1>
-				<div> {items} </div>
+			<div className='Pantry'>
+				<h1>Pantry</h1>
+				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients} addIngredient={this.addIngredient}/>
+				<div className='Items'> {items} </div>
 				<div>
-					<button onClick={this.emptyPantry}>Empty pantry</button>
+					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>
-				{msg}
+				<div className='message' >{msg}</div>
+        <input type='number' amount={this.state.amount} onChange={() => this.handleAmountChange} />
+        <select unit={this.state.unit} onChange={() => this.handleUnitChange}>
+          <option unit="ounce">Ounces</option>
+          <option unit="pound">Pounds</option>
+          <option unit="gram">Grams</option>
+          <option unit="kilo">Kilograms</option>
+          <option unit="teas">Teaspoons</option>
+          <option unit="table">Tablespoons</option>
+          <option unit="fl-oz">Fluid Ounces</option>
+          <option unit="cup">Cups</option>
+          <option unit="pint">Pints</option>
+          <option unit="quart">Quarts</option>
+          <option unit="gallon">Gallons</option>
+          <option unit="bushel">Bushels</option>
+          <option unit="ml">Milliliters</option>
+          <option unit="li">Liters</option>
+        </select>
 			</div>
 		);
 	}

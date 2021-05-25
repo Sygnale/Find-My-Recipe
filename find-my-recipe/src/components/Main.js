@@ -3,7 +3,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import Pantry from '../pages/Pantry';
+import Home from '../pages/Home';
+import Recipes from '../pages/Recipes';
 
 class Main extends React.Component {
   constructor(props) {
@@ -11,7 +12,6 @@ class Main extends React.Component {
     this.state = {
       userID: null,
     };
-    
     this.handleStateChange = this.handleStateChange.bind(this);
   }
   
@@ -22,14 +22,14 @@ class Main extends React.Component {
   render() {
     let redirect = '';
     if (this.state.userID) {
-      redirect = <Redirect to='/Pantry' />;
+      redirect = <Redirect to='/Home' />;
     }
-		else {
-			redirect = <Redirect to='/' />;
-		}
+    else {
+      redirect = <Redirect to='/' />;
+    }
     return (
       <div>
-				{redirect}
+        {redirect}
         <Switch> {/* The Switch decides which component to show based on the current URL. */}
           <Route
             exact path='/'
@@ -43,10 +43,16 @@ class Main extends React.Component {
               <Register {...props} handleStateChange = {this.handleStateChange}/>
             )}
           />
-					<Route
-            exact path='/Pantry'
+          <Route
+            exact path='/Home'
             render={(props) => (
-              <Pantry {...props} userID = {this.state.userID}/>
+              <Home {...props} userID = {this.state.userID}/>
+            )}
+          />
+          <Route
+            exact path='/Recipes'
+            render={(props) => (
+              <Recipes {...props} userID = {this.state.userID}/>
             )}
           />
         </Switch>

@@ -12,6 +12,7 @@ function Search(props) {
 	}, [query]);
 	
 	const getMatch = (q, allData) => {
+		//alert(JSON.stringify(allData));
 		if(allData.length === 0 || q === '')
 			return false;
 		let a = allData.filter((i) => {
@@ -29,7 +30,7 @@ function Search(props) {
 		setQuery(s);
 		
 		if(getMatch(s, props.pantry)) {
-			setSearching("Searching in your pantry...");			
+			setSearching("Searching in your pantry...");
 		}
 		else if(getMatch(s, props.list))
 			setSearching("Searching in ingredients database...");
@@ -40,22 +41,28 @@ function Search(props) {
 		
   }
 	
+	const handleClick = (e, n) => {
+		e.preventDefault();
+		props.addIngredient(n);
+		setResults([]);
+	}
+	
 	return (
 		<div>
 			<form>
-				<label>
-					<input
+				<label className='SearchContainer'>
+					<input className='SearchBar'
 						type="text"
 						placeholder="Search or add ingredients"
 						value={query}
 						onChange={handleSearch}
 					/>
-					{searching}
+					<div className='SearchText'>{searching}</div>
 					<ul>
 						{results.map(item => (
 							<li key={item.id}>
-								{item.name}
-								<button onClick={(event) => props.handleClick(event, 1, item.id)}>+</button>
+								<button className='RemoveButton' onClick={(event) => handleClick(event, item.id)}>+</button>
+								{item.name};
 							</li>
 						))}
 					</ul>

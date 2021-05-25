@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,800');
+
+body{
+    font-family:'Roboto', sans-serif;
+    box-sizing: border-box;
+    background-image: url("./../assets/pattern.PNG");
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    margin: -20px 0 50px;
+}
+/*
+h1 {
+    font-weight: bold;
+    margin: 0;
+    top: 10vh;
+    align-self: center;
+    position: absolute;
+}*/
