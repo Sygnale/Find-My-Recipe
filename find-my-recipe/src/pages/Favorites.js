@@ -112,7 +112,7 @@ class Favorites extends React.Component {
           <button className='MoreButton'>FIND MORE RECIPES</button>
         </Link>
         <div> {items} </div>
-        {msg}
+        <div className='Message'>{msg}</div>
       </div>
     );
   }

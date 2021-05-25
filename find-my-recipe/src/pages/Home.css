@@ -165,7 +165,7 @@ li{
 .FavRecipe{
     display: flex;
     flex-direction: row;
-    height: 12vh;
+    min-height: fit-content;
     width: 45vw;
     border-color: #878787;
     border-width: 4px;
@@ -253,4 +253,10 @@ li{
 .MoreButton:focus{
 	border:none;
 	outline: none;
+}
+
+.RecipeStatusMessage{
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
