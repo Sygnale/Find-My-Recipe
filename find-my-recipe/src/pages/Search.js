@@ -65,14 +65,14 @@ function Search(props) {
 	return (
 		<div>
 			<form>
-				<label>
+				<label className='SearchContainer'>
 					<input className='SearchBar'
 						type="text"
 						placeholder="Search or add ingredients"
 						value={query}
 						onChange={handleSearch}
 					/>
-					{searching}
+					<div className='SearchText'>{searching}</div>
 					<ul>
 						{results.map(item => (
 							<li key={item.id}>
