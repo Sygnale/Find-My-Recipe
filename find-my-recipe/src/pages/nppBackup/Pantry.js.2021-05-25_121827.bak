@@ -8,7 +8,6 @@ class Pantry extends React.Component {
     this.state = {
 			ingredients: [],
       pantry: [],
-			pantryChanged: false,
       amount: 0,
       unit: 'ounce',
 			action: null,
@@ -31,12 +30,8 @@ class Pantry extends React.Component {
 	}
 
 	// runs everytime listed props are updated
-	componentDidUpdate(pantryChanged) {
-		if(this.state.pantryChanged) {
-			this.getPantry();
-			console.log(this.state.pantry);
-			this.setState({ pantryChanged: false });
-		}
+	componentDidUpdate() {
+		console.log(this.state.pantry);
 	}
 
 	// runs right before exiting Pantry, cancel in-progress fetches
@@ -91,8 +86,8 @@ class Pantry extends React.Component {
 			this.setState({
 				action: data,
 				error: null,
-				pantryChanged: true,
 			});
+			this.getPantry();
 		})
 		.catch(err => {
 			this.setState({
@@ -114,8 +109,8 @@ class Pantry extends React.Component {
 			this.setState({
 				action: data,
 				error: null,
-				pantryChanged: true,
 			});
+			this.getPantry();
 		})
 		.catch(err => {
 			this.setState({
@@ -137,8 +132,8 @@ class Pantry extends React.Component {
 			this.setState({
 				action: data,
 				error: null,
-				pantryChanged: true,
 			});
+			this.getPantry();
 		})
 		.catch(err => {
 			this.setState({
@@ -236,7 +231,13 @@ class Pantry extends React.Component {
 
 	render() {
 		const { error } = this.state;
-		let items = (this.state.pantry).map((item) =>
+		let items;
+		if (error) {
+			items = error;
+		}
+		else {
+			//alert(this.state.pantry);
+			items = (this.state.pantry).map((item) =>
 				<li className='list' key={item.id}>
 					{item.name} {`(${item.amount})`} &nbsp;
 					<button className='RemoveButton' onClick={(event) => {
@@ -245,6 +246,8 @@ class Pantry extends React.Component {
 					}}>-</button>
 				</li>
 			);
+		}
+
 
 		let msg = '';
 		if (this.state.action) {
@@ -257,7 +260,7 @@ class Pantry extends React.Component {
 			<div className='Pantry'>
 				<h1>Pantry</h1>
 				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients} managePantry={this.managePantry}/>
-				<div className='Items'> {error}{items} </div>
+				<div className='Items'> {items} </div>
 				<div>
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>

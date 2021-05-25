@@ -44,7 +44,6 @@ function Search(props) {
 	const handleClick = (e, n) => {
 		e.preventDefault();
 		props.managePantry(1, n);
-		setQuery('');
 		setResults([]);
 	}
 	

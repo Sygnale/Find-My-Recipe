@@ -10,7 +10,13 @@ function Search(props) {
 			setSearching('');
 		}
 	}, [query]);
-	
+	/*
+	const data = [
+		{id: 1, name: 'abc'},
+		{id: 2, name: 'bcd'},
+		{id: 3, name: 'cde'}
+	];
+	*/
 	const getMatch = (q, allData) => {
 		//alert(JSON.stringify(allData));
 		if(allData.length === 0 || q === '')
@@ -28,9 +34,18 @@ function Search(props) {
 		e.preventDefault();
 		let s = e.target.value.toLowerCase();
 		setQuery(s);
+		/*
+		if (getMatch(s, data))
+			setSearching("Searching in ingredients database...");
+		else {
+			setSearching("¯\\_(⊙︿⊙)_/¯ not found");
+			setResults([]);
+		}
+		*/
 		
 		if(getMatch(s, props.pantry)) {
 			setSearching("Searching in your pantry...");
+			
 		}
 		else if(getMatch(s, props.list))
 			setSearching("Searching in ingredients database...");
@@ -43,14 +58,13 @@ function Search(props) {
 	
 	const handleClick = (e, n) => {
 		e.preventDefault();
-		props.managePantry(1, n);
-		setQuery('');
+		props.addIngredient(n);
 		setResults([]);
 	}
 	
 	return (
 		<div>
-			<form onSubmit={e => { e.preventDefault(); }}>
+			<form>
 				<label className='SearchContainer'>
 					<input className='SearchBar'
 						type="text"
