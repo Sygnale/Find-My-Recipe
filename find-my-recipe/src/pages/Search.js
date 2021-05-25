@@ -29,11 +29,8 @@ function Search(props) {
 		let s = e.target.value.toLowerCase();
 		setQuery(s);
 		
-		if(getMatch(s, props.pantry)) {
-			setSearching("Searching in your pantry...");
-		}
-		else if(getMatch(s, props.list))
-			setSearching("Searching in ingredients database...");
+		if(getMatch(s, props.list))
+			setSearching("Searching...");
 		else {
 			setSearching("¯\\_(⊙︿⊙)_/¯ not found");
 			setResults([]);
