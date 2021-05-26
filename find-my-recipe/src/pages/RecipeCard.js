@@ -1,9 +1,11 @@
 import  React, { useState, useEffect } from 'react';
 
-function RecipeCard() { // props.recipe - JSON w/ recipe info
-	const [recipe, setRecipe] = useState([]);
+function RecipeCard(props) { // props.recipe - JSON w/ recipe info
+	//const [recipe, setRecipe] = useState([]);
+	const [recipe, setRecipe] = useState(props.recipe);
 	const [list, setList] = useState([]);
 	
+	{/*
 	useEffect(() => {
 		// GET example recipe
 		fetch(`http://localhost:8080/recipes/11`, {
@@ -14,9 +16,13 @@ function RecipeCard() { // props.recipe - JSON w/ recipe info
 			console.log(data);
 			setRecipe(data);
 		});
-		
 	// empty dependency array means this effect will only run once (like componentDidMount in classes)
 	}, []);
+	*/}
+	
+	useEffect(() => {
+		setRecipe(props.recipe);
+	}, [props]);
 	
 	// once recipe is loaded
 	useEffect(() => {
@@ -73,6 +79,9 @@ function RecipeCard() { // props.recipe - JSON w/ recipe info
 			</table>
 			<div className='IngredientsList'>
 				What you need:
+				<button className='SelectRecipe'>
+					I wanna make this!
+				</button>
 				<ul>
 					{list.map((item, index) => 
 						<li key={index}> 
