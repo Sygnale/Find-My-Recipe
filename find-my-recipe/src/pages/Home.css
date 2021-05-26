@@ -66,8 +66,7 @@ body{
 }
 
 .SearchBar{
-    width: 30vw;
-    display: block;
+    max-width: 20vw;
     align-self: center;
 }
 
@@ -333,7 +332,7 @@ input::-webkit-inner-spin-button {
 }
 
 .RecipeSelector{
-    max-width: 20vw;
+    max-width: 18vw;
     text-overflow: ellipsis;
     margin-left: 4px;
 }
@@ -344,3 +343,4 @@ input::-webkit-inner-spin-button {
     margin-top: 4px;
     margin-bottom: 4px;
 }
+

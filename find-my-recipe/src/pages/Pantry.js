@@ -274,7 +274,7 @@ class Pantry extends React.Component {
 		return (
 			<div className='Pantry'>
 				<h1>Pantry</h1>
-				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients} managePantry={this.managePantry}/>
+				<Search className='SearchBar' pantry={this.state.pantry} list={this.state.ingredients} managePantry={this.managePantry}/>
 				<div className='Items'> {error}{items} </div>
 				<div className='AddIngredients'>
 					<p className='UpdateHeader'>Update Ingredient Amount: </p>
