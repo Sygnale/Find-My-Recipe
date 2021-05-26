@@ -16,7 +16,7 @@ class Pantry extends React.Component {
       error: null,
     };
 		this.getPantry = this.getPantry.bind(this);
-		this.addIngredient = this.addIngredient.bind(this);
+		this.addIngredientAmount = this.addIngredientAmount.bind(this);
 		this.removeIngredient = this.removeIngredient.bind(this);
 		this.emptyPantry = this.emptyPantry.bind(this);
 		this.managePantry = this.managePantry.bind(this);
@@ -78,32 +78,9 @@ class Pantry extends React.Component {
 		});
 	}
 
-	addIngredient(id) {
-		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
-			method: "POST",
-		})
-		.then(async response => {
-			let data = await response.text();
-			if(!response.ok) {
-				let err = data;
-				return Promise.reject(err);
-			}
-			this.setState({
-				action: data,
-				error: null,
-				pantryChanged: true,
-			});
-		})
-		.catch(err => {
-			this.setState({
-				error: err,
-			});
-		});
-	}
-
   addIngredientAmount(id, Converted) {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
-      method: "PUT",
+      method: "POST",
     })
     .then(async response => {
       let data = await response.text();
@@ -175,7 +152,7 @@ class Pantry extends React.Component {
 		switch(act) {
 			case 1:
         let Converted = this.amountConversion();
-				this.addIngredient(id);
+				//this.addIngredient(id);
         this.addIngredientAmount(id, Converted);
         this.setState({amount: 0});
 				break;
@@ -252,8 +229,6 @@ class Pantry extends React.Component {
 
 	render() {
 		const { error } = this.state;
-    for (const item of this.state.pantry)
-      console.log("Amounts: " + item.amount);
 		let items = (this.state.pantry).map((item) =>
 				<li className='List' key={item.id}>
 					<button className='RemoveButton' onClick={(event) => {
