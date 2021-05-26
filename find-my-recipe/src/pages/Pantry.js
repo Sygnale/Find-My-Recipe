@@ -101,6 +101,29 @@ class Pantry extends React.Component {
 		});
 	}
 
+  addIngredientAmount(id) {
+    fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${this.state.amount}`, {
+      method: "PUT",
+    })
+    .then(async response => {
+      let data = await response.text();
+      if(!response.ok) {
+        let err = data;
+        return Promise.reject(err);
+      }
+      this.setState({
+        action: data,
+        error: null,
+        pantryChanged: true,
+      });
+    })
+    .catch(err => {
+      this.setState({
+        error: err,
+      });
+    });
+  }
+
 	removeIngredient(id) {
 		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
 			method: "DELETE",
@@ -146,78 +169,81 @@ class Pantry extends React.Component {
 			});
 		});
 	}
-	
+
 	managePantry(act, id) {
 		switch(act) {
 			case 1:
+        this.amountConversion();
 				this.addIngredient(id);
+        this.addIngredientAmount(id);
+        this.setState({amount: 0});
 				break;
 			case -1:
 				this.removeIngredient(id);
+        this.setState({amount: 0});
 				break;
 			default:
 				break;
+
 		}
 	}
 
-  amountConversion(){
+  amountConversion() {
 
     switch(this.state.unit){
       case "ounce":
-        this.setState({amount: (this.state.amount / 35.274)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 35.274) * 1000) / 1000)});
+      break;
 
       case "pound":
-        this.setState({amount: (this.state.amount / 2.205)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 2.205) * 1000) / 1000)});
+      break;
 
       case "gram":
-        this.setState({amount: (this.state.amount / 1000)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 1000) * 1000) / 1000)});
+      break;
 
       case "kilo":
         return;
-      break
 
       case "teas":
-        this.setState({amount: (this.state.amount / 203)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 203) * 1000) / 1000)});
+      break;
 
       case "table":
-        this.setState({amount: (this.state.amount / 67.628)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 67.628) * 1000) / 1000)});
+      break;
 
       case "fl-oz":
-        this.setState({amount: (this.state.amount / 33.814)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 33.814) * 1000) / 1000)});
+      break;
 
       case "cup":
-        this.setState({amount: (this.state.amount / 4.167)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 4.167) * 1000) / 1000)});
+      break;
 
       case "pint":
-        this.setState({amount: (this.state.amount / 2.113)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 2.113) * 1000) / 1000)});
+      break;
 
       case "quart":
-        this.setState({amount: (this.state.amount / 1.057)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 1.057) * 1000) / 1000)});
+      break;
 
       case "gallon":
-        this.setState({amount: (this.state.amount / 3.785)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 3.785) * 1000) / 1000)});
+      break;
 
       case "bushel":
-        this.setState({amount: (this.state.amount * 35.239)});
-      break
+        this.setState({amount: (Math.round((this.state.amount * 35.239) * 1000) / 1000)});
+      break;
 
       case "ml":
-        this.setState({amount: (this.state.amount / 1000)});
-      break
+        this.setState({amount: (Math.round((this.state.amount / 1000) * 1000) / 1000)});
+      break;
 
       case "li":
         return;
-      break
 
       default:
         return;
@@ -226,12 +252,19 @@ class Pantry extends React.Component {
 
   }
 
-  handleUnitChange(event) {
-    this.setState({unit: event.target.unit});
+  handleUnitChange = (event)=> {
+    this.setState({unit: event.target.value});
   }
 
-  handleAmountChange(event) {
-    this.setState({unit: event.target.amount});
+  handleAmountChange = (event)=> {
+
+    let preAmount = parseFloat(event.target.value);
+
+    if (preAmount < 0)
+      preAmount=0;
+
+    this.setState({amount: preAmount});
+
   }
 
 	render() {
@@ -262,22 +295,22 @@ class Pantry extends React.Component {
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>
 				<div className='message' >{msg}</div>
-        <input type='number' amount={this.state.amount} onChange={() => this.handleAmountChange} />
-        <select unit={this.state.unit} onChange={() => this.handleUnitChange}>
-          <option unit="ounce">Ounces</option>
-          <option unit="pound">Pounds</option>
-          <option unit="gram">Grams</option>
-          <option unit="kilo">Kilograms</option>
-          <option unit="teas">Teaspoons</option>
-          <option unit="table">Tablespoons</option>
-          <option unit="fl-oz">Fluid Ounces</option>
-          <option unit="cup">Cups</option>
-          <option unit="pint">Pints</option>
-          <option unit="quart">Quarts</option>
-          <option unit="gallon">Gallons</option>
-          <option unit="bushel">Bushels</option>
-          <option unit="ml">Milliliters</option>
-          <option unit="li">Liters</option>
+        <input type='number' name="amountInput" value={this.state.amount} onChange={this.handleAmountChange} min="0" />
+        <select defUnit={this.state.unit} onChange={this.handleUnitChange}>
+          <option value="ounce">Ounces</option>
+          <option value="pound">Pounds</option>
+          <option value="gram">Grams</option>
+          <option value="kilo">Kilograms</option>
+          <option value="teas">Teaspoons</option>
+          <option value="table">Tablespoons</option>
+          <option value="fl-oz">Fluid Ounces</option>
+          <option value="cup">Cups</option>
+          <option value="pint">Pints</option>
+          <option value="quart">Quarts</option>
+          <option value="gallon">Gallons</option>
+          <option value="bushel">Bushels</option>
+          <option value="ml">Milliliters</option>
+          <option value="li">Liters</option>
         </select>
 			</div>
 		);
