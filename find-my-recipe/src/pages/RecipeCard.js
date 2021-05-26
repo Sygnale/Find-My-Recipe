@@ -1,4 +1,5 @@
 import  React, { useState, useEffect } from 'react';
+import './RecipeDisplay.css';
 
 function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 	//const [recipe, setRecipe] = useState([]);
@@ -21,13 +22,17 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 	*/}
 	
 	useEffect(() => {
+		console.log(recipe);
+	}, []);
+	
+	useEffect(() => {
 		setRecipe(props.recipe);
 	}, [props]);
 	
 	// once recipe is loaded
 	useEffect(() => {
 		if(recipe.length !== 0) {
-			const { ingredients} = recipe;
+			const { ingredients } = recipe;
 		
 			//load ingredients database
 			fetch(`http://localhost:8080/ingredients`, {
@@ -59,51 +64,48 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 	return(
 		<div className='RecipeCard'>
 			<h1>{recipe.title}</h1>
-			<table className='NutInfo'>
-				<thead>
-					<tr>
-						<th>Fat</th>
-						<th>Saturate</th>
-						<th>Sugar</th>
-						<th>Salt</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{recipe.fat}</td>
-						<td>{recipe.saturates}</td>
-						<td>{recipe.sugars}</td>
-						<td>{recipe.salt}</td>
-					</tr>
-				</tbody>
-			</table>
-			<div className='IngredientsList'>
-				What you need:
-				<button className='SelectRecipe'>
-					I wanna make this!
-				</button>
-				<ul>
-					{list.map((item, index) => 
-						<li key={index}> 
-							{item.name} ({item.quantity} {item.unit})
-						</li>
-					)}
-				</ul>
+			<div className='grid-container'>
+				<div className='IngredientsList'>
+					<h4>Ingredients:</h4>
+					<div className='ScrollList'>
+						<tbody className='IngredientsTable'>
+							{list.map((item, index) => 
+								<tr>
+									<td>[{item.quantity} {item.unit}]</td>
+									<td>{item.name}</td>
+								</tr>
+							)}
+						</tbody>
+					</div>
+				</div>
+				<div className='Instructions'>
+					<h4>Instructions:</h4>
+					<div className='ScrollList'>
+						
+						{recipe.length === 0 ? '' : 
+							<ol>
+								{recipe.instructions.map((i) =>
+									<li key={i.step_number}> 
+										{i.instruction}
+									</li>
+								)}
+							</ol>
+						}
+					</div>
+				</div>
 			</div>
-			<div className='Instructions'>
-				Instructions:
-				{recipe.length === 0 ? '' : 
-					<ol>
-						{recipe.instructions.map((i) =>
-							<li key={i.step_number}> 
-								{i.instruction}
-							</li>
-						)}
-					</ol>
-				}
-			</div>
-			<div className='URL'>
-				<a href={recipe.url}>The Sauce</a>
+			<div className='CardFooter'>
+				<div class="square green"></div>
+				<div class="square orange"></div>
+				<div class="square red"></div>
+				<div>
+					<button className='SelectRecipe'>
+						I wanna make this!
+					</button>
+				</div>
+				<div className='URL'>
+					<a href={recipe.url}>The Sauce</a>
+				</div>
 			</div>
 		</div>
 	);

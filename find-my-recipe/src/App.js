@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Main from './components/Main.js';
+import RecipeBox from './pages/RecipeBox.js';
 
 const App = () => (
-  <div className='app'>
-    <Main />
-  </div>
-);
+	<div className='app'>
+		<RecipeBox />
+	</div> 
+)
 
 export default App;

@@ -1,0 +1,126 @@
+body{
+    font-family:'Roboto', sans-serif;
+    box-sizing: border-box;
+    background-image: url("./../assets/pattern.PNG");
+    background-position: center;
+		background-attachment: fixed;
+		background-repeat: no-repeat;
+		background-size: cover;
+    
+		font-family: 'Roboto', sans-serif;
+		height: 100vh;
+}
+
+.RecipeCard {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+	position: absolute;
+	width: 80%;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 10px;
+  padding: 10px;
+	text-align: left;
+}
+
+.IngredientsTable {
+	vertical-align: top;
+}
+
+.ScrollList {
+	height: 200px;
+	overflow: auto;
+}
+
+.PrevRecipe{
+	position:fixed;
+	width:40px;
+	height:40px;
+	bottom:40px;
+	right:40px;
+	background-color:#2541B2;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+	top: 50%;
+	left: 4%;
+	transform: translate(-50%, -50%);
+}
+
+.NextRecipe{
+	position:fixed;
+	width:40px;
+	height:40px;
+	bottom:100px;
+	right:40px;
+	background-color:#2541B2;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+	top: 50%;
+	left: 96%;
+	transform: translate(-50%, -50%);
+}
+
+.CardFooter {
+	display: inline;
+	vertical-align: bottom;
+}
+
+.SelectRecipe{
+  border-radius: 22px;
+	background-color: #2541B2;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 50px;
+	letter-spacing: 1px;
+	border:none;
+	outline: none;
+	margin-bottom:0.5vh;
+  margin-top: 0.5vh;
+}
+
+.square {
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.green {
+	background-color: #0F0;
+}
+
+.orange {
+	background-color: #ffa500;
+}
+
+.red {
+	background-color: #F00;
+}
+
+.URL {
+	float: right;
+}
+
+ol{
+	margin: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+  padding-right: 0;
+	padding-left: 20px;
+}

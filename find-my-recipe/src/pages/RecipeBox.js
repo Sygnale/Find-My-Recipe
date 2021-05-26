@@ -1,5 +1,6 @@
 import  React, { useState, useEffect } from 'react';
 import RecipeCard from './RecipeCard';
+import './RecipeDisplay.css';
 
 function RecipeBox() {
 	const [recipes, setRecipes] = useState([]);
@@ -15,6 +16,7 @@ function RecipeBox() {
 			})
 			.then(async response => {
 				let data = await response.json();
+				console.log(data);
 				arr = [...arr, data];
 				if(arr.length === recipeIDs.length) {
 					setRecipes(arr);
@@ -24,9 +26,7 @@ function RecipeBox() {
 	}, []);
 	
 	useEffect(() => {
-		if(recipes.length !== 0) {
-			
-		}
+		console.log(recipes);
 	}, [recipes]);
 	
 	useEffect(() => {
