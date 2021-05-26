@@ -101,8 +101,8 @@ class Pantry extends React.Component {
 		});
 	}
 
-  addIngredientAmount(id) {
-    fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${this.state.amount}`, {
+  addIngredientAmount(id, Converted) {
+    fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
       method: "PUT",
     })
     .then(async response => {
@@ -171,11 +171,12 @@ class Pantry extends React.Component {
 	}
 
 	managePantry(act, id) {
+
 		switch(act) {
 			case 1:
-        this.amountConversion();
+        let Converted = this.amountConversion();
 				this.addIngredient(id);
-        this.addIngredientAmount(id);
+        this.addIngredientAmount(id, Converted);
         this.setState({amount: 0});
 				break;
 			case -1:
@@ -192,61 +193,43 @@ class Pantry extends React.Component {
 
     switch(this.state.unit){
       case "ounce":
-        this.setState({amount: (Math.round((this.state.amount / 35.274) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 35.274);
 
       case "pound":
-        this.setState({amount: (Math.round((this.state.amount / 2.205) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 2.205);
 
       case "gram":
-        this.setState({amount: (Math.round((this.state.amount / 1000) * 1000) / 1000)});
-      break;
-
-      case "kilo":
-        return;
+        return (this.state.amount / 1000);
 
       case "teas":
-        this.setState({amount: (Math.round((this.state.amount / 203) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 203);
 
       case "table":
-        this.setState({amount: (Math.round((this.state.amount / 67.628) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 67.628);
 
       case "fl-oz":
-        this.setState({amount: (Math.round((this.state.amount / 33.814) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 33.814);
 
       case "cup":
-        this.setState({amount: (Math.round((this.state.amount / 4.167) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 4.167);
 
       case "pint":
-        this.setState({amount: (Math.round((this.state.amount / 2.113) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 2.113);
 
       case "quart":
-        this.setState({amount: (Math.round((this.state.amount / 1.057) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 1.057);
 
       case "gallon":
-        this.setState({amount: (Math.round((this.state.amount / 3.785) * 1000) / 1000)});
-      break;
+        return (this.state.amount / 3.785);
 
       case "bushel":
-        this.setState({amount: (Math.round((this.state.amount * 35.239) * 1000) / 1000)});
-      break;
+       return (this.state.amount * 35.239);
 
       case "ml":
-        this.setState({amount: (Math.round((this.state.amount / 1000) * 1000) / 1000)});
-      break;
-
-      case "li":
-        return;
+        return (this.state.amount / 1000);
 
       default:
-        return;
+        return this.state.amount;
 
     }
 
@@ -269,6 +252,8 @@ class Pantry extends React.Component {
 
 	render() {
 		const { error } = this.state;
+    for (const item of this.state.pantry)
+      console.log("Amounts: " + item.amount);
 		let items = (this.state.pantry).map((item) =>
 				<li className='list' key={item.id}>
 					{item.name} {`(${item.amount})`} &nbsp;
