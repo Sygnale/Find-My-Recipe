@@ -690,6 +690,22 @@ app.post('/:userId/ingredients/:ingredientId/:amount', async (req, res) => {
 
   let sql, result;
 
+  console.log(`Finding ingredient ${ingredientId} from user ${userId}...`);
+  sql = `SELECT COUNT(*) FROM user_ingredients
+  WHERE user_ingredients.user_id=? AND user_ingredients.ingredient_id=?`;
+  result = await query(sql, [userId, ingredientId]);
+  if (result[0]['COUNT(*)'] === 0) {
+    console.log(`Could not find ingredient ${ingredientId} from user ${userId}`);
+
+    console.log(`Adding ingredient ${ingredientId} to user ${userId}...`);
+    sql = `INSERT INTO user_ingredients (user_id, ingredient_id, amount) VALUES (?, ?, 0)`;
+    await query(sql, [userId, ingredientId]);
+    console.log(`Ingredient ${ingredientId} added to user ${userId}`);
+  }
+  else {
+    console.log(`Ingredient ${ingredientId} found from user ${userId}`);
+  }
+
   console.log(`Getting amount of ingredient ${ingredientId} from user ${userId}...`);
   sql = `SELECT amount FROM user_ingredients WHERE user_id=? AND ingredient_id=?`;
   result = await query(sql, [userId, ingredientId]);
