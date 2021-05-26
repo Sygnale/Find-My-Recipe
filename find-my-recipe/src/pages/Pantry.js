@@ -255,12 +255,12 @@ class Pantry extends React.Component {
     for (const item of this.state.pantry)
       console.log("Amounts: " + item.amount);
 		let items = (this.state.pantry).map((item) =>
-				<li className='list' key={item.id}>
-					{item.name} {`(${item.amount})`} &nbsp;
+				<li className='List' key={item.id}>
 					<button className='RemoveButton' onClick={(event) => {
 						event.preventDefault();
 						this.managePantry(-1, item.id);
 					}}>-</button>
+					{item.name} {`(${item.amount})`}
 				</li>
 			);
 

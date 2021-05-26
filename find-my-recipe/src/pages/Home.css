@@ -113,9 +113,6 @@ li{
     padding-bottom: 1vh;
 }
 
-.list{
-    background-color: #878787;    
-}
 
 .RecipeTitle{
     margin-right:0.5vw;
@@ -259,4 +256,25 @@ li{
     text-align: center;
     margin-top: 4px;
     margin-bottom: 4px;
+}
+
+
+.Items{
+    border:solid;
+    border-color: #878787;
+    margin: 5px;
+    border-radius: 10px;
+    border-width: 4px;
+}
+
+.List{
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 10px;
+    padding: 0;
+    border: none;
+    border-width: 2px;
+    border-color: #2541B2;
 }
