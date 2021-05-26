@@ -170,13 +170,8 @@ class Pantry extends React.Component {
         		let Converted = this.amountConversion();
 				//this.addIngredient(id);
 
-				if(Converted == 0){
-					this.removeIngredient(id);
-				}
-				else{
-					this.addIngredientAmount(id, Converted);
-       				this.setState({amount: 0});
-				}
+				this.addIngredientAmount(id, Converted);
+       			this.setState({amount: 0});
 				break;
 			case -1:
 				this.removeIngredient(id);
