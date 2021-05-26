@@ -690,6 +690,15 @@ app.post('/:userId/ingredients/:ingredientId/:amount', async (req, res) => {
 
   let sql, result;
 
+  sql=`SELECT COUNT(*) FROM ingredients where id=${ingredientId}`;
+  result=await query(sql,[ingredientId]);
+  if(result[0]['COUNT(*)']==0){
+    console.log('Ingredient not found');
+    res.status=404;
+    res.end('Ingredient not found');
+    return;
+  }
+
   console.log(`Finding ingredient ${ingredientId} from user ${userId}...`);
   sql = `SELECT COUNT(*) FROM user_ingredients
   WHERE user_ingredients.user_id=? AND user_ingredients.ingredient_id=?`;

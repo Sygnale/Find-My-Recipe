@@ -3,18 +3,19 @@ import { Link } from 'react-router-dom';
 import Search from './Search';
 
 class Pantry extends React.Component {
-  constructor(props) { // props = { userID }
-    super(props);
-    this.state = {
+	constructor(props) { // props = { userID }
+    	super(props);
+    	this.state = {
 			ingredients: [],
-      pantry: [],
+      		pantry: [],
 			pantryChanged: false,
-      amount: 0,
-      unit: 'ounce',
+      		amount: 0,
+      		unit: 'ounce',
 			action: null,
-      query: null,
-      error: null,
-    };
+      		query: null,
+      		error: null,
+	  		selectedRecipe: -1,
+    	};
 		this.getPantry = this.getPantry.bind(this);
 		this.addIngredientAmount = this.addIngredientAmount.bind(this);
 		this.removeIngredient = this.removeIngredient.bind(this);
@@ -68,6 +69,21 @@ class Pantry extends React.Component {
 			this.setState({
 				pantry: data.ingredients,
 			});
+			let select=document.getElementById('RecipeSelector');
+
+			while(select.options.length){
+				select.remove(0);
+			}
+			data.ingredients.forEach(option =>
+				select.options.add(new Option(option.name, option.id))
+			);
+			
+			if(data.ingredients.length != 0){
+				this.setState({
+					selectedRecipe: data.ingredients[0].id,
+				});
+			}
+
 			console.log(data.ingredients);
 		})
 		.catch(err => {
@@ -78,28 +94,28 @@ class Pantry extends React.Component {
 		});
 	}
 
-  addIngredientAmount(id, Converted) {
-    fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
-      method: "POST",
-    })
-    .then(async response => {
-      let data = await response.text();
-      if(!response.ok) {
-        let err = data;
-        return Promise.reject(err);
-      }
-      this.setState({
-        action: data,
-        error: null,
-        pantryChanged: true,
-      });
-    })
-    .catch(err => {
-      this.setState({
-        error: err,
-      });
-    });
-  }
+  	addIngredientAmount(id, Converted) {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
+			method: "POST",
+		})
+		.then(async response => {
+			let data = await response.text();
+		if(!response.ok) {
+			let err = data;
+			return Promise.reject(err);
+		}
+		this.setState({
+			action: data,
+			error: null,
+			pantryChanged: true,
+		});
+		})
+		.catch(err => {
+			this.setState({
+				error: err,
+			});
+		});
+  	}
 
 	removeIngredient(id) {
 		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
@@ -151,14 +167,14 @@ class Pantry extends React.Component {
 
 		switch(act) {
 			case 1:
-        let Converted = this.amountConversion();
+        		let Converted = this.amountConversion();
 				//this.addIngredient(id);
-        this.addIngredientAmount(id, Converted);
-        this.setState({amount: 0});
+        		this.addIngredientAmount(id, Converted);
+       			this.setState({amount: 0});
 				break;
 			case -1:
 				this.removeIngredient(id);
-        this.setState({amount: 0});
+        		this.setState({amount: 0});
 				break;
 			default:
 				break;
@@ -212,20 +228,28 @@ class Pantry extends React.Component {
 
   }
 
-  handleUnitChange = (event)=> {
-    this.setState({unit: event.target.value});
-  }
+  	handleUnitChange = (event) => {
+    	this.setState({unit: event.target.value});
+  	}
 
-  handleAmountChange = (event)=> {
+  	handleRecipeChange = (event) => {
+    	this.setState({selectedRecipe: event.target.value});
+  	}
 
-    let preAmount = parseFloat(event.target.value);
+  	handleAmountChange = (event)=> {
 
-    if (preAmount < 0)
-      preAmount=0;
+    	let preAmount = parseFloat(event.target.value);
 
-    this.setState({amount: preAmount});
+    	if (preAmount < 0)
+      		preAmount=0;
 
-  }
+    	this.setState({amount: preAmount});
+
+  	}
+
+  	updateIngredientAmount = (event) => {
+		this.managePantry(1,this.state.selectedRecipe);
+	}
 
 	render() {
 		const { error } = this.state;
@@ -255,23 +279,25 @@ class Pantry extends React.Component {
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>
 				<div className='message' >{msg}</div>
-        <input type='number' name="amountInput" value={this.state.amount} onChange={this.handleAmountChange} min="0" />
-        <select defUnit={this.state.unit} onChange={this.handleUnitChange}>
-          <option value="ounce">Ounces</option>
-          <option value="pound">Pounds</option>
-          <option value="gram">Grams</option>
-          <option value="kilo">Kilograms</option>
-          <option value="teas">Teaspoons</option>
-          <option value="table">Tablespoons</option>
-          <option value="fl-oz">Fluid Ounces</option>
-          <option value="cup">Cups</option>
-          <option value="pint">Pints</option>
-          <option value="quart">Quarts</option>
-          <option value="gallon">Gallons</option>
-          <option value="bushel">Bushels</option>
-          <option value="ml">Milliliters</option>
-          <option value="li">Liters</option>
-        </select>
+				<input type='number' name="amountInput" value={this.state.amount} onChange={this.handleAmountChange} min="0" />
+				<select defUnit={this.state.unit} onChange={this.handleUnitChange}>
+					<option value="ounce">Ounces</option>
+					<option value="pound">Pounds</option>
+					<option value="gram">Grams</option>
+					<option value="kilo">Kilograms</option>
+					<option value="teas">Teaspoons</option>
+					<option value="table">Tablespoons</option>
+					<option value="fl-oz">Fluid Ounces</option>
+					<option value="cup">Cups</option>
+					<option value="pint">Pints</option>
+					<option value="quart">Quarts</option>
+					<option value="gallon">Gallons</option>
+					<option value="bushel">Bushels</option>
+					<option value="ml">Milliliters</option>
+					<option value="li">Liters</option>
+				</select>
+				<select selectToEdit={this.state.selectedRecipe} id='RecipeSelector' onChange={this.handleRecipeChange}></select>
+				<button onClick={this.updateIngredientAmount}>UPDATE SELECTED INGREDIENT AMOUNT</button>
 			</div>
 		);
 	}
