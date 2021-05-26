@@ -278,3 +278,69 @@ li{
     border-width: 2px;
     border-color: #2541B2;
 }
+
+.UpdateButton{
+    border-radius: 20px;
+	background-color: #2541B2;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 40px;
+	letter-spacing: 1px;
+	border:none;
+    margin-bottom: 5px;
+    margin-top: 5px;
+	outline: none;
+}
+
+.UpdateButton:hover{
+    background-color: #8787;
+}
+
+.UpdateButton:active{
+    background-color: #8787;
+}
+
+.UpdateButton:focus{
+	border:none;
+	outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.amountInput{
+    max-width: 3vw;
+    margin: 0;
+    margin-right: 8px;
+}
+
+.AddIngredients{
+    border: solid;
+    border-color: #878787;
+    border-width: 4px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.RecipeSelector{
+    max-width: 20vw;
+    text-overflow: ellipsis;
+    margin-left: 4px;
+}
+
+.UpdateHeader{
+    width:100%;
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

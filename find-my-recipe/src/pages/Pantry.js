@@ -105,7 +105,7 @@ class Pantry extends React.Component {
 			return Promise.reject(err);
 		}
 		this.setState({
-			action: data,
+			action: 'Ingredient amount updated',
 			error: null,
 			pantryChanged: true,
 		});
@@ -169,8 +169,14 @@ class Pantry extends React.Component {
 			case 1:
         		let Converted = this.amountConversion();
 				//this.addIngredient(id);
-        		this.addIngredientAmount(id, Converted);
-       			this.setState({amount: 0});
+
+				if(Converted == 0){
+					this.removeIngredient(id);
+				}
+				else{
+					this.addIngredientAmount(id, Converted);
+       				this.setState({amount: 0});
+				}
 				break;
 			case -1:
 				this.removeIngredient(id);
@@ -275,29 +281,32 @@ class Pantry extends React.Component {
 				<h1>Pantry</h1>
 				<Search className='Search' pantry={this.state.pantry} list={this.state.ingredients} managePantry={this.managePantry}/>
 				<div className='Items'> {error}{items} </div>
+				<div className='AddIngredients'>
+					<p className='UpdateHeader'>Update Ingredient Amount: </p>
+					<input type='number' className="amountInput" value={this.state.amount} onChange={this.handleAmountChange} min="0" />
+						<select defUnit={this.state.unit} onChange={this.handleUnitChange}>
+							<option value="ounce">Ounces</option>
+							<option value="pound">Pounds</option>
+							<option value="gram">Grams</option>
+							<option value="kilo">Kilograms</option>
+							<option value="teas">Teaspoons</option>
+							<option value="table">Tablespoons</option>
+							<option value="fl-oz">Fluid Ounces</option>
+							<option value="cup">Cups</option>
+							<option value="pint">Pints</option>
+							<option value="quart">Quarts</option>
+							<option value="gallon">Gallons</option>
+							<option value="bushel">Bushels</option>
+							<option value="ml">Milliliters</option>
+							<option value="li">Liters</option>
+						</select>
+						<select selectToEdit={this.state.selectedRecipe} className='RecipeSelector' id='RecipeSelector' onChange={this.handleRecipeChange}></select>
+						<button className='UpdateButton' onClick={this.updateIngredientAmount}>UPDATE SELECTED INGREDIENT AMOUNT</button>
+					</div>
 				<div>
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
 				</div>
 				<div className='message' >{msg}</div>
-				<input type='number' name="amountInput" value={this.state.amount} onChange={this.handleAmountChange} min="0" />
-				<select defUnit={this.state.unit} onChange={this.handleUnitChange}>
-					<option value="ounce">Ounces</option>
-					<option value="pound">Pounds</option>
-					<option value="gram">Grams</option>
-					<option value="kilo">Kilograms</option>
-					<option value="teas">Teaspoons</option>
-					<option value="table">Tablespoons</option>
-					<option value="fl-oz">Fluid Ounces</option>
-					<option value="cup">Cups</option>
-					<option value="pint">Pints</option>
-					<option value="quart">Quarts</option>
-					<option value="gallon">Gallons</option>
-					<option value="bushel">Bushels</option>
-					<option value="ml">Milliliters</option>
-					<option value="li">Liters</option>
-				</select>
-				<select selectToEdit={this.state.selectedRecipe} id='RecipeSelector' onChange={this.handleRecipeChange}></select>
-				<button onClick={this.updateIngredientAmount}>UPDATE SELECTED INGREDIENT AMOUNT</button>
 			</div>
 		);
 	}
