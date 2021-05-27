@@ -74,14 +74,17 @@ class Results extends React.Component {
     }
     else {
       items = (this.state.results).map((item) => 
-        <li key={item.id}>
-          (${item.title})`
-          <button onClick={(event) => this.addFavorite(event, item.id)}>+</button>
-          <div>
-            <li>Total Fat `(${item.fat})`</li>
-            <li>Saturated Fat `(${item.saturates})`</li>
-            <li>Sodium `(${item.salt})`</li>
-            <li>Sugars `(${item.sugars})`</li>
+        <li className='Recipe' key={item.id}>
+          <button className='AddRecipeButton' onClick={(event) => this.addFavorite(event, item.id)}>+</button>
+          <button className='ViewRecipeButton'>
+            <i class="arrow"></i>
+          </button>
+          <div className='RecipeTitle'>{item.title}</div>
+          <div className='NutritionalInfo'>
+            <li>Total Fat: {item.fat}</li>
+            <li>Saturated Fat: {item.saturates}</li>
+            <li>Sodium: {item.salt}</li>
+            <li>Sugars: {item.sugars}</li>
           </div>
         </li>
       );
@@ -93,10 +96,10 @@ class Results extends React.Component {
     }
 
     return (
-      <div>
-        <h1>Recipes</h1>
+      <div className='Results'>
+        <h1 className='ResultsTitle'>Recipes</h1>
         <div> {items} </div>
-        {msg}
+        <div className='Message'>{msg}</div>
       </div>
     );
   }

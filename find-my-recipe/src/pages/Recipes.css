@@ -11,13 +11,138 @@ body{
     overflow-y: hidden;
     font-family: 'Roboto', sans-serif;
     height: 100vh;
-    margin: -20px 0 50px;
 }
-/*
-h1 {
-    font-weight: bold;
-    margin: 0;
-    top: 10vh;
-    align-self: center;
+
+.title{
+    margin: auto;
+    top: 2vh;
+    left: 80vh;
     position: absolute;
-}*/
+}
+
+.Recipes{
+    position: absolute;
+    top: 10vh;
+    left: 0;
+}
+
+.Tags{
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 1vw; 
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    /* box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
+    0 10px 12px rgba(0,0,0,0.22); */
+    max-height: 88vh;
+    overflow-y: auto;
+}
+
+.TagsTitle{
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
+.ResultsTitle{
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
+.RemoveRecipeButton:hover{
+    background-color:#878787;
+}
+
+.RemoveRecipeButton:active{
+    background-color: #878787;
+}
+
+.RemoveRecipeButton:focus{
+    border:none;
+    outline: none;
+}
+
+.NutritionalInfo{
+    float: right;
+    width: 10vw;
+}
+
+.Recipe{
+    display: flex;
+    flex-direction: row;
+    min-height: fit-content;
+    width: 45vw;
+    border-color: #878787;
+    border-width: 4px;
+    border-style: solid;
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-bottom: 2px;
+}
+
+.Results{
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin-left: 1vw; 
+    margin-right: 1vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
+    0 10px 12px rgba(0,0,0,0.22); */
+    max-height: 88vh;
+    overflow-y: auto;
+}
+
+.RecipeTitle{
+    margin-right:0.5vw;
+    margin-left:0.5vw;
+    width: 25vw;
+}
+
+.ViewRecipeButton{
+    border-radius: 11px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    letter-spacing: 1px;
+    border: none;
+    outline: none;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    width: 3vw;
+    background-color: #2541B2;
+    margin-top: 3px;
+}
+
+.ViewRecipeButton:hover{
+    background-color: #8787;
+}
+
+.ViewRecipeButton:active{
+    background-color: #8787;
+}
+
+.ViewRecipeButton:focus{
+    border: none;
+    outline: none;
+}
+
+.arrow{
+    border: solid #FFFFFF;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.Message{
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

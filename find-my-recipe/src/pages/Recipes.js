@@ -22,7 +22,7 @@ class Recipes extends React.Component {
   render() {
     return (
       <div className>
-        <h1>Find My Recipe</h1>
+        <h1 className='title'>Find My Recipe</h1>
         <SplitPane className='Recipes' split="vertical" defaultSize={600}>
           <div className='Tags'>
             <Route

@@ -124,6 +124,7 @@ li{
 .RecipeTitle{
     margin-right:0.5vw;
     margin-left:0.5vw;
+    width: 25vw;
 }
 
 .RemoveRecipeButton{
@@ -193,10 +194,6 @@ li{
     0 10px 12px rgba(0,0,0,0.22);
     max-height: 88vh;
     overflow-y: auto;
-}
-
-.RecipeTitle{
-    width: 25vw;
 }
 
 .ViewRecipeButton{
