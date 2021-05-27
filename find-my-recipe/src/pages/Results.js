@@ -50,7 +50,7 @@ class Results extends React.Component {
       method: "POST",
     })
     .then(async response => {
-      let data = await response.json();
+      let data = await response.text();
       if(!response.ok) {
         let err = data;
         return Promise.reject(err);
