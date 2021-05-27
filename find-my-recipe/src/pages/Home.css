@@ -360,3 +360,8 @@ input::-webkit-inner-spin-button {
 select{
     border: none;
 }
+
+.SearchResults{
+    max-height: 20vh;
+    overflow-y: auto;
+}
