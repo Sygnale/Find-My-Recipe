@@ -8,7 +8,7 @@ body{
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: cover;
-    overflow-y: hidden;
+   overflow-y: hidden;
 	font-family: 'Roboto', sans-serif;
 	height: 100vh;
 }
@@ -33,9 +33,10 @@ body{
     flex-direction: column;
     align-items: center;
     display: flex;
-    justify-content: center;
     box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
     0 10px 12px rgba(0,0,0,0.22);
+    max-height: 88vh;
+    overflow-y: auto;
 }
 
 .EmptyButton{
@@ -182,6 +183,8 @@ li{
     align-items: center;
     box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
     0 10px 12px rgba(0,0,0,0.22);
+    max-height: 88vh;
+    overflow-y: auto;
 }
 
 .RecipeTitle{
@@ -342,5 +345,9 @@ input::-webkit-inner-spin-button {
     text-align: center;
     margin-top: 4px;
     margin-bottom: 4px;
+}
+
+select{
+    border: none;
 }
 
