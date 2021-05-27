@@ -5,17 +5,18 @@ body{
     box-sizing: border-box;
     background-image: url("./../assets/pattern.PNG");
     background-position: center;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-size: cover;
-   overflow-y: hidden;
-	font-family: 'Roboto', sans-serif;
-	height: 100vh;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
 }
 
 .title{
     margin: auto;
-    top: 0vh;
+    top: 2vh;
+    left: 80vh;
     position: absolute;
 }
 
@@ -36,39 +37,45 @@ body{
     box-shadow: 0 14px 24px rgba(0,0,0,0.22), 
     0 10px 12px rgba(0,0,0,0.22);
     max-height: 88vh;
-    overflow-y: auto;
+}
+
+.PantryTitle{
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 4px;
 }
 
 .EmptyButton{
     border-radius: 22px;
-	background-color: #2541B2;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 50px;
-	letter-spacing: 1px;
-	border:none;
-	outline: none;
-	margin-bottom:0.5vh;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 50px;
+    letter-spacing: 1px;
+    border:none;
+    outline: none;
     margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
 }
 
 .EmptyButton:hover{
-	background-color:#878787;
+    background-color: #878787;
 }
 
 .EmptyButton:active{
-	background-color: #878787;
+    background-color: #878787;
 }
 
 .EmptyButton:focus{
-	border:none;
-	outline: none;
+    border: none;
+    outline: none;
 }
 
 .SearchBar{
     max-width: 20vw;
     align-self: center;
+    margin-top: 18px;
 }
 
 ul{
@@ -83,29 +90,29 @@ li{
 
 .RemoveButton{
     border-radius: 11px;
-	background-color: #2541B2;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 6px 12px;
-	letter-spacing: 1px;
-	border:none;
-	outline: none;
-	margin-bottom:1px;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    letter-spacing: 1px;
+    border:none;
+    outline: none;
+    margin-bottom:1px;
     margin-right: 3px;
 }
 
 .RemoveButton:hover{
-	background-color:#878787;
+    background-color: #878787;
 }
 
 .RemoveButton:active{
-	background-color: #878787;
+    background-color: #878787;
 }
 
 .RemoveButton:focus{
-	border:none;
-	outline: none;
+    border:none;
+    outline: none;
 }
 
 .message{
@@ -121,15 +128,15 @@ li{
 
 .RemoveRecipeButton{
     border-radius: 11px;
-	background-color: #2541B2;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 6px 12px;
-	letter-spacing: 1px;
-	border:none;
-	outline: none;
-	margin-bottom:3px;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    letter-spacing: 1px;
+    border:none;
+    outline: none;
+    margin-bottom:3px;
     margin-top: 3px;
     margin-right: 3px;
     margin-left: 3px;
@@ -138,20 +145,21 @@ li{
 
 .FavRecipeTitle{
     text-align: center;
+    margin-top: 12px;
     margin-bottom: 4px;
 }
 
 .RemoveRecipeButton:hover{
-	background-color:#878787;
+    background-color:#878787;
 }
 
 .RemoveRecipeButton:active{
-	background-color: #878787;
+    background-color: #878787;
 }
 
 .RemoveRecipeButton:focus{
-	border:none;
-	outline: none;
+    border:none;
+    outline: none;
 }
 
 .NutritionalInfo{
@@ -193,15 +201,15 @@ li{
 
 .ViewRecipeButton{
     border-radius: 11px;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 6px 12px;
-	letter-spacing: 1px;
-	border:none;
-	outline: none;
-	margin-bottom:3px;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 12px;
+    letter-spacing: 1px;
+    border: none;
+    outline: none;
+    margin-bottom: 3px;
     margin-right: 3px;
-    width:3vw;
+    width: 3vw;
     background-color: #2541B2;
     margin-top: 3px;
 }
@@ -215,8 +223,8 @@ li{
 }
 
 .ViewRecipeButton:focus{
-	border:none;
-	outline: none;
+    border: none;
+    outline: none;
 }
 
 .arrow{
@@ -229,16 +237,17 @@ li{
 }
 
 .MoreButton{
-    border-radius: 11px;
-	background-color: #2541B2;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 40px;
-	letter-spacing: 1px;
-	border:none;
+    border-radius: 22px;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 40px;
+    letter-spacing: 1px;
+    border: none;
+    margin-top: 18px;
     margin-bottom: 5px;
-	outline: none;
+    outline: none;
 }
 
 .MoreButton:hover{
@@ -250,11 +259,11 @@ li{
 }
 
 .MoreButton:focus{
-	border:none;
-	outline: none;
+    border: none;
+    outline: none;
 }
 
-.RecipeStatusMessage{
+.Message{
     text-align: center;
     margin-top: 4px;
     margin-bottom: 4px;
@@ -262,11 +271,12 @@ li{
 
 
 .Items{
-    border:solid;
+    border: solid;
     border-color: #878787;
     margin: 5px;
     border-radius: 10px;
     border-width: 4px;
+    overflow-y: auto;
 }
 
 .List{
@@ -283,16 +293,16 @@ li{
 
 .UpdateButton{
     border-radius: 20px;
-	background-color: #2541B2;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 40px;
-	letter-spacing: 1px;
-	border:none;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 40px;
+    letter-spacing: 1px;
+    border:none;
     margin-bottom: 5px;
     margin-top: 5px;
-	outline: none;
+    outline: none;
 }
 
 .UpdateButton:hover{
@@ -304,8 +314,8 @@ li{
 }
 
 .UpdateButton:focus{
-	border:none;
-	outline: none;
+    border: none;
+    outline: none;
 }
 
 input::-webkit-outer-spin-button,
@@ -341,7 +351,7 @@ input::-webkit-inner-spin-button {
 }
 
 .UpdateHeader{
-    width:100%;
+    width: 100%;
     text-align: center;
     margin-top: 4px;
     margin-bottom: 4px;
@@ -350,4 +360,3 @@ input::-webkit-inner-spin-button {
 select{
     border: none;
 }
-

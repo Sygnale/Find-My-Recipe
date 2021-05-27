@@ -273,7 +273,7 @@ class Pantry extends React.Component {
 
 		return (
 			<div className='Pantry'>
-				<h1>Pantry</h1>
+				<h1 className='PantryTitle'>Pantry</h1>
 				<Search className='SearchBar' pantry={this.state.pantry} list={this.state.ingredients} managePantry={this.managePantry}/>
 				<div className='Items'> {error}{items} </div>
 				<div className='AddIngredients'>
@@ -296,7 +296,7 @@ class Pantry extends React.Component {
 							<option value="li">Liters</option>
 						</select>
 						<select selectToEdit={this.state.selectedRecipe} className='RecipeSelector' id='RecipeSelector' onChange={this.handleRecipeChange}></select>
-						<button className='UpdateButton' onClick={this.updateIngredientAmount}>UPDATE SELECTED INGREDIENT AMOUNT</button>
+						<button className='UpdateButton' onClick={this.updateIngredientAmount}>UPDATE AMOUNT</button>
 					</div>
 				<div>
 					<button className='EmptyButton' onClick={this.emptyPantry}>EMPTY PANTRY</button>
