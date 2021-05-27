@@ -9,7 +9,7 @@ class Recipes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userID: null,
+      userID: this.props.userID,
     };
     
     this.handleStateChange = this.handleStateChange.bind(this);
