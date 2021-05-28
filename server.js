@@ -64,7 +64,7 @@ app.post('/add-user/:username-:password', (req, res) => {
         if (result[0]["COUNT (*)"] != 0) {
             console.log("Request denied: user already found in database");
             res.statusCode = 404;
-            res.end("Username already exists"); //User exists, return error
+            res.end(JSON.stringify("Username already exists")); //User exists, return error
         }
         else { //User does not exist, insert into database with null ingredients/tags and with corresponding userID and password
           bcrypt.genSalt(saltRound, function(err, salt){
@@ -99,7 +99,7 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
         if (result.length == 0) {
             console.log("User Not Found");
             res.statusCode = 404;
-            res.end("User Not Found"); //Username does not match
+            res.end(JSON.stringify("User Not Found")); //Username does not match
         }
         else {
           bcrypt.compare(password,result[0].password, function(err, res1){
@@ -113,7 +113,7 @@ app.get('/authenticate-user/:username-:password', (req, res) => {
             else{
               console.log("Incorrect Password");
               res.statusCode = 404;
-              res.end("Incorrect Password"); //Password
+              res.end(JSON.stringify("Incorrect Password")); //Password
             }
           });
         }
@@ -158,7 +158,7 @@ app.get('/:userId/ingredients', (req, res) => {
       if (result2.length === 0) {
         console.log(`${username} (id: ${userId}) has no ingredients`);
 				res.statusCode = 404;
-        res.end(`${username} has no ingredients`);
+        res.end(JSON.stringify(`${username} has no ingredients`));
         return;
       }
       console.log(`Got ingredients from ${username} (id: ${userId})`);
@@ -328,14 +328,14 @@ app.get('/:userId/tags', (req, res) => {
       if (result2.length === 0) {
         console.log(`${username} (id: ${userId}) has no tags`);
 				res.statusCode = 404;
-        res.end(`${username} has no tags`);
+        res.end(JSON.stringify(`${username} has no tags`));
         return;
       }
       console.log(`Got tags from ${username} (id: ${userId})`);
       const response = {
         tags: result2,
       };
-      res.json(response);
+      res.json(JSON.stringify(response));
     });
   });
 });
