@@ -14,14 +14,14 @@ const tagsOpt = [
 
 const Checkbox = ({ label, isSelected, onCheckboxChange }) => (
   <div className="form-check">
-    <label>
-      <input
+    <input className='check'
         type="checkbox"
         name={label}
         checked={isSelected}
         onChange={onCheckboxChange}
         className="form-check-input"
       />
+    <label className='OptionLabel'>
       {label}
     </label>
   </div>
@@ -218,11 +218,11 @@ class Tags extends React.Component {
     return (
       <div className='TagsTitle'>
         <h1>Search</h1>
-        <form onSubmit={this.handleFormSubmit}>
+        <form className='Checkboxes' onSubmit={this.handleFormSubmit}>
           {this.createCheckboxes()}
-          </form>
-          <button className="searchAgain" onClick={(event) => this.getResults}>Filter</button>
-          <div>
+        </form>
+        <button className="searchAgain" onClick={(event) => this.getResults}>FILTER RECIPES</button>
+        <div>
         {msg} {error}
         </div>
       </div>
