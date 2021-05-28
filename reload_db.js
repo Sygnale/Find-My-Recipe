@@ -1,6 +1,7 @@
 const fs = require('fs');
 const http = require('http');
 const mysql = require('mysql2');
+const csv=require('csv-parser');
 
 const con = mysql.createConnection({
   host: "localhost",
@@ -246,6 +247,21 @@ async function insert_ingredients_and_recipes(json) {
   return await remaining_queries;
 }
 
+async function fix_ingredients (){
+  fs.createReadStream('ingredients.csv')
+  .pipe(csv( {separator: ","}))
+  .on('data', (row) => {
+      let name=row.name.replace('\'','\\\'');
+      let label=row.label.replace('\'','\\\'');
+      let sql=`UPDATE ingredients SET name=\'${label}\' WHERE name=\'${name}\'`;
+      console.log(sql);
+      query(sql);
+  })
+  .on('end', () => {
+  console.log('Ingredient names updated');
+  });
+}
+
 async function reload_db() {
   console.log("reload_db running...");
 
@@ -269,6 +285,9 @@ async function reload_db() {
     await Promise.all(promises);
     console.log("Recipe information added");
   });
+
+  console.log("Updating ingredient names");
+  await(fix_ingredients());
 
   console.log("reload_db finished successfully");
 }
