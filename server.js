@@ -335,7 +335,7 @@ app.get('/:userId/tags', (req, res) => {
       const response = {
         tags: result2,
       };
-      res.json(JSON.stringify(response));
+      res.json(response);
     });
   });
 });
@@ -369,6 +369,34 @@ app.post('/:userId/tags/:tag', (req, res) => {
       res.end("Tag added");
     });
   });
+});
+
+app.delete('/:userId/tags', async (req, res) => {
+  const userId = req.params.userId;
+  let sql, result;
+
+  console.log(`Getting user ${userId}...`);
+  sql = `SELECT username FROM users WHERE id=? LIMIT 1`;
+  result = await query(sql, [userId]);
+  if (result.length === 0) {
+    console.log(`User ${userId} not found`);
+    res.end("User not found");
+    return;
+  }
+  console.log(`User ${userId} found`);
+
+  const username = result[0].username;
+  console.log(`Deleting all tags from ${username}...`);
+  sql = `DELETE FROM user_tags WHERE user_id=?`;
+  result = await query(sql, [userId]);
+  if (result.affectedRows === 0) {
+    console.log(`Deleted 0 tags from user ${userId}`);
+    res.end("User has no tags");
+    return;
+  }
+  const msg = `All tags deleted from ${username}`;
+  console.log(msg);
+  res.end(msg);
 });
 
 app.delete('/:userId/tags/:tag', (req, res) => {

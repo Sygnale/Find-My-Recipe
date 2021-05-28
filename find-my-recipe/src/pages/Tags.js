@@ -46,9 +46,9 @@ class Tags extends React.Component {
 }
 
   componentDidMount() {
+    this.emptyTags();
     this.getTags();
     console.log(this.state.tags);
-    this.initialValues();
   }
 
   // runs everytime listed props are updated
@@ -81,6 +81,9 @@ class Tags extends React.Component {
       error: err,
     });
   });
+
+  console.log(typeof this.state.tags);
+
   }
 
   removeTag(tag) {
@@ -98,7 +101,11 @@ class Tags extends React.Component {
         error: null,
         tagChanged: true,
       });
+
+    console.log(this.state.tags);
+
     })
+
     .catch(err => {
       this.setState({
         error: err,
@@ -117,9 +124,8 @@ class Tags extends React.Component {
   				let err = data;
   				return Promise.reject(err);
   			}
-  			this.setState({
-  				tags: data,
-  			});
+
+  			this.setState({tags: data.tags });
 
   			console.log(data);
 
@@ -127,11 +133,38 @@ class Tags extends React.Component {
 
   		.catch(err => {
   			this.setState({
-  				pantry: [],
+  				tags: [],
   				error: "You have no tags.",
   			});
   		});
   	}
+
+    emptyTags() {
+
+      fetch(`http://localhost:8080/${this.props.userID}/tags`, {
+        method: "DELETE",
+      })
+      .then(async response => {
+        let data = await response.json();
+        if(!response.ok) {
+          let err = data;
+          return Promise.reject(err);
+        }
+
+        this.setState({tags: data.tags });
+
+        console.log(data);
+
+       })
+
+      .catch(err => {
+        this.setState({
+          tags: [],
+          error: "You have no tags.",
+        });
+      });
+
+    }
 
     handleCheckboxChange = changeEvent => {
       const { name } = changeEvent.target;
@@ -172,14 +205,6 @@ class Tags extends React.Component {
     );
 
     createCheckboxes = () => tagsOpt.map(this.createCheckbox);
-
-    initialValues(){
-
-      for (const name of this.state.tags){
-        this.setState({checkboxes: {[name]: true}});
-        console.log("Tried");
-      }
-    }
 
   render() {
 
