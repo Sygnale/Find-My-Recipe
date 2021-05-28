@@ -14,7 +14,7 @@ const tagsOpt = [
 
 const Checkbox = ({ label, isSelected, onCheckboxChange }) => (
   <div className="form-check">
-    <input className='check'
+    <input
         type="checkbox"
         name={label}
         checked={isSelected}

@@ -187,6 +187,8 @@ body{
     letter-spacing: 1px;
     border:none;
     outline: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 .searchAgain:hover{
@@ -219,6 +221,9 @@ body{
     justify-content: center;
 }
 
-.check{
-    width: min-content;
+.form-check-input{
+    width: 1vw;
+}
+.form-check{
+    width: 100%;
 }
