@@ -335,7 +335,7 @@ app.get('/:userId/tags', (req, res) => {
       const response = {
         tags: result2,
       };
-      res.json(JSON.stringify(response));
+      res.json(response);
     });
   });
 });
