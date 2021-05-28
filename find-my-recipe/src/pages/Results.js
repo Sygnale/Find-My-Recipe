@@ -96,7 +96,7 @@ class Results extends React.Component {
     }
 
     return (
-      <div className='Results'>
+      <div>
         <h1 className='ResultsTitle'>Recipes</h1>
         <div> {items} </div>
         <div className='Message'>{msg}</div>
