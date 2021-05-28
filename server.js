@@ -458,7 +458,8 @@ app.get('/get-recipes/:userId', (req, res) => {
       'gluten free': false,
     };
     for (const tag of result1)
-      tags[tag] = true;
+      tags[tag.tag] = true;
+
     for (const tag in tags) {
       if (tags[tag]) {
         switch (tag) {
@@ -470,7 +471,7 @@ app.get('/get-recipes/:userId', (req, res) => {
         }
       }
     }
-
+    console.log(recipeQueryString);
     con.query(recipeQueryString, (err2,result2) => {
       if(err2) throw err2;
 

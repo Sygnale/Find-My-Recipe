@@ -12,6 +12,7 @@ class Results extends React.Component {
 
     this.getResults = this.getResults.bind(this);
     this.addFavorite = this.addFavorite.bind(this);
+    //this.props.resetData.bind(this);
   }
 
   // runs only once when Results is created
@@ -21,6 +22,13 @@ class Results extends React.Component {
   
   // runs right before exiting Results, cancel in-progress fetches
   componentWillUnmount() {
+  }
+
+  componentDidUpdate(){
+    if(this.props.update){
+      this.props.resetData();
+      this.getResults();
+    }
   }
 
   getResults() {

@@ -221,7 +221,7 @@ class Tags extends React.Component {
         <form className='Checkboxes' onSubmit={this.handleFormSubmit}>
           {this.createCheckboxes()}
         </form>
-        <button className="searchAgain" onClick={(event) => this.getResults}>FILTER RECIPES</button>
+        <button className="searchAgain" onClick={this.props.updateResults}>FILTER RECIPES</button>
         <div>
         {msg} {error}
         </div>
