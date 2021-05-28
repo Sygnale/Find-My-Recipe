@@ -77,8 +77,8 @@ class Pantry extends React.Component {
 			data.ingredients.forEach(option =>
 				select.options.add(new Option(option.name, option.id))
 			);
-			
-			if(data.ingredients.length != 0){
+
+			if(data.ingredients.length !== 0){
 				this.setState({
 					selectedRecipe: data.ingredients[0].id,
 				});
