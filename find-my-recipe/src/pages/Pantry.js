@@ -26,15 +26,14 @@ class Pantry extends React.Component {
 	// runs only once when Pantry is created
 	componentDidMount() {
 		this.getIngredients();
-		console.log(this.state.ingredients);
 		this.getPantry();
-		console.log(this.state.pantry);
 	}
 
 	// runs everytime listed props are updated
 	componentDidUpdate(pantryChanged) {
 		if(this.state.pantryChanged) {
 			this.getPantry();
+			console.log(this.state.ingredients);
 			console.log(this.state.pantry);
 			this.setState({ pantryChanged: false });
 		}

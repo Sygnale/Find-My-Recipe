@@ -16,7 +16,7 @@ function Search(props) {
 		if(allData.length === 0 || q === '')
 			return false;
 		let a = allData.filter((i) => {
-			return i.name.includes(q);
+			return (i.name.toLowerCase()).includes(q.toLowerCase());
 		});
 		if (a.length === 0)
 			return false;
@@ -26,7 +26,7 @@ function Search(props) {
 	
 	const handleSearch = (e) => {
 		e.preventDefault();
-		let s = e.target.value.toLowerCase();
+		let s = e.target.value;
 		setQuery(s);
 		
 		if(getMatch(s, props.list))
