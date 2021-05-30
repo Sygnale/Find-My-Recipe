@@ -204,6 +204,33 @@ body{
     outline: none;
 }
 
+.BackButton{
+    border-radius: 14px;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 40px;
+    letter-spacing: 1px;
+    border:none;
+    outline: none;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.BackButton:hover{
+    background-color:#878787;
+}
+
+.BackButton:active{
+    background-color: #878787;
+}
+
+.BackButton:focus{
+    border:none;
+    outline: none;
+}
+
 .Checkboxes{
     display: flex;
     flex-direction: column;

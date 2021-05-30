@@ -471,7 +471,6 @@ app.get('/get-recipes/:userId', (req, res) => {
         }
       }
     }
-    console.log(recipeQueryString);
     con.query(recipeQueryString, (err2,result2) => {
       if(err2) throw err2;
 

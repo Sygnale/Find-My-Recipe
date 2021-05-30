@@ -225,6 +225,9 @@ class Tags extends React.Component {
         <div>
         {msg} {error}
         </div>
+        <Link to='/Home'>
+        <button className='BackButton'>BACK TO PANTRY</button>
+        </Link>
       </div>
     );
   }
