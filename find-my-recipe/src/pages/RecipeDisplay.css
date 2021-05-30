@@ -65,6 +65,20 @@ body{
 	top: 50%;
 	left: 4%;
 	transform: translate(-50%, -50%);
+	border: none;
+}
+
+.PrevRecipe:hover{
+    background-color:#878787;
+}
+
+.PrevRecipe:active{
+    background-color: #878787;
+}
+
+.PrevRecipe:focus{
+    border:none;
+    outline: none;
 }
 
 .NextRecipe{
@@ -81,6 +95,20 @@ body{
 	top: 50%;
 	left: 96%;
 	transform: translate(-50%, -50%);
+	border: none;
+}
+
+.NextRecipe:hover{
+    background-color:#878787;
+}
+
+.NextRecipe:active{
+    background-color: #878787;
+}
+
+.NextRecipe:focus{
+    border:none;
+    outline: none;
 }
 
 .CardFooter {
@@ -134,7 +162,22 @@ body{
   height: 40px;
   border-radius: 50%;
   text-align: center;
+  border: none;
 }
+
+.close-icon:hover{
+    background-color:#878787;
+}
+
+.close-icon:active{
+    background-color: #878787;
+}
+
+.close-icon:focus{
+    border:none;
+    outline: none;
+}
+
 
 .label-container{
 	position:fixed;
