@@ -1,15 +1,15 @@
 import  React, { useState, useEffect } from 'react';
 import './RecipeDisplay.css';
 
-function RecipeCard(props) { // props.recipe - JSON w/ recipe info
-	//const [recipe, setRecipe] = useState([]);
-	const [recipe, setRecipe] = useState(props.recipe);
+function RecipeCard(props) { // props.id - recipe id
+														 // props.list - JSON w/ ingredient names
+	const [recipe, setRecipe] = useState([]);
 	const [list, setList] = useState([]);
 	
-	{/*
+	
 	useEffect(() => {
-		// GET example recipe
-		fetch(`http://localhost:8080/recipes/11`, {
+		// GET recipe info
+		fetch(`http://localhost:8080/recipes/${props.id}`, {
 			method: "GET",
 		})
 		.then(async response => {
@@ -17,21 +17,25 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 			console.log(data);
 			setRecipe(data);
 		});
-	// empty dependency array means this effect will only run once (like componentDidMount in classes)
-	}, []);
-	*/}
-	
-	useEffect(() => {
-		console.log(recipe);
-	}, []);
-	
-	useEffect(() => {
-		setRecipe(props.recipe);
 	}, [props]);
 	
 	// once recipe is loaded
 	useEffect(() => {
 		if(recipe.length !== 0) {
+			console.log(recipe);
+			const { ingredients } = recipe;
+			
+			let arr = [];
+			ingredients.map((item) => {
+				let ing = props.list.filter((i) => i.id === item.ingredient_id);
+				arr = [...arr, {
+					name: ing[0].name,
+					quantity: item.quantity,
+					unit: item.unit,
+				}];
+			});
+			setList(arr);
+			/*
 			const { ingredients } = recipe;
 		
 			//load ingredients database
@@ -51,6 +55,7 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 				});
 				setList(arr);
 			});
+			*/
 		}
 	}, [recipe]);
 	
@@ -61,6 +66,56 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 		}
 	}, [list]);
 	
+	const fatColor = `square ${recipe.fat}`;
+	const saturateColor = `square ${recipe.saturates}`;
+	const saltColor = `square ${recipe.salt}`;
+	const sugarColor = `square ${recipe.sugars}`;
+	
+	const fatLabel = () => {
+		let meaning;
+		if(recipe.fat === "green")
+			meaning = "< 3.0g/100g";
+		else if(recipe.fat === "orange")
+			meaning = "3.0g to 17.5g/100g";
+		else if(recipe.fat === "red")
+			meaning = "> 17.5g/100g";
+		return (meaning);
+	}
+	
+	const saturateLabel = () => {
+		let meaning;
+		if(recipe.saturates === "green")
+			meaning = "< 1.5g/100g";
+		else if(recipe.saturates === "orange")
+			meaning = "1.5g to 5.0g/100g";
+		else if(recipe.saturates === "red")
+			meaning = "> 5.0g/100g";
+		return (meaning);
+	}
+	
+	const sugarLabel = () => {
+		let meaning;
+		if(recipe.sugars === "green")
+			meaning = "< 5.0g/100g";
+		else if(recipe.sugars === "orange")
+			meaning = "5.0g to 22.5g/100g";
+		else if(recipe.sugars === "red")
+			meaning = "> 22.5g/100g";
+		return (meaning);
+	}
+	
+	const saltLabel = () => {
+		let meaning;
+		if(recipe.salt === "green")
+			meaning = "< 0.3g/100g";
+		else if(recipe.salt === "orange")
+			meaning = "0.3g to 1.5g/100g";
+		else if(recipe.salt === "red")
+			meaning = "> 1.5g/100g";
+		return (meaning);
+	}
+	
+	
 	return(
 		<div className='RecipeCard'>
 			<h1>{recipe.title}</h1>
@@ -70,7 +125,7 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 					<div className='ScrollList'>
 						<tbody className='IngredientsTable'>
 							{list.map((item, index) => 
-								<tr>
+								<tr key={index}>
 									<td>[{item.quantity} {item.unit}]</td>
 									<td>{item.name}</td>
 								</tr>
@@ -81,7 +136,6 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 				<div className='Instructions'>
 					<h4>Instructions:</h4>
 					<div className='ScrollList'>
-						
 						{recipe.length === 0 ? '' : 
 							<ol>
 								{recipe.instructions.map((i) =>
@@ -95,9 +149,14 @@ function RecipeCard(props) { // props.recipe - JSON w/ recipe info
 				</div>
 			</div>
 			<div className='CardFooter'>
-				<div class="square green"></div>
-				<div class="square orange"></div>
-				<div class="square red"></div>
+				<div class={fatColor}></div>
+				<div class="label-container">Fat: {fatLabel()}</div>
+				<div class={saturateColor}></div>
+				<div class="label-container">Saturate: {saturateLabel()}</div>
+				<div class={sugarColor}></div>
+				<div class="label-container">Sugar: {sugarLabel()}</div>
+				<div class={saltColor}></div>
+				<div class="label-container">Salt: {saltLabel()}</div>
 				<div>
 					<button className='SelectRecipe'>
 						I wanna make this!

@@ -44,10 +44,15 @@ class Favorites extends React.Component {
       }
       this.setState({
         favorites: data,
+				error: null,
       });
+			console.log(data);
+			let arr = data.map((i) => i.recipe_id);
+			this.props.initDisplay(arr);
     })
     .catch(err => {
       this.setState({
+				favorites: [],
         error: "No favorited recipes.",
       });
     });
@@ -67,6 +72,7 @@ class Favorites extends React.Component {
       this.setState({
         action: data,
         favoritesChanged: true,
+				error: null,
       });
     })
     .catch(err => {
@@ -83,10 +89,14 @@ class Favorites extends React.Component {
       items = error;
     }
     else {
-      items = (this.state.favorites).map((item) => 
+      items = (this.state.favorites).map((item, index) => 
         <li className='FavRecipe' key={item.recipe_id}>
           <button className='RemoveRecipeButton' onClick={(event) => this.removeFavorite(event, item.recipe_id)}>X</button>
-          <button className='ViewRecipeButton'>
+          <button className='ViewRecipeButton' onClick={(event) => {
+						event.preventDefault();
+						this.props.openOn(index);
+						this.props.toggleDisplay();
+						}}>
             <i class="arrow"></i>
           </button>
           <div className='RecipeTitle'>{item.title}</div>
