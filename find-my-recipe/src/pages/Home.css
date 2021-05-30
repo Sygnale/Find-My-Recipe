@@ -365,3 +365,7 @@ select{
     max-height: 20vh;
     overflow-y: auto;
 }
+
+.UnitText{
+    margin: 0;
+}

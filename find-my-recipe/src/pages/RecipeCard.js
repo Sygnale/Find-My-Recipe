@@ -126,8 +126,8 @@ function RecipeCard(props) { // props.id - recipe id
 						<tbody className='IngredientsTable'>
 							{list.map((item, index) => 
 								<tr key={index}>
-									<td>[{item.quantity} {item.unit}]</td>
-									<td>{item.name}</td>
+									<td>[{item.quantity}&nbsp;{item.unit}]</td>
+									<td>&nbsp;{item.name}</td>
 								</tr>
 							)}
 						</tbody>
@@ -138,9 +138,9 @@ function RecipeCard(props) { // props.id - recipe id
 					<div className='ScrollList'>
 						{recipe.length === 0 ? '' : 
 							<ol>
-								{recipe.instructions.map((i) =>
-									<li key={i.step_number}> 
-										{i.instruction}
+								{recipe.instructions.map((i, index) =>
+									<li> 
+										{index+1}. {i.instruction}
 									</li>
 								)}
 							</ol>

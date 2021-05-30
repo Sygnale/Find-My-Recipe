@@ -274,6 +274,7 @@ class Pantry extends React.Component {
 			<div className='Pantry'>
 				<h1 className='PantryTitle'>Pantry</h1>
 				<Search className='SearchBar' pantry={this.state.pantry} list={this.state.ingredients} managePantry={this.managePantry}/>
+				<p className='UnitText'>All displayed ingredient amounts are in the corresponding SI units</p>
 				<div className='Items'> {error}{items} </div>
 				<div className='AddIngredients'>
 					<p className='UpdateHeader'>Update Ingredient Amount: </p>
