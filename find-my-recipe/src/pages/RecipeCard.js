@@ -162,9 +162,9 @@ function RecipeCard(props) { // props.id - recipe id
 						I wanna make this!
 					</button>
 				</div>
-				<div className='URL'>
-					<a href={recipe.url}>The Sauce</a>
-				</div>
+				<a href={recipe.url}>
+					<button className='SourceButton'>VIEW SOURCE</button>
+				</a>
 			</div>
 		</div>
 	);
