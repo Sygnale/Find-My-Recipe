@@ -149,22 +149,25 @@ function RecipeCard(props) { // props.id - recipe id
 				</div>
 			</div>
 			<div className='CardFooter'>
-				<div class={fatColor}></div>
-				<div class="label-container">Fat: {fatLabel()}</div>
-				<div class={saturateColor}></div>
-				<div class="label-container">Saturate: {saturateLabel()}</div>
-				<div class={sugarColor}></div>
-				<div class="label-container">Sugar: {sugarLabel()}</div>
-				<div class={saltColor}></div>
-				<div class="label-container">Salt: {saltLabel()}</div>
-				<div>
+				<div class='Nutrition'>
+					<div><p class='NutritionLabel'>Nutritional Info:</p></div>
+					<div class={fatColor}><p className='NutritionTypeLabel'>Fat</p></div>
+					<div class="label-container">Fat: {fatLabel()}</div>
+					<div class={saturateColor}><p className='NutritionTypeLabel'>Saturates</p></div>
+					<div class="label-container">Saturate: {saturateLabel()}</div>
+					<div class={sugarColor}><p className='NutritionTypeLabel'>Sugar</p></div>
+					<div class="label-container">Sugar: {sugarLabel()}</div>
+					<div class={saltColor}><p className='NutritionTypeLabel'>Salt</p></div>
+					<div class="label-container">Salt: {saltLabel()}</div>
+				</div>
+				<div className='Buttons'>
 					<button className='SelectRecipe'>
 						I wanna make this!
 					</button>
+					<a href={recipe.url}>
+						<button className='SourceButton'>VIEW SOURCE</button>
+					</a>
 				</div>
-				<a href={recipe.url}>
-					<button className='SourceButton'>VIEW SOURCE</button>
-				</a>
 			</div>
 		</div>
 	);

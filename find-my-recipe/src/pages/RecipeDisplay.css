@@ -111,9 +111,9 @@ body{
     outline: none;
 }
 
-.CardFooter {
-	display: inline;
-	vertical-align: bottom;
+.CardFooter{
+	display: flex;
+	flex-direction: row;
 }
 
 .SelectRecipe{
@@ -126,8 +126,8 @@ body{
 	letter-spacing: 1px;
 	border:none;
 	outline: none;
-	margin-bottom:0.5vh;
-  margin-top: 0.5vh;
+	width: max-content;
+	margin-bottom: 5px;
 }
 
 .square {
@@ -181,8 +181,8 @@ body{
 
 .label-container{
 	position:fixed;
-	bottom:48px;
-	right:105px;
+	bottom:9vh;;
+	right:62vw;
 	color:#FFF;
 	background:rgba(51,51,51,0.5);
 	display:table-cell;
@@ -190,6 +190,7 @@ body{
 	padding:10px;
 	border-radius:3px;
 	visibility: hidden;
+	width: max-content;
 }
 
 div.square:hover + div.label-container{
@@ -228,4 +229,27 @@ ol{
 .SourceButton:focus{
     border:none;
     outline: none;
+}
+
+.NutritionLabel{
+	margin: 0;
+	width: max-content;
+}
+
+.Nutrition{
+	display: flex;
+	flex-direction: column;
+	width: 30vw;
+}
+
+.NutritionTypeLabel{
+	margin: 0;
+	margin-left: 28px;
+}
+
+.Buttons{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
