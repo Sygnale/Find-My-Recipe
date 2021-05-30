@@ -3,69 +3,68 @@ body{
     box-sizing: border-box;
     background-image: url("./../assets/pattern.PNG");
     background-position: center;
-		background-attachment: fixed;
-		background-repeat: no-repeat;
-		background-size: cover;
-    
-		font-family: 'Roboto', sans-serif;
-		height: 100vh;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
 }
 
 .RecipeCard {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px;
-  text-align: center;
-  background-color: #FFFFFF;
-  border-radius: 5px;
-	position: absolute;
-	width: 80%;
-	top: 50%;
-	left: 50%;
-	margin-right: -50%;
-	transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    position: absolute;
+    width: 80%;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
 }
 
 .RecipeBox {
-	position: fixed;
-  background: #00000050;
-  width: 100%;
-  height: 100vh;
-  top: 0;
-  left: 0;
+    position: fixed;
+    background: #00000050;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
 }
 
 .grid-container {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-gap: 10px;
-  padding: 10px;
-	text-align: left;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 10px;
+    padding: 10px;
+    text-align: left;
 }
 
 .IngredientsTable {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .ScrollList {
-	height: 200px;
-	overflow: auto;
+    height: 200px;
+    overflow: auto;
 }
 
 .PrevRecipe{
-	position:fixed;
-	width:40px;
-	height:40px;
-	bottom:40px;
-	right:40px;
-	background-color:#2541B2;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-	box-shadow: 2px 2px 3px #999;
-	top: 50%;
-	left: 4%;
-	transform: translate(-50%, -50%);
-	border: none;
+    position:fixed;
+    width:40px;
+    height:40px;
+    bottom:40px;
+    right:40px;
+    background-color:#2541B2;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    top: 50%;
+    left: 4%;
+    transform: translate(-50%, -50%);
+    border: none;
 }
 
 .PrevRecipe:hover{
@@ -82,20 +81,20 @@ body{
 }
 
 .NextRecipe{
-	position:fixed;
-	width:40px;
-	height:40px;
-	bottom:100px;
-	right:40px;
-	background-color:#2541B2;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-	box-shadow: 2px 2px 3px #999;
-	top: 50%;
-	left: 96%;
-	transform: translate(-50%, -50%);
-	border: none;
+    position:fixed;
+    width:40px;
+    height:40px;
+    bottom:100px;
+    right:40px;
+    background-color:#2541B2;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    top: 50%;
+    left: 96%;
+    transform: translate(-50%, -50%);
+    border: none;
 }
 
 .NextRecipe:hover{
@@ -112,57 +111,57 @@ body{
 }
 
 .CardFooter{
-	display: flex;
-	flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .SelectRecipe{
-  border-radius: 22px;
-	background-color: #2541B2;
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 50px;
-	letter-spacing: 1px;
-	border:none;
-	outline: none;
-	width: max-content;
-	margin-bottom: 5px;
+    border-radius: 22px;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 50px;
+    letter-spacing: 1px;
+    border:none;
+    outline: none;
+    width: max-content;
+    margin-bottom: 5px;
 }
 
 .square {
-  float: left;
-  width: 20px;
-  height: 20px;
-  margin: 5px;
-  border: 1px solid rgba(0, 0, 0, .2);
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border: 1px solid rgba(0, 0, 0, .2);
 }
 
 .green {
-	background-color: #0F0;
+    background-color: #0F0;
 }
 
 .orange {
-	background-color: #ffa500;
+    background-color: #ffa500;
 }
 
 .red {
-	background-color: #F00;
+    background-color: #F00;
 }
 
 .close-icon {
-  content: 'x';
-  cursor: pointer;
-  position: fixed;
-  right: 5%;
-  top: 12%;
-  background-color:#2541B2;
-	color:#FFF;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  text-align: center;
-  border: none;
+    content: 'x';
+    cursor: pointer;
+    position: fixed;
+    right: 5%;
+    top: 12%;
+    background-color:#2541B2;
+    color:#FFF;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    border: none;
 }
 
 .close-icon:hover{
@@ -180,34 +179,34 @@ body{
 
 
 .label-container{
-	position:fixed;
-	bottom:9vh;;
-	right:62vw;
-	color:#FFF;
-	background:rgba(51,51,51,0.5);
-	display:table-cell;
-	vertical-align:middle;
-	padding:10px;
-	border-radius:3px;
-	visibility: hidden;
-	width: max-content;
+    position:fixed;
+    bottom:9vh;;
+    right:62vw;
+    color:#FFF;
+    background:rgba(51,51,51,0.5);
+    display:table-cell;
+    vertical-align:middle;
+    padding:10px;
+    border-radius:3px;
+    visibility: hidden;
+    width: max-content;
 }
 
 div.square:hover + div.label-container{
-  visibility: visible;
-  opacity: 1;
+    visibility: visible;
+    opacity: 1;
 }
 
 ol{
-	margin: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-  	padding-right: 0;
-	padding-left: 20px;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    padding-left: 20px;
 }
 
 .SourceButton{
-	border-radius: 16px;
+    border-radius: 16px;
     background-color: #2541B2;
     color: #FFFFFF;
     font-size: 12px;
@@ -232,24 +231,24 @@ ol{
 }
 
 .NutritionLabel{
-	margin: 0;
-	width: max-content;
+    margin: 0;
+    width: max-content;
 }
 
 .Nutrition{
-	display: flex;
-	flex-direction: column;
-	width: 30vw;
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
 }
 
 .NutritionTypeLabel{
-	margin: 0;
-	margin-left: 28px;
+    margin: 0;
+    margin-left: 28px;
 }
 
 .Buttons{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

@@ -44,8 +44,8 @@ class Results extends React.Component {
       this.setState({
         results: data,
       });
-			let arr = data.map((i) => i.id);
-			this.props.initDisplay(arr);
+      let arr = data.map((i) => i.id);
+      this.props.initDisplay(arr);
     })
     .catch(err => {
       this.setState({
@@ -87,10 +87,10 @@ class Results extends React.Component {
         <li className='Recipe' key={item.id}>
           <button className='AddRecipeButton' onClick={(event) => this.addFavorite(event, item.id)}>+</button>
           <button className='ViewRecipeButton' onClick={(event) => {
-						event.preventDefault();
-						this.props.openOn(index);
-						this.props.toggleDisplay();
-						}}>
+            event.preventDefault();
+            this.props.openOn(index);
+            this.props.toggleDisplay();
+            }}>
             <i class="arrow"></i>
           </button>
           <div className='RecipeTitle'>{item.title}</div>

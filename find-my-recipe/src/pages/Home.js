@@ -11,45 +11,43 @@ class Home extends React.Component {
     super(props);
     this.state = {
       userID: this.props.userID,
-			displayOpen: false,
-			displayContent: [],
-			displayFirst: null,
+      displayOpen: false,
+      displayContent: [],
+      displayFirst: null,
     };
     
     this.openOn = this.openOn.bind(this);
-		this.toggleDisplay = this.toggleDisplay.bind(this);
-		this.initDisplay = this.initDisplay.bind(this);
+    this.toggleDisplay = this.toggleDisplay.bind(this);
+    this.initDisplay = this.initDisplay.bind(this);
   }
   
   openOn = (i) => {
     this.setState({ 
-			displayFirst: i,
-		});
+      displayFirst: i,
+    });
   }
-	
-	toggleDisplay() {
-		this.setState({
-			displayOpen: !this.state.displayOpen
-		});
-	}
-	
-	initDisplay = (stuff) => {
-		this.setState({
-			displayContent: stuff,
-		});
-	}
-	
-	componentDidUpdate(displayOpen, displayContent, displayFirst) {
-		console.log(this.state.displayOpen);
-		console.log(this.state.displayContent);
-		console.log(this.state.displayFirst);
-	}
-	
-	
-
+  
+  toggleDisplay() {
+    this.setState({
+      displayOpen: !this.state.displayOpen
+    });
+  }
+  
+  initDisplay = (stuff) => {
+    this.setState({
+      displayContent: stuff,
+    });
+  }
+  
+  componentDidUpdate(displayOpen, displayContent, displayFirst) {
+    console.log(this.state.displayOpen);
+    console.log(this.state.displayContent);
+    console.log(this.state.displayFirst);
+  }
+  
   render() {
-		const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} />;
-		
+    const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} />;
+    
     return (
       <div className>
         <h1 className='title'>Find My Recipe</h1>
@@ -69,9 +67,9 @@ class Home extends React.Component {
             />
           </div>
         </SplitPane>
-				
-				{popup}
-				
+        
+        {popup}
+        
       </div>
     );
   }

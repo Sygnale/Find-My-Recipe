@@ -12,17 +12,17 @@ class Recipes extends React.Component {
     this.state = {
       userID: this.props.userID,
       updateResults: false,
-			displayOpen: false,
-			displayContent: [],
-			displayFirst: null,
+      displayOpen: false,
+      displayContent: [],
+      displayFirst: null,
     };
     
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleDataReset= this.handleDataReset.bind(this);
-		
-		this.openOn = this.openOn.bind(this);
-		this.toggleDisplay = this.toggleDisplay.bind(this);
-		this.initDisplay = this.initDisplay.bind(this);
+    
+    this.openOn = this.openOn.bind(this);
+    this.toggleDisplay = this.toggleDisplay.bind(this);
+    this.initDisplay = this.initDisplay.bind(this);
   }
   
   handleStateChange(value) {
@@ -36,28 +36,28 @@ class Recipes extends React.Component {
   handleDataReset(){ 
     this.setState({ updateResults: false});
   }
-	
-	openOn = (i) => {
+  
+  openOn = (i) => {
     this.setState({ 
-			displayFirst: i,
-		});
+      displayFirst: i,
+    });
   }
-	
-	toggleDisplay() {
-		this.setState({
-			displayOpen: !this.state.displayOpen
-		});
-	}
-	
-	initDisplay = (stuff) => {
-		this.setState({
-			displayContent: stuff,
-		});
-	}
+  
+  toggleDisplay() {
+    this.setState({
+      displayOpen: !this.state.displayOpen
+    });
+  }
+  
+  initDisplay = (stuff) => {
+    this.setState({
+      displayContent: stuff,
+    });
+  }
 
   render() {
-		const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} />;
-		
+    const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} />;
+    
     return (
       <div className>
         <h1 className='title'>Find My Recipe</h1>
@@ -77,9 +77,9 @@ class Recipes extends React.Component {
             />
           </div>
         </SplitPane>
-				
-				{popup}
-				
+        
+        {popup}
+        
       </div>
     );
   }

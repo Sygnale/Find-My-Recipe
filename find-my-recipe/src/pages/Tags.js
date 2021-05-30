@@ -115,29 +115,29 @@ class Tags extends React.Component {
 
 
   getTags() {
-  		fetch(`http://localhost:8080/${this.props.userID}/tags`, {
-  			method: "GET",
-  		})
-  		.then(async response => {
-  			let data = await response.json();
-  			if(!response.ok) {
-  				let err = data;
-  				return Promise.reject(err);
-  			}
+      fetch(`http://localhost:8080/${this.props.userID}/tags`, {
+        method: "GET",
+      })
+      .then(async response => {
+        let data = await response.json();
+        if(!response.ok) {
+          let err = data;
+          return Promise.reject(err);
+        }
 
-  			this.setState({tags: data.tags });
+        this.setState({tags: data.tags });
 
-  			console.log(data);
+        console.log(data);
 
-  	   })
+       })
 
-  		.catch(err => {
-  			this.setState({
-  				tags: [],
-  				error: "You have no tags.",
-  			});
-  		});
-  	}
+      .catch(err => {
+        this.setState({
+          tags: [],
+          error: "You have no tags.",
+        });
+      });
+    }
 
     emptyTags() {
 

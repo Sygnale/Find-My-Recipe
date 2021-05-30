@@ -9,7 +9,7 @@ class Login extends React.Component {
       username: "",
       password: "",
       error: null,
-			isAuthenticated: false,
+      isAuthenticated: false,
       response: null,
     };
 
@@ -31,7 +31,7 @@ class Login extends React.Component {
      console.log(data);
      this.setState({
        response: data.id,
-			 isAuthenticated: true,
+       isAuthenticated: true,
      });
      this.props.handleStateChange(this.state.response);
    })
@@ -101,7 +101,7 @@ class Login extends React.Component {
             <div className='right-panel'>
               <h1 className>Find My Recipe</h1>
               <p>New?&nbsp;
-								<Link to='/Register'>Create a new account</Link>
+                <Link to='/Register'>Create a new account</Link>
               </p>
             </div>
           </div>
