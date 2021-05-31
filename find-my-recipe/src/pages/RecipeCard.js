@@ -92,11 +92,29 @@ function RecipeCard(props) { // props.id - recipe id
       meaning = "> 1.5g/100g";
     return (meaning);
   }
+
+  let addFavorite = (event) => {
+    event.preventDefault();
+    fetch(`http://localhost:8080/favorites/${props.userID}/${props.id}`, {
+      method: "POST",
+    })
+    .then(async response => {
+      let data = await response.text();
+      if(!response.ok) {
+        let err = data;
+        return Promise.reject(err);
+      }
+      alert('Favorite recipe added');
+    })
+    .catch(err => {
+      alert(err);
+    });
+  }
   
   return(
     <div className='RecipeCard'>
       <h1>{recipe.title}</h1>
-      <button className='AddButton'>ADD</button>
+      <button className='AddButton' onClick={(event) => addFavorite(event)}>ADD</button>
       <div className='grid-container'>
         <div className='IngredientsList'>
           <h4>Ingredients:</h4>

@@ -46,7 +46,7 @@ class Home extends React.Component {
   }
   
   render() {
-    const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} />;
+    const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} userID={this.state.userID} />;
     
     return (
       <div className>

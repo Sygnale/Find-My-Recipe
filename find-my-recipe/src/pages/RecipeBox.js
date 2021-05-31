@@ -86,7 +86,7 @@ function RecipeBox(props) { //props.recipes - list of recipe ids to display
     }
   };
   
-  const card = isLoading && <RecipeCard id={recipes[index]} list={list}/>;
+  const card = isLoading && <RecipeCard id={recipes[index]} list={list} userID={props.userID}/>;
   
   const nextButton = (reachedEnd === false) && <button className='NextRecipe' onClick={(event) => clickNext(event)}>
         &gt;
