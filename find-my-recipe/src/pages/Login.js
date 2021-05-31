@@ -72,7 +72,7 @@ class Login extends React.Component {
     return (
       <div className='Login'>
         <div className='left'>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} autofill='off'>
           <h1>Login</h1>
             <label>
               <input
