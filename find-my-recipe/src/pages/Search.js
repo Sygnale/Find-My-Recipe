@@ -44,7 +44,7 @@ function Search(props) {
     setQuery('');
     setResults([]);
   }
-  
+
   return (
     <div>
       <form onSubmit={e => { e.preventDefault(); }}>
@@ -60,7 +60,7 @@ function Search(props) {
             {results.map(item => (
               <li key={item.id}>
                 <button className='RemoveButton' onClick={(event) => handleClick(event, item.id)}>+</button>
-                {item.name};
+                {item.name}
               </li>
             ))}
           </ul>
