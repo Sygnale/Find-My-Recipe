@@ -368,3 +368,7 @@ select{
 .UnitText{
     margin: 0;
 }
+
+.ErrorText{
+    margin-left: 5px;
+}
