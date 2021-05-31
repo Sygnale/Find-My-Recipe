@@ -5,8 +5,7 @@ function RecipeCard(props) { // props.id - recipe id
                              // props.list - JSON w/ ingredient names
   const [recipe, setRecipe] = useState([]);
   const [list, setList] = useState([]);
-  
-  
+
   useEffect(() => {
     // GET recipe info
     fetch(`http://localhost:8080/recipes/${props.id}`, {
@@ -35,27 +34,6 @@ function RecipeCard(props) { // props.id - recipe id
         }];
       });
       setList(arr);
-      /*
-      const { ingredients } = recipe;
-    
-      //load ingredients database
-      fetch(`http://localhost:8080/ingredients`, {
-          method: "GET",
-      })
-      .then(async response => {
-        let data = await response.json();     
-        let arr = [];
-        ingredients.map((item) => {
-          let ing = data.filter((i) => i.id === item.ingredient_id);
-          arr = [...arr, {
-            name: ing[0].name,
-            quantity: item.quantity,
-            unit: item.unit,
-          }];
-        });
-        setList(arr);
-      });
-      */
     }
   }, [recipe]);
   
@@ -115,10 +93,10 @@ function RecipeCard(props) { // props.id - recipe id
     return (meaning);
   }
   
-  
   return(
     <div className='RecipeCard'>
       <h1>{recipe.title}</h1>
+      <button className='AddButton'>ADD</button>
       <div className='grid-container'>
         <div className='IngredientsList'>
           <h4>Ingredients:</h4>
@@ -161,9 +139,6 @@ function RecipeCard(props) { // props.id - recipe id
           <div class="label-container">Salt: {saltLabel()}</div>
         </div>
         <div className='Buttons'>
-          <button className='SelectRecipe'>
-            I wanna make this!
-          </button>
           <a href={recipe.url}>
             <button className='SourceButton'>VIEW SOURCE</button>
           </a>

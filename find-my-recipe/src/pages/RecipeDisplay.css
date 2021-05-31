@@ -59,7 +59,8 @@ body{
     background-color:#2541B2;
     color:#FFF;
     border-radius:50px;
-    text-align:center;
+    text-align: center;
+    font-weight: bold;
     box-shadow: 2px 2px 3px #999;
     top: 50%;
     left: 4%;
@@ -89,7 +90,8 @@ body{
     background-color:#2541B2;
     color:#FFF;
     border-radius:50px;
-    text-align:center;
+    text-align: center;
+    font-weight: bold;
     box-shadow: 2px 2px 3px #999;
     top: 50%;
     left: 96%;
@@ -113,20 +115,6 @@ body{
 .CardFooter{
     display: flex;
     flex-direction: row;
-}
-
-.SelectRecipe{
-    border-radius: 22px;
-    background-color: #2541B2;
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px 50px;
-    letter-spacing: 1px;
-    border:none;
-    outline: none;
-    width: max-content;
-    margin-bottom: 5px;
 }
 
 .square {
@@ -161,6 +149,7 @@ body{
     height: 40px;
     border-radius: 50%;
     text-align: center;
+    font-weight: bold;
     border: none;
 }
 
@@ -205,8 +194,35 @@ ol{
     padding-left: 20px;
 }
 
+.AddButton{
+    position: absolute;
+    border-radius: 22px;
+    background-color: #2541B2;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 24px;
+    letter-spacing: 1px;
+    border:none;
+    outline: none;
+    margin-left: 450px;
+}
+
+.AddButton:hover{
+    background-color:#878787;
+}
+
+.AddButton:active{
+    background-color: #878787;
+}
+
+.AddButton:focus{
+    border:none;
+    outline: none;
+}
+
 .SourceButton{
-    border-radius: 16px;
+    border-radius: 22px;
     background-color: #2541B2;
     color: #FFFFFF;
     font-size: 12px;
@@ -218,7 +234,7 @@ ol{
 }
 
 .SourceButton:hover{
-    background-color:#878787;
+    background-color: #878787;
 }
 
 .SourceButton:active{
