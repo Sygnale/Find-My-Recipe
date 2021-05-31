@@ -91,7 +91,7 @@ class Favorites extends React.Component {
     else {
       items = (this.state.favorites).map((item, index) => 
         <li className='FavRecipe' key={item.recipe_id}>
-          <button className='RemoveRecipeButton' onClick={(event) => this.removeFavorite(event, item.recipe_id)}>X</button>
+          <button className='RemoveRecipeButton' onClick={(event) => this.removeFavorite(event, item.recipe_id)}>x</button>
           <button className='ViewRecipeButton' onClick={(event) => {
             event.preventDefault();
             this.props.openOn(index);

@@ -49,7 +49,7 @@ body{
 .ResultsTitle{
     text-align: center;
     margin-top: 12px;
-    margin-bottom: 4px;
+    margin-bottom: 18px;
 }
 
 .RemoveRecipeButton:hover{
@@ -67,7 +67,7 @@ body{
 
 .NutritionalInfo{
     float: right;
-    width: 10vw;
+    width: 12vw;
 }
 
 .Recipe{
@@ -80,7 +80,7 @@ body{
     border-style: solid;
     box-sizing: border-box;
     border-radius: 10px;
-    margin-bottom: 2px;
+    margin-bottom: 8px;
 }
 
 .Results{
@@ -151,9 +151,8 @@ body{
     border-radius: 11px;
     background-color: #2541B2;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
-    padding: 6px 12px;
     letter-spacing: 1px;
     border:none;
     outline: none;
@@ -161,7 +160,7 @@ body{
     margin-top: 3px;
     margin-right: 3px;
     margin-left: 3px;
-    width:2vw;
+    width: 2vw;
 }
 
 .AddRecipeButton:hover{
@@ -178,7 +177,7 @@ body{
 }
 
 .searchAgain{
-    border-radius: 14px;
+    border-radius: 22px;
     background-color: #2541B2;
     color: #FFFFFF;
     font-size: 12px;
@@ -187,7 +186,7 @@ body{
     letter-spacing: 1px;
     border:none;
     outline: none;
-    margin-top: 4px;
+    margin-top: 18px;
     margin-bottom: 4px;
 }
 
@@ -205,7 +204,7 @@ body{
 }
 
 .BackButton{
-    border-radius: 14px;
+    border-radius: 22px;
     background-color: #2541B2;
     color: #FFFFFF;
     font-size: 12px;
@@ -214,8 +213,8 @@ body{
     letter-spacing: 1px;
     border:none;
     outline: none;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 18px;
+    margin-bottom: 8px;
 }
 
 .BackButton:hover{
@@ -238,6 +237,7 @@ body{
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
+    margin-top: 18px;
 }
 
 .TagsTitle{
@@ -251,6 +251,7 @@ body{
 .form-check-input{
     width: 1vw;
 }
+
 .form-check{
     width: 100%;
 }
