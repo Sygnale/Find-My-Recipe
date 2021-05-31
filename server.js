@@ -707,6 +707,8 @@ app.put('/:userId/ingredients/:ingredientId/:amount', (req, res) => {
   });
 });
 
+
+//API for adding amount to specific user's ingredient
 app.post('/:userId/ingredients/:ingredientId/:amount', async (req, res) => {
   const userId = req.params.userId;
   const ingredientId = req.params.ingredientId;
