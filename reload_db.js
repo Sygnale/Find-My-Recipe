@@ -253,12 +253,12 @@ async function fix_ingredients (){
   .on('data', (row) => {
       let name=row.name.replace('\'','\\\'');
       let label=row.label.replace('\'','\\\'');
-      let sql=`UPDATE ingredients SET name=\'${label}\' WHERE name=\'${name}\'`;
-      console.log(sql);
-      query(sql);
+      let sql=`USE find_my_recipe; UPDATE ingredients SET name=\'${label}\' WHERE name=\'${name}\'`;
+      query_db(sql,'');
   })
   .on('end', () => {
   console.log('Ingredient names updated');
+  return;
   });
 }
 
@@ -267,7 +267,7 @@ async function reload_db() {
 
   // Connect to MySQL
   await connect_mysql(con);
-
+  
   // Get json
   let url = "http://data.csail.mit.edu/im2recipe/recipes_with_nutritional_info.json";
   //let path = "C:\\Users\\Emily\\Desktop\\recipes_with_nutritional_info.json";
@@ -285,11 +285,12 @@ async function reload_db() {
     await Promise.all(promises);
     console.log("Recipe information added");
   });
-
+  
   console.log("Updating ingredient names");
   await fix_ingredients();
 
   console.log("reload_db finished successfully");
+  process.exit(0);
 }
 
 reload_db().catch((err) => {
