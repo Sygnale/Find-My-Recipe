@@ -15,4 +15,4 @@ Install MySQL using the installer [here](https://dev.mysql.com/downloads/install
 
  ### React.js
 
-Navigate to the Find-My-Recipe/find-my-recipe folder. Type "npm start" into the command line and a window should open with the project at localhost:3000. 
+Navigate to the Find-My-Recipe/find-my-recipe folder in another command window. Type "npm start" into the command line and a window should open with the project at localhost:3000. 
