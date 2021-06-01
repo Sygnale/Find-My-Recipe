@@ -39,12 +39,6 @@ class Home extends React.Component {
     });
   }
   
-  componentDidUpdate(displayOpen, displayContent, displayFirst) {
-    console.log(this.state.displayOpen);
-    console.log(this.state.displayContent);
-    console.log(this.state.displayFirst);
-  }
-  
   render() {
     const popup = this.state.displayOpen && <RecipeBox recipes={this.state.displayContent} handleClose={this.toggleDisplay} index={this.state.displayFirst} userID={this.state.userID} />;
     

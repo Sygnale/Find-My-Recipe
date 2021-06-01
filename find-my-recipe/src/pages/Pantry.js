@@ -33,8 +33,6 @@ class Pantry extends React.Component {
   componentDidUpdate(pantryChanged) {
     if(this.state.pantryChanged) {
       this.getPantry();
-      console.log(this.state.ingredients);
-      console.log(this.state.pantry);
       this.setState({ pantryChanged: false });
     }
   }
@@ -78,8 +76,6 @@ class Pantry extends React.Component {
           selectedRecipe: data.ingredients[0].id,
         });
       }
-
-      console.log(data.ingredients);
     })
     .catch(err => {
       this.setState({

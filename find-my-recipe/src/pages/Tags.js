@@ -48,14 +48,12 @@ class Tags extends React.Component {
   componentDidMount() {
     this.emptyTags();
     this.getTags();
-    console.log(this.state.tags);
   }
 
   // runs everytime listed props are updated
   componentDidUpdate(tagsChanged) {
     if(this.state.tagsChanged) {
       this.getTags();
-      console.log(this.state.tags);
       this.setState({ tagsChanged: false });
     }
   }
@@ -81,9 +79,6 @@ class Tags extends React.Component {
       error: err,
     });
   });
-
-  console.log(typeof this.state.tags);
-
   }
 
   removeTag(tag) {
@@ -101,9 +96,6 @@ class Tags extends React.Component {
         error: null,
         tagChanged: true,
       });
-
-    console.log(this.state.tags);
-
     })
 
     .catch(err => {
@@ -126,9 +118,6 @@ class Tags extends React.Component {
         }
 
         this.setState({tags: data.tags });
-
-        console.log(data);
-
        })
 
       .catch(err => {
@@ -152,9 +141,6 @@ class Tags extends React.Component {
         }
 
         this.setState({tags: data.tags });
-
-        console.log(data);
-
        })
 
       .catch(err => {
@@ -191,7 +177,6 @@ class Tags extends React.Component {
       Object.keys(this.state.checkboxes)
         .filter(checkbox => this.state.checkboxes[checkbox])
         .forEach(checkbox => {
-          console.log(checkbox, "is selected.");
         });
     };
 

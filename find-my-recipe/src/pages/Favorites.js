@@ -46,7 +46,6 @@ class Favorites extends React.Component {
         favorites: data,
         error: null,
       });
-      console.log(data);
       let arr = data.map((i) => i.recipe_id);
       this.props.initDisplay(arr);
     })

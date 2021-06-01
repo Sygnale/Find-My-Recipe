@@ -82,6 +82,9 @@ class Results extends React.Component {
     if (error) {
       items = error;
     }
+		else if(this.state.results.length === 0) {
+			items = "｡ﾟ(ﾟ´Д`ﾟ)ﾟ｡ NO MATCHES FOUND (time to go grocery shopping!)";
+		}
     else {
       items = (this.state.results).map((item, index) => 
         <li className='Recipe' key={item.id}>
