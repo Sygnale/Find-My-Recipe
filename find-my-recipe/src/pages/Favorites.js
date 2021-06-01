@@ -27,10 +27,6 @@ class Favorites extends React.Component {
       this.setState({ favoritesChanged: false, });
     }
   }
-  
-  // runs right before exiting Favorites, cancel in-progress fetches
-  componentWillUnmount() {
-  }
 
   getFavorites() {
     fetch(`http://localhost:8080/favorites/${this.props.userID}`, {

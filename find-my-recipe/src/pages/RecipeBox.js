@@ -35,34 +35,24 @@ function RecipeBox(props) {
     setReachedBeg(index === 0);
   }, [index]);
   
+	// change to next recipe (unless already at last recipe)
   const clickNext = (e) => {
     e.preventDefault();
     if(reachedEnd === false)
       setIndex(index + 1);
   }
   
+	// change to previous recipe (unless already at first recipe)
   const clickPrev = (e) => {
     e.preventDefault();
     if(reachedBeg === false)
       setIndex(index - 1);
   }
   
-	// only show arrow buttons when there're more recipes to show
-  const swipeButtons = () => {
-    if(reachedEnd === false) {
-      <button className='PrevRecipe' onClick={(event) => clickPrev(event)}>
-        &lt;
-      </button>
-    }
-    if(reachedBeg === false) {
-      <button className='NextRecipe' onClick={(event) => clickNext(event)}>
-        &gt;
-      </button>
-    }
-  };
-  
+	// only create recipe card once states are updated
   const card = isLoaded && <RecipeCard id={recipes[index]} list={list} userID={props.userID}/>;
   
+	// only displays arrow buttons when there're more recipes to show
   const nextButton = (reachedEnd === false) && <button className='NextRecipe' onClick={(event) => clickNext(event)}>
         &gt;
       </button>;

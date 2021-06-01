@@ -17,7 +17,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  // user, pass cannot be null or ""
+  // enters valid username and password into database (user, pass cannot be null or "")
   authenUser(user, pass) {
     fetch(`http://localhost:8080/authenticate-user/${user}-${pass}`, {
       method: "GET",
@@ -42,7 +42,8 @@ class Login extends React.Component {
      });
    });
   }
-
+	
+	// determines if submitted username and password is valid
   handleSubmit(event) {
     event.preventDefault(); // prevents page from refreshing
     if (this.state.username === "" 
@@ -57,7 +58,8 @@ class Login extends React.Component {
       this.authenUser(this.state.username, this.state.password);
     }
   }
-
+	
+	// trace user input
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }

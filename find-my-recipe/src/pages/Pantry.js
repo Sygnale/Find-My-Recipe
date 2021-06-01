@@ -36,7 +36,8 @@ class Pantry extends React.Component {
       this.setState({ pantryChanged: false });
     }
   }
-
+	
+	// load possible ingredients in database
   getIngredients() {
     fetch(`http://localhost:8080/ingredients`, {
         method: "GET",
@@ -48,7 +49,8 @@ class Pantry extends React.Component {
       });
     });
   }
-
+	
+	// load user's pantry items
   getPantry() {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
       method: "GET",
@@ -107,7 +109,8 @@ class Pantry extends React.Component {
 			});
 		});
 	}
-
+	
+	// eliminate selected ingredient from user's pantry
   removeIngredient(id) {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
       method: "DELETE",
@@ -130,7 +133,8 @@ class Pantry extends React.Component {
       });
     });
   }
-
+	
+	// removes all items from user's pantry
   emptyPantry() {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
       method: 'DELETE',
@@ -153,7 +157,8 @@ class Pantry extends React.Component {
       });
     });
   }
-
+	
+	// methods to add/remove ingredients (1=add, -1=remove)
   managePantry(act, id) {
     switch(act) {
       case 1:

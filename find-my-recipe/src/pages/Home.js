@@ -21,18 +21,21 @@ class Home extends React.Component {
     this.initDisplay = this.initDisplay.bind(this);
   }
   
+	// gives which recipe is displayed first upon opening popup
   openOn = (i) => {
     this.setState({ 
       displayFirst: i,
     });
   }
   
+	// open/close recipe display popup
   toggleDisplay() {
     this.setState({
       displayOpen: !this.state.displayOpen
     });
   }
   
+	// passes list of recipes to display
   initDisplay = (stuff) => {
     this.setState({
       displayContent: stuff,
