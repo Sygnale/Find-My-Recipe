@@ -39,10 +39,6 @@ class Pantry extends React.Component {
     }
   }
 
-  // runs right before exiting Pantry, cancel in-progress fetches
-  componentWillUnmount() {
-  }
-
   getIngredients() {
     fetch(`http://localhost:8080/ingredients`, {
         method: "GET",
@@ -93,28 +89,28 @@ class Pantry extends React.Component {
     });
   }
 
-    addIngredientAmount(id, Converted) {
-    fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
-      method: "POST",
-    })
-    .then(async response => {
-      let data = await response.text();
-    if(!response.ok) {
-      let err = data;
-      return Promise.reject(err);
-    }
-    this.setState({
-      action: 'Ingredient amount updated',
-      error: null,
-      pantryChanged: true,
-    });
-    })
-    .catch(err => {
-      this.setState({
-        error: err,
-      });
-    });
-    }
+	addIngredientAmount(id, Converted) {
+		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
+			method: "POST",
+		})
+		.then(async response => {
+			let data = await response.text();
+		if(!response.ok) {
+			let err = data;
+			return Promise.reject(err);
+		}
+		this.setState({
+			action: 'Ingredient amount updated',
+			error: null,
+			pantryChanged: true,
+		});
+		})
+		.catch(err => {
+			this.setState({
+				error: err,
+			});
+		});
+	}
 
   removeIngredient(id) {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
@@ -163,27 +159,22 @@ class Pantry extends React.Component {
   }
 
   managePantry(act, id) {
-
     switch(act) {
       case 1:
-            let Converted = this.amountConversion();
-        //this.addIngredient(id);
-
+				let Converted = this.amountConversion();
         this.addIngredientAmount(id, Converted);
-            this.setState({amount: 0});
+				this.setState({amount: 0});
         break;
       case -1:
         this.removeIngredient(id);
-            this.setState({amount: 0});
+				this.setState({amount: 0});
         break;
       default:
         break;
-
     }
   }
 
   amountConversion() {
-
     switch(this.state.unit){
       case "ounce":
         return (this.state.amount / 35.274);
@@ -223,52 +214,46 @@ class Pantry extends React.Component {
 
       default:
         return this.state.amount;
-
     }
-
   }
 
-    handleUnitChange = (event) => {
-      this.setState({unit: event.target.value});
-    }
+	handleUnitChange = (event) => {
+		this.setState({unit: event.target.value});
+	}
 
-    handleRecipeChange = (event) => {
-      this.setState({selectedRecipe: event.target.value});
-    }
+	handleRecipeChange = (event) => {
+		this.setState({selectedRecipe: event.target.value});
+	}
 
-    handleAmountChange = (event)=> {
+	handleAmountChange = (event)=> {
+		let preAmount = parseFloat(event.target.value);
 
-      let preAmount = parseFloat(event.target.value);
+		if (preAmount < 0)
+				preAmount=0;
 
-      if (preAmount < 0)
-          preAmount=0;
+		this.setState({amount: preAmount});
+	}
 
-      this.setState({amount: preAmount});
-
-    }
-
-    updateIngredientAmount = (event) => {
-    this.managePantry(1,this.state.selectedRecipe);
+	updateIngredientAmount = (event) => {
+		this.managePantry(1,this.state.selectedRecipe);
   }
 
   render() {
     const { error } = this.state;
     let items = (this.state.pantry).map((item) =>
-        <li className='List' key={item.id}>
-          <button className='RemoveButton' onClick={(event) => {
-            event.preventDefault();
-            this.managePantry(-1, item.id);
-          }}>-</button>
-          {item.name} {`(${item.amount})`}
-        </li>
-      );
+			<li className='List' key={item.id}>
+				<button className='RemoveButton' onClick={(event) => {
+					event.preventDefault();
+					this.managePantry(-1, item.id);
+				}}>-</button>
+				{item.name} {`(${item.amount})`}
+			</li>
+		);
 
     let msg = '';
     if (this.state.action) {
       msg = this.state.action;
     }
-
-    //reloading page on Pantry loses user ID, so make user log back in if that happens, but that's another issue
 
     return (
       <div className='Pantry'>

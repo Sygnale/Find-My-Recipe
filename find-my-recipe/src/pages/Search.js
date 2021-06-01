@@ -12,7 +12,6 @@ function Search(props) {
   }, [query]);
   
   const getMatch = (q, allData) => {
-    //alert(JSON.stringify(allData));
     if(allData.length === 0 || q === '')
       return false;
     let a = allData.filter((i) => {
@@ -34,13 +33,12 @@ function Search(props) {
     else {
       setSearching("¯\\_(⊙︿⊙)_/¯ not found");
       setResults([]);
-    }
-    
+    }   
   }
   
   const handleClick = (e, n) => {
     e.preventDefault();
-    props.managePantry(1, n);
+    props.managePantry(1, n); // add ingredient to pantry
     setQuery('');
     setResults([]);
   }

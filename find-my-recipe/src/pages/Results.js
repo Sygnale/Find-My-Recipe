@@ -1,4 +1,5 @@
 import React from 'react';
+import gif from '../assets/bowl_mixing.gif';
 import { Link } from 'react-router-dom';
 
 class Results extends React.Component {
@@ -8,6 +9,7 @@ class Results extends React.Component {
         results: [],
         action: null,
         error: null,
+				isLoaded: false,
       };
 
     this.getResults = this.getResults.bind(this);
@@ -19,14 +21,11 @@ class Results extends React.Component {
   componentDidMount() {
     this.getResults();
   }
-  
-  // runs right before exiting Results, cancel in-progress fetches
-  componentWillUnmount() {
-  }
 
   componentDidUpdate(){
     if(this.props.update){
       this.props.resetData();
+			this.setState({ isLoaded: false, });
       this.getResults();
     }
   }
@@ -43,6 +42,7 @@ class Results extends React.Component {
       }
       this.setState({
         results: data,
+				isLoaded: true,
       });
       let arr = data.map((i) => i.id);
       this.props.initDisplay(arr);
@@ -112,7 +112,9 @@ class Results extends React.Component {
     return (
       <div>
         <h1 className='ResultsTitle'>Recipes</h1>
-        <div> {items} </div>
+        <div>
+				{this.state.isLoaded ? items : <img src={gif} alt="gif"/>}
+				</div>
         <div className='Message'>{msg}</div>
       </div>
     );

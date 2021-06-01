@@ -1,19 +1,20 @@
 import  React, { useState, useEffect } from 'react';
 import './RecipeDisplay.css';
 
-function RecipeCard(props) { // props.id - recipe id
-                             // props.list - JSON w/ ingredient names
+// props.id - recipe id
+// props.list - JSON w/ ingredient names
+
+function RecipeCard(props) { 
   const [recipe, setRecipe] = useState([]);
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    // GET recipe info
+    // GET recipe info when passed in new id
     fetch(`http://localhost:8080/recipes/${props.id}`, {
       method: "GET",
     })
     .then(async response => {
       let data = await response.json();
-      console.log(data);
       setRecipe(data);
     });
   }, [props]);
@@ -21,7 +22,6 @@ function RecipeCard(props) { // props.id - recipe id
   // once recipe is loaded
   useEffect(() => {
     if(recipe.length !== 0) {
-      console.log(recipe);
       const { ingredients } = recipe;
       
       let arr = [];
@@ -37,13 +37,7 @@ function RecipeCard(props) { // props.id - recipe id
     }
   }, [recipe]);
   
-  // once ingredients list is loaded
-  useEffect(() => {
-    if(list.length !== 0) {
-      console.log(list);
-    }
-  }, [list]);
-  
+	// determine nutritional info
   const fatColor = `square ${recipe.fat}`;
   const saturateColor = `square ${recipe.saturates}`;
   const saltColor = `square ${recipe.salt}`;

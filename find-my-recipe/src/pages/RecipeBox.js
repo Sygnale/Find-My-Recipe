@@ -2,38 +2,19 @@ import  React, { useState, useEffect } from 'react';
 import RecipeCard from './RecipeCard';
 import './RecipeDisplay.css';
 
-function RecipeBox(props) { //props.recipes - list of recipe ids to display
-                            //props.index - index of recipe to first display
-  //const [recipes, setRecipes] = useState([]);
+//props.recipes - list of recipe ids to display
+//props.index - index of recipe to first display
+
+function RecipeBox(props) {
   const [recipes, setRecipes] = useState(props.recipes);
   const [list, setList] = useState([]);
   const [index, setIndex] = useState(props.index);
-  const [boundError, setBoundError] = useState(null);
   const [reachedEnd, setReachedEnd] = useState(false);
   const [reachedBeg, setReachedBeg] = useState(false);  
-  const [isLoading, setLoading] = useState(true);
-  //const recipeIDs = [5, 7, 11, 12, 13, 18, 23, 24, 34, 50];
+  const [isLoaded, setLoading] = useState(false);  
   
-  
-  useEffect(() => {
-    {/*
-    let arr = [];
-    recipeIDs.map((id) => {
-      fetch(`http://localhost:8080/recipes/${id}`, {
-        method: "GET",
-      })
-      .then(async response => {
-        let data = await response.json();
-        console.log(data);
-        arr = [...arr, data];
-        if(arr.length === recipeIDs.length) {
-          setRecipes(arr);
-        }
-      });
-    });
-    */}
-    
-    //load ingredients database
+	// load ingredients database
+  useEffect(() => {    
     fetch(`http://localhost:8080/ingredients`, {
         method: "GET",
     })
@@ -43,23 +24,16 @@ function RecipeBox(props) { //props.recipes - list of recipe ids to display
     });
   }, []);
   
-  
+  // prevent access to states when they're still loading
   useEffect(() => {
-    console.log(recipes);
     setLoading(recipes.length !== 0 && list.length !== 0);
   }, [recipes, list]);
   
-  useEffect(() => {
-    console.log(index);
-    console.log(reachedBeg);
-    console.log(reachedEnd);
-  }, [reachedBeg, reachedEnd]);
-  
+	// check for bound error
   useEffect(() => {
     setReachedEnd(index === recipes.length - 1);
     setReachedBeg(index === 0);
   }, [index]);
-  
   
   const clickNext = (e) => {
     e.preventDefault();
@@ -73,6 +47,7 @@ function RecipeBox(props) { //props.recipes - list of recipe ids to display
       setIndex(index - 1);
   }
   
+	// only show arrow buttons when there're more recipes to show
   const swipeButtons = () => {
     if(reachedEnd === false) {
       <button className='PrevRecipe' onClick={(event) => clickPrev(event)}>
@@ -86,7 +61,7 @@ function RecipeBox(props) { //props.recipes - list of recipe ids to display
     }
   };
   
-  const card = isLoading && <RecipeCard id={recipes[index]} list={list} userID={props.userID}/>;
+  const card = isLoaded && <RecipeCard id={recipes[index]} list={list} userID={props.userID}/>;
   
   const nextButton = (reachedEnd === false) && <button className='NextRecipe' onClick={(event) => clickNext(event)}>
         &gt;
