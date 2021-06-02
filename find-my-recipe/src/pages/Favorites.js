@@ -20,7 +20,7 @@ class Favorites extends React.Component {
     this.getFavorites();
   }
   
-  // runs everytime listed props are updated
+  // runs every time listed props are updated
   componentDidUpdate() {
     if(this.state.favoritesChanged) {
       this.getFavorites();
@@ -28,6 +28,7 @@ class Favorites extends React.Component {
     }
   }
 
+  // load user's favorite recipes
   getFavorites() {
     fetch(`http://localhost:8080/favorites/${this.props.userID}`, {
       method: "GET",
@@ -53,6 +54,7 @@ class Favorites extends React.Component {
     });
   }
 
+  // remove recipe from user's favorites
   removeFavorite(event, id) {
     event.preventDefault();
     fetch(`http://localhost:8080/favorites/${this.props.userID}/${id}`, {

@@ -13,7 +13,7 @@ function RecipeBox(props) {
   const [reachedBeg, setReachedBeg] = useState(false);  
   const [isLoaded, setLoading] = useState(false);  
   
-	// load ingredients database
+  // load ingredients database
   useEffect(() => {    
     fetch(`http://localhost:8080/ingredients`, {
         method: "GET",
@@ -29,30 +29,30 @@ function RecipeBox(props) {
     setLoading(recipes.length !== 0 && list.length !== 0);
   }, [recipes, list]);
   
-	// check for bound error
+  // check for bound error
   useEffect(() => {
     setReachedEnd(index === recipes.length - 1);
     setReachedBeg(index === 0);
   }, [index]);
   
-	// change to next recipe (unless already at last recipe)
+  // change to next recipe (unless already at last recipe)
   const clickNext = (e) => {
     e.preventDefault();
     if(reachedEnd === false)
       setIndex(index + 1);
   }
   
-	// change to previous recipe (unless already at first recipe)
+  // change to previous recipe (unless already at first recipe)
   const clickPrev = (e) => {
     e.preventDefault();
     if(reachedBeg === false)
       setIndex(index - 1);
   }
   
-	// only create recipe card once states are updated
+  // only create recipe card once states are updated
   const card = isLoaded && <RecipeCard id={recipes[index]} list={list} userID={props.userID}/>;
   
-	// only displays arrow buttons when there're more recipes to show
+  // only displays arrow buttons when there're more recipes to show
   const nextButton = (reachedEnd === false) && <button className='NextRecipe' onClick={(event) => clickNext(event)}>
         &gt;
       </button>;

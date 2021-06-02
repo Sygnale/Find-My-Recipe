@@ -3,13 +3,11 @@ import Results from './Results'
 import { Link } from 'react-router-dom';
 
 const tagsOpt = [
-
-"low fat",
-"low salt",
-"low sugar",
-"vegetarian",
-"gluten free",
-
+  "low fat",
+  "low salt",
+  "low sugar",
+  "vegetarian",
+  "gluten free",
 ];
 
 const Checkbox = ({ label, isSelected, onCheckboxChange }) => (
@@ -50,7 +48,7 @@ class Tags extends React.Component {
     this.getTags();
   }
 
-  // runs everytime listed props are updated
+  // runs every time listed props are updated
   componentDidUpdate(tagsChanged) {
     if(this.state.tagsChanged) {
       this.getTags();

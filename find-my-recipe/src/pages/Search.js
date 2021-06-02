@@ -5,14 +5,14 @@ function Search(props) {
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState('');
   
-	// stop ingredients search when no input given
+  // stop ingredients search when no input given
   useEffect(() => {
     if(query === '') {
       setSearching('');
     }
   }, [query]);
   
-	// filters query against entire ingredients database
+  // filters query against entire ingredients database
   const getMatch = (q, allData) => {
     if(allData.length === 0 || q === '')
       return false;
@@ -25,7 +25,7 @@ function Search(props) {
     return true;
   }
   
-	// handles ingredients search when user inputs query
+  // handles ingredients search when user inputs query
   const handleSearch = (e) => {
     e.preventDefault();
     let s = e.target.value;
@@ -39,7 +39,7 @@ function Search(props) {
     }   
   }
   
-	// adds selected ingredients to pantry
+  // adds selected ingredients to pantry
   const handleClick = (e, n) => {
     e.preventDefault();
     props.managePantry(1, n); // add ingredient to pantry

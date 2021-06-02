@@ -29,15 +29,15 @@ class Pantry extends React.Component {
     this.getPantry();
   }
 
-  // runs everytime listed props are updated
+  // runs every time listed props are updated
   componentDidUpdate(pantryChanged) {
     if(this.state.pantryChanged) {
       this.getPantry();
       this.setState({ pantryChanged: false });
     }
   }
-	
-	// load possible ingredients in database
+  
+  // load possible ingredients in database
   getIngredients() {
     fetch(`http://localhost:8080/ingredients`, {
         method: "GET",
@@ -49,8 +49,8 @@ class Pantry extends React.Component {
       });
     });
   }
-	
-	// load user's pantry items
+  
+  // load user's pantry items
   getPantry() {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
       method: "GET",
@@ -87,30 +87,30 @@ class Pantry extends React.Component {
     });
   }
 
-	addIngredientAmount(id, Converted) {
-		fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
-			method: "POST",
-		})
-		.then(async response => {
-			let data = await response.text();
-		if(!response.ok) {
-			let err = data;
-			return Promise.reject(err);
-		}
-		this.setState({
-			action: 'Ingredient amount updated',
-			error: null,
-			pantryChanged: true,
-		});
-		})
-		.catch(err => {
-			this.setState({
-				error: err,
-			});
-		});
-	}
-	
-	// eliminate selected ingredient from user's pantry
+  addIngredientAmount(id, Converted) {
+    fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}/${Converted}`, {
+      method: "POST",
+    })
+    .then(async response => {
+      let data = await response.text();
+    if(!response.ok) {
+      let err = data;
+      return Promise.reject(err);
+    }
+    this.setState({
+      action: 'Ingredient amount updated',
+      error: null,
+      pantryChanged: true,
+    });
+    })
+    .catch(err => {
+      this.setState({
+        error: err,
+      });
+    });
+  }
+  
+  // eliminate selected ingredient from user's pantry
   removeIngredient(id) {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients/${id}`, {
       method: "DELETE",
@@ -133,8 +133,8 @@ class Pantry extends React.Component {
       });
     });
   }
-	
-	// removes all items from user's pantry
+  
+  // removes all items from user's pantry
   emptyPantry() {
     fetch(`http://localhost:8080/${this.props.userID}/ingredients`, {
       method: 'DELETE',
@@ -157,18 +157,18 @@ class Pantry extends React.Component {
       });
     });
   }
-	
-	// methods to add/remove ingredients (1=add, -1=remove)
+  
+  // methods to add/remove ingredients (1=add, -1=remove)
   managePantry(act, id) {
     switch(act) {
       case 1:
-				let Converted = this.amountConversion();
+        let Converted = this.amountConversion();
         this.addIngredientAmount(id, Converted);
-				this.setState({amount: 0});
+        this.setState({amount: 0});
         break;
       case -1:
         this.removeIngredient(id);
-				this.setState({amount: 0});
+        this.setState({amount: 0});
         break;
       default:
         break;
@@ -218,38 +218,38 @@ class Pantry extends React.Component {
     }
   }
 
-	handleUnitChange = (event) => {
-		this.setState({unit: event.target.value});
-	}
+  handleUnitChange = (event) => {
+    this.setState({unit: event.target.value});
+  }
 
-	handleRecipeChange = (event) => {
-		this.setState({selectedRecipe: event.target.value});
-	}
+  handleRecipeChange = (event) => {
+    this.setState({selectedRecipe: event.target.value});
+  }
 
-	handleAmountChange = (event)=> {
-		let preAmount = parseFloat(event.target.value);
+  handleAmountChange = (event)=> {
+    let preAmount = parseFloat(event.target.value);
 
-		if (preAmount < 0)
-				preAmount=0;
+    if (preAmount < 0)
+        preAmount=0;
 
-		this.setState({amount: preAmount});
-	}
+    this.setState({amount: preAmount});
+  }
 
-	updateIngredientAmount = (event) => {
-		this.managePantry(1,this.state.selectedRecipe);
+  updateIngredientAmount = (event) => {
+    this.managePantry(1,this.state.selectedRecipe);
   }
 
   render() {
     const { error } = this.state;
     let items = (this.state.pantry).map((item) =>
-			<li className='List' key={item.id}>
-				<button className='RemoveButton' onClick={(event) => {
-					event.preventDefault();
-					this.managePantry(-1, item.id);
-				}}>-</button>
-				{item.name} {`(${item.amount})`}
-			</li>
-		);
+      <li className='List' key={item.id}>
+        <button className='RemoveButton' onClick={(event) => {
+          event.preventDefault();
+          this.managePantry(-1, item.id);
+        }}>-</button>
+        {item.name} {`(${item.amount})`}
+      </li>
+    );
 
     let msg = '';
     if (this.state.action) {

@@ -9,12 +9,11 @@ class Results extends React.Component {
         results: [],
         action: null,
         error: null,
-				isLoaded: false,
+        isLoaded: false,
       };
 
     this.getResults = this.getResults.bind(this);
     this.addFavorite = this.addFavorite.bind(this);
-    //this.props.resetData.bind(this);
   }
 
   // runs only once when Results is created
@@ -22,14 +21,16 @@ class Results extends React.Component {
     this.getResults();
   }
 
+  // runs every time listed props are updated
   componentDidUpdate(){
     if(this.props.update){
       this.props.resetData();
-			this.setState({ isLoaded: false, });
+      this.setState({ isLoaded: false, });
       this.getResults();
     }
   }
 
+  // load generated recipes from database
   getResults() {
     fetch(`http://localhost:8080/get-recipes/${this.props.userID}`, {
       method: "GET",
@@ -42,7 +43,7 @@ class Results extends React.Component {
       }
       this.setState({
         results: data,
-				isLoaded: true,
+        isLoaded: true,
       });
       let arr = data.map((i) => i.id);
       this.props.initDisplay(arr);
@@ -54,6 +55,7 @@ class Results extends React.Component {
     });
   }
 
+  // add recipe to user's favorites
   addFavorite(event, id) {
     event.preventDefault();
     fetch(`http://localhost:8080/favorites/${this.props.userID}/${id}`, {
@@ -82,9 +84,9 @@ class Results extends React.Component {
     if (error) {
       items = error;
     }
-		else if(this.state.results.length === 0) {
-			items = "｡ﾟ(ﾟ´Д`ﾟ)ﾟ｡ NO MATCHES FOUND (time to go grocery shopping!)";
-		}
+    else if(this.state.results.length === 0) {
+      items = "｡ﾟ(ﾟ´Д`ﾟ)ﾟ｡ NO MATCHES FOUND (time to go grocery shopping!)";
+    }
     else {
       items = (this.state.results).map((item, index) => 
         <li className='Recipe' key={item.id}>
@@ -116,8 +118,8 @@ class Results extends React.Component {
       <div>
         <h1 className='ResultsTitle'>Recipes</h1>
         <div>
-				{this.state.isLoaded ? items : <img src={gif} alt="gif"/>}
-				</div>
+        {this.state.isLoaded ? items : <img src={gif} alt="gif"/>}
+        </div>
         <div className='Message'>{msg}</div>
       </div>
     );

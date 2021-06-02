@@ -38,8 +38,8 @@ class Register extends React.Component {
       });
     });
   }
-	
-	// determines if submitted username and password is valid
+  
+  // determines if submitted username and password is valid
   handleSubmit(event) {
     event.preventDefault(); // prevents page from refreshing
     if (this.state.username === "" 
@@ -54,8 +54,8 @@ class Register extends React.Component {
       this.addUser(this.state.username, this.state.password);
     }
   }
-	
-	// trace user input
+  
+  // trace user input
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }

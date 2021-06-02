@@ -7,8 +7,8 @@ import './RecipeDisplay.css';
 function RecipeCard(props) { 
   const [recipe, setRecipe] = useState([]);
   const [list, setList] = useState([]);
-	
-	// GET recipe info when passed in new id
+  
+  // GET recipe info when passed in new id
   useEffect(() => {
     fetch(`http://localhost:8080/recipes/${props.id}`, {
       method: "GET",
@@ -37,13 +37,13 @@ function RecipeCard(props) {
     }
   }, [recipe]);
   
-	// display nutritional info
+  // display nutritional info
   const fatColor = `square ${recipe.fat}`;
   const saturateColor = `square ${recipe.saturates}`;
   const saltColor = `square ${recipe.salt}`;
   const sugarColor = `square ${recipe.sugars}`;
   
-	// display color meaning for each nutritional category
+  // display color meaning for each nutritional category
   const fatLabel = () => {
     let meaning;
     if(recipe.fat === "green")
@@ -87,8 +87,8 @@ function RecipeCard(props) {
       meaning = "> 1.5g/100g";
     return (meaning);
   }
-	
-	// add displayed recipe to favorites if not already favorited
+  
+  // add displayed recipe to favorites if not already favorited
   let addFavorite = (event) => {
     event.preventDefault();
     fetch(`http://localhost:8080/favorites/${props.userID}/${props.id}`, {
